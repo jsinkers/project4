@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../static/register_machine/register_machine.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <title>Problem</title>
+</head>
+
+<body>
+     <nav class="navbar navbar-light bg-light">
+      <span class="navbar-brand mb-0 h1">Reggie</span>
+    </nav>
+    <div class="container">
+        <div class="row" id="probStatement">
+            <div class="col">
+                <h1>Problem title</h1>
+                <p>Problem statement goes here</p>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg" id="program">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h4>Program</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table" id="tabProgram">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Step</th>
+                                    <th scope="col">Instruction</th>
+                                    <th scope="col">Register</th>
+                                    <th scope="col">Go to step</th>
+                                    <th scope="col">Branch to step</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td scope="row">1</td>
+                                    <td>Deb</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td scope="row">2</td>
+                                    <td>Inc</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td scope="row">3</td>
+                                    <td>End</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary">Reset</button>
+                            <button class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg">
+                <div class="container-fluid" id="registers">
+                    <div class="row">
+                        <div class="col">
+                            <h4>Registers</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="register">Register 1</div>
+                        <div class="register">Register 2</div>
+                        <div class="register">Register 3</div>
+                        <div class="register">Register 4</div>
+                        <div class="register">Register 5</div>
+                        <div class="register">Register 6</div>
+                        <div class="register">Register 7</div>
+                        <div class="register">Register 8</div>
+                    </div>
+                </div>
+                <div id="controls" class="container-fluid">
+
+                    <div class="row">
+                        <div class="col"><h4>Controls</h4></div></div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary">Run</button>
+                            <button class="btn btn-primary">Step</button>
+                            <button class="btn btn-primary">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="tests" class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h4>Tests</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
