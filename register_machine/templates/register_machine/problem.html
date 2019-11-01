@@ -13,15 +13,16 @@
 </head>
 
 <body>
-     <nav class="navbar navbar-light bg-light">
-      <span class="navbar-brand mb-0 h1">Reggie</span>
+<div id="app">
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Reggie</span>
     </nav>
+
     <div class="container">
         <div class="row" id="probStatement">
             <div class="col">
                 <h1>Problem title</h1>
                 <p>Problem statement goes here</p>
-
             </div>
         </div>
         <div class="row">
@@ -86,147 +87,21 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    1
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-outline-primary">-</button>
-                                        <button type="button" class="btn btn-outline-primary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    2
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    3
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    4
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    5
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    6
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    7
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="register">
-                            <div class="container">
-                                <div class="regHeading row justify-content-center">
-                                    8
-                                </div>
-                                <div class="regContent row justify-content-center">
-                                    <h2>0</h2>
-                                </div>
-                                <div class="regFooter row">
-                                    <div class="col btn-group btn-group-sm" role="group">
-                                        <button type="button" class="btn btn-secondary">-</button>
-                                        <button type="button" class="btn btn-secondary">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <register v-for="reg in registers" :init-reg-value="reg.value" :reg-id="reg.id"></register>
                     </div>
                 </div>
                 <div id="controls" class="container-fluid">
 
                     <div class="row">
-                        <div class="col"><h4>Controls</h4></div></div>
+                        <div class="col"><h4>Controls</h4></div>
+                    </div>
                     <div class="row">
                         <div class="col">
                             <button class="btn btn-primary">Run</button>
                             <button class="btn btn-primary">Step</button>
                             <button class="btn btn-primary">Reset</button>
                         </div>
-                    </div>
+                    </div>a
                 </div>
                 <div id="tests" class="container-fluid">
                     <div class="row">
@@ -238,12 +113,54 @@
             </div>
         </div>
     </div>
+</div>
     <script>
+        Vue.component('register', {
+            props: {
+                regId: Number,
+                initRegValue: Number
+            },
+            template: `<div class="register">
+                        <div class="container">
+                            <div class="regHeading row justify-content-center">
+                                {{ regId }}
+                            </div>
+                            <div class="regContent row justify-content-center">
+                                <h2>{{ regValue }}</h2>
+                            </div>
+                            <div class="regFooter row">
+                                <div class="col btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-primary" @click=decReg>-</button>
+                                    <button type="button" class="btn btn-outline-primary" @click=incReg>+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`,
+            data: function() {
+                return {
+                    regValue: this.initRegValue
+                }
+            },
+            methods: {
+                decReg: function () {this.regValue ? this.regValue-- : 0;},
+                incReg: function () {this.regValue++;}
+            }
+
+        });
+
         var app = new Vue({
-          el: '#app',
-          data: {
-            message: 'Hello Vue!'
-          }
+            el: '#app',
+            data: {
+                program: [],
+                registers: [{id: 1, value: 0},
+                            {id: 2, value: 1},
+                            {id: 3, value: 2},
+                            {id: 4, value: 3},
+                            {id: 5, value: 4},
+                            {id: 6, value: 5},
+                            {id: 7, value: 6},
+                            {id: 8, value: 7}]
+            }
         })
     </script>
 </body>
