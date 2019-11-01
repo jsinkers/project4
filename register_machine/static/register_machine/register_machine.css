@@ -5774,13 +5774,15 @@ a.close.disabled {
   vertical-align: text-top !important;
 }
 
-.bg-primary {
+.bg-primary, .register .container .regHeading {
   background-color: #007bff !important;
 }
 
-a.bg-primary:hover, a.bg-primary:focus,
+a.bg-primary:hover, .register .container a.regHeading:hover, a.bg-primary:focus, .register .container a.regHeading:focus,
 button.bg-primary:hover,
-button.bg-primary:focus {
+.register .container button.regHeading:hover,
+button.bg-primary:focus,
+.register .container button.regHeading:focus {
   background-color: #0062cc !important;
 }
 
@@ -5862,7 +5864,7 @@ button.bg-dark:focus {
   background-color: transparent !important;
 }
 
-.border {
+.border, .register .container {
   border: 1px solid #dee2e6 !important;
 }
 
@@ -5902,7 +5904,7 @@ button.bg-dark:focus {
   border-left: 0 !important;
 }
 
-.border-primary {
+.border-primary, .register .container {
   border-color: #007bff !important;
 }
 
@@ -5946,7 +5948,7 @@ button.bg-dark:focus {
   border-radius: 0.25rem !important;
 }
 
-.rounded-top {
+.rounded-top, .register .container .regHeading {
   border-top-left-radius: 0.25rem !important;
   border-top-right-radius: 0.25rem !important;
 }
@@ -5966,7 +5968,7 @@ button.bg-dark:focus {
   border-bottom-left-radius: 0.25rem !important;
 }
 
-.rounded-lg {
+.rounded-lg, .register .container {
   border-radius: 0.3rem !important;
 }
 
@@ -7354,7 +7356,7 @@ button.bg-dark:focus {
   padding-left: 0.25rem !important;
 }
 
-.p-2 {
+.p-2, .register {
   padding: 0.5rem !important;
 }
 
@@ -7368,7 +7370,7 @@ button.bg-dark:focus {
   padding-right: 0.5rem !important;
 }
 
-.pb-2,
+.pb-2, .register .container .regFooter,
 .py-2 {
   padding-bottom: 0.5rem !important;
 }
@@ -9448,7 +9450,7 @@ button.bg-dark:focus {
   font-style: italic !important;
 }
 
-.text-white {
+.text-white, .register .container .regHeading {
   color: #fff !important;
 }
 

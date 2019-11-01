@@ -3,6 +3,20 @@
 .register {
   //@extend .col-lg;
   @extend .col-3;
-
+  @extend .p-2;
+  .container {
+    @extend .border;
+    @extend .border-primary;
+    //@extend .bg-secondary;
+    @extend .rounded-lg;
+    .regHeading {
+      @extend .bg-primary;
+      @extend .rounded-top;
+      @extend .text-white;
+    }
+    .regFooter {
+      @extend .pb-2;
+    }
+  }
 
 }
