@@ -94,7 +94,7 @@
                         <div class="col">
                             <button class="btn btn-primary">Run</button>
                             <button class="btn btn-primary">Step</button>
-                            <button class="btn btn-primary">Reset</button>
+                            <button class="btn btn-primary" @click="resetRegisters">Reset</button>
                         </div>
                     </div>a
                 </div>
@@ -149,7 +149,8 @@
                 }
             },
             watch: {
-                value: function() {this.$emit("update:reg-value", this.value)}
+                value: function() {this.$emit("update:reg-value", this.value)},
+                regValue: function() {this.value = this.regValue;}
             }
         });
 
@@ -187,9 +188,12 @@
                             {id: 8, value: 7}]
             },
             methods: {
-                incReg: function (value) {
-                    console.log("incReg");
-                    this.regValue = this.regValue ? this.regValue + value : 0;
+                resetRegisters: function () {
+                    console.log("resetting registers");
+                    this.registers.forEach(function(item) {
+                        console.log(`${item.id}`);
+                        item.value = 0;
+                    });
                 },
             }
         })
