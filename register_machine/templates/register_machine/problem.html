@@ -46,27 +46,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td scope="row">1</td>
-                                    <td>Deb</td>
-                                    <td>1</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">2</td>
-                                    <td>Inc</td>
-                                    <td>2</td>
-                                    <td>1</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">3</td>
-                                    <td>End</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
+                                    <tr v-for="(step, ind) in program">
+                                        <td scope="row">{{ ind + 1 }}</td>
+                                        <td>{{ step.instruction }}</td>
+                                        <td>{{ step.register }}</td>
+                                        <td>{{ step.goTo }}</td>
+                                        <td>{{ step.branchTo }}</td>
+                                    </tr>
+                                    <!--<step v-for="(step, ind) in program"
+                                          :prog-step="step"
+                                          :key="ind">
+                                    </step>-->
                                 </tbody>
                             </table>
                         </div>
@@ -87,7 +77,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <register v-for="reg in registers" :init-reg-value="reg.value" :reg-id="reg.id"></register>
+                        <register v-for="(reg, ind) in registers"
+                                  :key="ind"
+                                  :reg-value="reg.value"
+                                  :reg-id="reg.id"
+                                  @update:reg-value="reg.value = $event"
+                        ></register>
                     </div>
                 </div>
                 <div id="controls" class="container-fluid">
@@ -115,10 +110,10 @@
     </div>
 </div>
     <script>
-        Vue.component('register', {
+         Vue.component('register', {
             props: {
                 regId: Number,
-                initRegValue: Number
+                regValue: Number,
             },
             template: `<div class="register">
                         <div class="container">
@@ -126,32 +121,62 @@
                                 {{ regId }}
                             </div>
                             <div class="regContent row justify-content-center">
-                                <h2>{{ regValue }}</h2>
+                                <h2>{{ value }}</h2>
                             </div>
                             <div class="regFooter row">
                                 <div class="col btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-outline-primary" @click=decReg>-</button>
-                                    <button type="button" class="btn btn-outline-primary" @click=incReg>+</button>
+                                    <button type="button" class="btn btn-outline-primary"
+                                        @click="decReg"
+                                        >-</button>
+                                    <button type="button" class="btn btn-outline-primary"
+                                        @click="incReg"
+                                        >+</button>
                                 </div>
                             </div>
                         </div>
                     </div>`,
             data: function() {
                 return {
-                    regValue: this.initRegValue
+                    value: this.regValue
                 }
             },
             methods: {
-                decReg: function () {this.regValue ? this.regValue-- : 0;},
-                incReg: function () {this.regValue++;}
+                decReg: function () {
+                    this.value ? this.value-- : 0;
+                },
+                incReg: function () {
+                    this.value++;
+                }
+            },
+            watch: {
+                value: function() {this.$emit("update:reg-value", this.value)}
             }
-
         });
 
+
+        Vue.component('step', {
+            props: {
+                progStep: Object
+            },
+            template: `<tr>
+                            <td scope="row"></td>
+                            <td>{{ step.instruction }}</td>
+                            <td>{{ step.register }}</td>
+                            <td>{{ step.goTo }}</td>
+                            <td>{{ step.branchTo }}</td>
+                        </tr>`,
+            data: function() {
+                return {
+                    step: this.progStep
+                }
+            }
+            });
         var app = new Vue({
             el: '#app',
             data: {
-                program: [],
+                program: [{instruction: "deb", register: 1, goTo: 2, branchTo: 3},
+                            {instruction: "inc", register: 2, goTo: 1, branchTo: null},
+                            {instruction: "end", register: null, goTo: null, branchTo: null},],
                 registers: [{id: 1, value: 0},
                             {id: 2, value: 1},
                             {id: 3, value: 2},
@@ -160,6 +185,12 @@
                             {id: 6, value: 5},
                             {id: 7, value: 6},
                             {id: 8, value: 7}]
+            },
+            methods: {
+                incReg: function (value) {
+                    console.log("incReg");
+                    this.regValue = this.regValue ? this.regValue + value : 0;
+                },
             }
         })
     </script>
