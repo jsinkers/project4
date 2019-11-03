@@ -21,10 +21,10 @@ rm_program = {steps: [{inst: <inc|dec|end>, register: <int>, goTo: <int>, branch
 
 JSON objects
 ```
-tests = {{ name: <string>,
+tests = { { name: <string>,
   register_start_values: { <id>: <value>, ... }
   register_end_values: { <id>: <value>, ... }
-}, { }}
+}, { } }
 ```
 
 ## References
