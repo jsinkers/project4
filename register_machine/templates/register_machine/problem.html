@@ -9,194 +9,83 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="../../static/register_machine/register_machine.js" type="module"></script>
     <title>Problem</title>
 </head>
 
 <body>
-<div id="app">
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1">Reggie</span>
-    </nav>
+    <div id="app">
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1">Reggie</span>
+        </nav>
 
-    <div class="container">
-        <div class="row" id="probStatement">
-            <div class="col">
-                <h1>Problem title</h1>
-                <p>Problem statement goes here</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg" id="program">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col">
-                            <h4>Program</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <table class="table" id="tabProgram">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Step</th>
-                                    <th scope="col">Instruction</th>
-                                    <th scope="col">Register</th>
-                                    <th scope="col">Go to step</th>
-                                    <th scope="col">Branch to step</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(step, ind) in program">
-                                        <td scope="row">{{ ind + 1 }}</td>
-                                        <td>{{ step.instruction }}</td>
-                                        <td>{{ step.register }}</td>
-                                        <td>{{ step.goTo }}</td>
-                                        <td>{{ step.branchTo }}</td>
-                                    </tr>
-                                    <!--<step v-for="(step, ind) in program"
-                                          :prog-step="step"
-                                          :key="ind">
-                                    </step>-->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary">Reset</button>
-                            <button class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
+        <div class="container">
+            <div class="row" id="probStatement">
+                <div class="col">
+                    <h1>Problem title</h1>
+                    <p>Problem statement goes here</p>
                 </div>
             </div>
-            <div class="col-12 col-lg">
-                <div class="container-fluid" id="registers">
-                    <div class="row">
-                        <div class="col">
-                            <h4>Registers</h4>
+            <div class="row">
+                <div class="col-12 col-lg" id="program">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <h4>Program</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <program :program="program"></program>
+                                <!--<program-grid></program-grid>-->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary">Reset</button>
+                                <button class="btn btn-primary">Save</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <register v-for="(reg, ind) in registers"
-                                  :key="ind"
-                                  :reg-value="reg.value"
-                                  :reg-id="reg.id"
-                                  @update:reg-value="reg.value = $event"
-                        ></register>
-                    </div>
                 </div>
-                <div id="controls" class="container-fluid">
-
-                    <div class="row">
-                        <div class="col"><h4>Controls</h4></div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary">Run</button>
-                            <button class="btn btn-primary">Step</button>
-                            <button class="btn btn-primary" @click="resetRegisters">Reset</button>
+                <div class="col-12 col-lg">
+                    <div class="container-fluid" id="registers">
+                        <div class="row">
+                            <div class="col">
+                                <h4>Registers</h4>
+                            </div>
                         </div>
-                    </div>a
-                </div>
-                <div id="tests" class="container-fluid">
-                    <div class="row">
-                        <div class="col">
-                            <h4>Tests</h4>
+                        <div class="row">
+                            <register v-for="(reg, ind) in registers"
+                                      :key="ind"
+                                      :reg-value="reg.value"
+                                      :reg-id="reg.id"
+                                      @update:reg-value="reg.value = $event"
+                            ></register>
+                        </div>
+                    </div>
+                    <div id="controls" class="container-fluid">
+                        <div class="row">
+                            <div class="col"><h4>Controls</h4></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary" @click="runRegMachine">Run</button>
+                                <button class="btn btn-primary" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary" @click="resetRegisters">Reset</button>
+                            </div>
+                        </div>a
+                    </div>
+                    <div id="tests" class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <h4>Tests</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-    <script>
-         Vue.component('register', {
-            props: {
-                regId: Number,
-                regValue: Number,
-            },
-            template: `<div class="register">
-                        <div class="container">
-                            <div class="regHeading row justify-content-center">
-                                {{ regId }}
-                            </div>
-                            <div class="regContent row justify-content-center">
-                                <h2>{{ value }}</h2>
-                            </div>
-                            <div class="regFooter row">
-                                <div class="col btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-outline-primary"
-                                        @click="decReg"
-                                        >-</button>
-                                    <button type="button" class="btn btn-outline-primary"
-                                        @click="incReg"
-                                        >+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`,
-            data: function() {
-                return {
-                    value: this.regValue
-                }
-            },
-            methods: {
-                decReg: function () {
-                    this.value ? this.value-- : 0;
-                },
-                incReg: function () {
-                    this.value++;
-                }
-            },
-            watch: {
-                value: function() {this.$emit("update:reg-value", this.value)},
-                regValue: function() {this.value = this.regValue;}
-            }
-        });
-
-
-        Vue.component('step', {
-            props: {
-                progStep: Object
-            },
-            template: `<tr>
-                            <td scope="row"></td>
-                            <td>{{ step.instruction }}</td>
-                            <td>{{ step.register }}</td>
-                            <td>{{ step.goTo }}</td>
-                            <td>{{ step.branchTo }}</td>
-                        </tr>`,
-            data: function() {
-                return {
-                    step: this.progStep
-                }
-            }
-            });
-        var app = new Vue({
-            el: '#app',
-            data: {
-                program: [{instruction: "deb", register: 1, goTo: 2, branchTo: 3},
-                            {instruction: "inc", register: 2, goTo: 1, branchTo: null},
-                            {instruction: "end", register: null, goTo: null, branchTo: null},],
-                registers: [{id: 1, value: 0},
-                            {id: 2, value: 1},
-                            {id: 3, value: 2},
-                            {id: 4, value: 3},
-                            {id: 5, value: 4},
-                            {id: 6, value: 5},
-                            {id: 7, value: 6},
-                            {id: 8, value: 7}]
-            },
-            methods: {
-                resetRegisters: function () {
-                    console.log("resetting registers");
-                    this.registers.forEach(function(item) {
-                        console.log(`${item.id}`);
-                        item.value = 0;
-                    });
-                },
-            }
-        })
-    </script>
 </body>
 </html>
