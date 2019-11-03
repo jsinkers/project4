@@ -2,7 +2,8 @@
 
 .register {
   //@extend .col-lg;
-  @extend .col-3;
+  @extend .col-6;
+  @extend .col-md-3;
   @extend .p-2;
   .container {
     @extend .border;
@@ -25,4 +26,18 @@
   @extend .bg-primary;
   @extend .text-white;
 }
+
+th {
+  word-break:break-all;
+  font-size: 0.5rem;
+}
+
+@include media-breakpoint-up(sm) {
+  th {
+    word-break:break-all;
+    font-size: 0.8rem;
+  }
+}
+
+
 

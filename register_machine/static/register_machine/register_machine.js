@@ -56,6 +56,7 @@ Vue.component('register', {
 Vue.component('program', {
     props: {
         program: Array,
+        fields: Array,
         currentStepId: Number
     },
     template : `<table class="table" id="tabProgram">
@@ -64,9 +65,9 @@ Vue.component('program', {
                     <th scope="col">Step</th>
                     <th scope="col">Instruction</th>
                     <th scope="col">Register</th>
-                    <th scope="col">Go to step</th>
-                    <th scope="col">Branch to step</th>
-                    <th scope="col"></th>
+                    <th scope="col">Go to</th>
+                    <th scope="col">Branch to</th>
+                    <!--<th scope="col"></th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +76,8 @@ Vue.component('program', {
                           :edit-mode="false"
                           :curr-step-id="currentStepId"
                           :key="ind"
-                          @>
+                          :fields="fields"
+                          >
                     </step>
                 </tbody>
             </table>`,
@@ -91,30 +93,32 @@ Vue.component('program', {
 
 Vue.component('program-grid', {
     props: {
-        program: Array
+        program: Array,
+        fields: Array
     },
-    template: `<kendo-grid :data-source="program">
+    template: `<kendo-grid :data-source="program" :fields="fields">
             </kendo-grid>`
 });
 
 Vue.component('step', {
     props: {
         progStep: Object,
-        editMode: Boolean,
-        currStepId: Number
+        currStepId: Number,
+        fields: Array
     },
     template: `<tr v-bind:class="{ currStep: step.id === currStepId}">
-                <td scope="row">{{ step.id }}</td>
-                <td>{{ step.instruction }}</td>
-                <td>{{ step.register }}</td>
-                <td>{{ step.goTo }}</td>
-                <td>{{ step.branchTo }}</td>
-                <td v-if="step.editable">
-                    <a href="#"
+                <td scope="row">
+                    {{ step.id }} <a v-if="step.editable" href="#"
                         class="badge badge-primary"
                         @click="toggleEdit">Edit</a>
                 </td>
-                <td v-else></td>
+                <dropdown v-for="(field, ind) in fields"
+                    :key="ind"
+                    :editMode="step.editMode"
+                    :field="field.field"
+                    :value="step[field.field]"
+                    :options="field.options"
+                ></dropdown>
             </tr>`,
     data: function() {
         return {
@@ -129,12 +133,35 @@ Vue.component('step', {
     }
 });
 
+Vue.component('dropdown', {
+    props: {
+        editMode: Boolean,
+        field: String,
+        value: Number | String,
+        options: Array
+    },
+    template: `<td>
+                    <span v-if="editMode">
+                        <select class="form-control">
+                            <option v-for="(opt, ind) in options"
+                                    :key="ind">
+                                    {{ opt }}
+                            </option>
+                        </select>
+                    </span>
+                    <span v-else>{{value}}</span>
+                </td>`,
+    methods: {
+
+    }
+});
+
 var app = new Vue({
     el: '#app',
     data: {
-        program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false},
-            {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: true},
-            {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: false},],
+        program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
+            {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: true, editMode: false},
+            {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: false, editMode: false},],
         registers: [{id: 1, value: 0},
             {id: 2, value: 1},
             {id: 3, value: 2},
@@ -148,7 +175,12 @@ var app = new Vue({
             {instruction: "end", description: "End", fields: []}],
         currentStepId: 1,
         running: false,
-        rmInterval: null
+        rmInterval: null,
+        fields: [{field: "instruction", optionFn: function() {return this.instructions.map(x => {return this.instruction})}},
+                {field: "register", optionFn: function() {return this.registers.map(x => {return x.id})}},
+                {field: "goTo", optionFn: function() {return this.program.map(x => {return x.id})}},
+                {field: "branchTo", optionFn: function() {return this.program.map(x => {return x.id})}}
+        ]
     },
     components: {
         //Grid
@@ -173,7 +205,6 @@ var app = new Vue({
             let currStep = this.program.find(x => x.id === this.currentStepId);
             if (currStep.instruction !== "end") {
                 var regInd = this.registers.findIndex(x => x.id === currStep.register);
-                //let reg = registers[regInd];
             }
             if (currStep.instruction === "inc") {
                 // find register whose steps correspond to
@@ -209,6 +240,21 @@ var app = new Vue({
                 this.rmInterval = clearInterval(this.rmInterval);
             }
             document.querySelector("#btnStep").disabled = false;
+        },
+        registerOpts: function(inst) {
+            //return [for (reg of this.registers) reg.id]
+            return this.registers.map(x => {return x.id})
+        },
+        goToOpts: function(inst) {
+            //return [for (step of this.program) step.id]
+            return this.program.map(x => {return x.id})
+        },
+        branchToOpts: function(inst) {
+            return this.program.map(x => {return x.id})
+        },
+        instOpts: function() {
+            //return [for (inst of this.instructions) inst.description]
+            return this.program.map(x => {return this.instruction})
         }
     }
 });
