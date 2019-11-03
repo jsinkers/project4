@@ -55,7 +55,8 @@ Vue.component('register', {
 
 Vue.component('program', {
     props: {
-        program: Array
+        program: Array,
+        currentStepId: Number
     },
     template : `<table class="table" id="tabProgram">
                 <thead>
@@ -72,6 +73,7 @@ Vue.component('program', {
                     <step v-for="(step, ind) in program"
                           :prog-step="step"
                           :edit-mode="false"
+                          :curr-step-id="currentStepId"
                           :key="ind"
                           @>
                     </step>
@@ -93,13 +95,15 @@ Vue.component('program-grid', {
     },
     template: `<kendo-grid :data-source="program">
             </kendo-grid>`
-})
+});
+
 Vue.component('step', {
     props: {
         progStep: Object,
-        editMode: Boolean
+        editMode: Boolean,
+        currStepId: Number
     },
-    template: `<tr>
+    template: `<tr v-bind:class="{ currStep: step.id === currStepId}">
                 <td scope="row">{{ step.id }}</td>
                 <td>{{ step.instruction }}</td>
                 <td>{{ step.register }}</td>
@@ -157,6 +161,13 @@ var app = new Vue({
                 item.value = 0;
             });
         },
+        resetProgram: function () {
+            if (this.rmInterval) {
+                this.rmInterval = clearInterval(this.rmInterval);
+            }
+            this.running = false;
+            this.currentStepId = 1;
+        },
         executeProgramStep: function () {
             console.log("executeProgramStep");
             let currStep = this.program.find(x => x.id === this.currentStepId);
@@ -180,6 +191,7 @@ var app = new Vue({
                 if (this.rmInterval) {
                     clearInterval(this.rmInterval);
                     this.rmInterval = null;
+                    document.querySelector("#btnStep").disabled = false;
                 }
             }
         },
@@ -188,10 +200,17 @@ var app = new Vue({
             //while (this.running) {
             //console.log("running regMachine");
             this.rmInterval = setInterval(this.executeProgramStep, 500);
-
+            document.querySelector("#btnStep").disabled = true;
         },
         stepRegMachine: function() {
             this.executeProgramStep();
+        },
+        pauseRegMachine: function() {
+            this.running = false;
+            if (this.rmInterval) {
+                this.rmInterval = clearInterval(this.rmInterval);
+            }
+            document.querySelector("#btnStep").disabled = false;
         }
     }
 });

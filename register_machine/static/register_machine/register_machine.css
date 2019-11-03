@@ -5774,14 +5774,16 @@ a.close.disabled {
   vertical-align: text-top !important;
 }
 
-.bg-primary, .register .container .regHeading {
+.bg-primary, .currStep, .register .container .regHeading {
   background-color: #007bff !important;
 }
 
-a.bg-primary:hover, .register .container a.regHeading:hover, a.bg-primary:focus, .register .container a.regHeading:focus,
+a.bg-primary:hover, a.currStep:hover, .register .container a.regHeading:hover, a.bg-primary:focus, a.currStep:focus, .register .container a.regHeading:focus,
 button.bg-primary:hover,
+button.currStep:hover,
 .register .container button.regHeading:hover,
 button.bg-primary:focus,
+button.currStep:focus,
 .register .container button.regHeading:focus {
   background-color: #0062cc !important;
 }
@@ -9450,7 +9452,7 @@ button.bg-dark:focus {
   font-style: italic !important;
 }
 
-.text-white, .register .container .regHeading {
+.text-white, .currStep, .register .container .regHeading {
   color: #fff !important;
 }
 

@@ -33,17 +33,15 @@
                             <div class="col">
                                 <h4>Program</h4>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col">
-                                <program :program="program"></program>
-                                <!--<program-grid></program-grid>-->
+                                <button class="btn btn-primary">Save</button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary">Reset</button>
-                                <button class="btn btn-primary">Save</button>
+                                <program :program="program"
+                                        :current-step-id="currentStepId"></program>
+                                <!--<program-grid></program-grid>-->
                             </div>
                         </div>
                     </div>
@@ -53,6 +51,9 @@
                         <div class="row">
                             <div class="col">
                                 <h4>Registers</h4>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary" @click="resetRegisters">Reset</button>
                             </div>
                         </div>
                         <div class="row">
@@ -70,11 +71,12 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary" @click="runRegMachine">Run</button>
-                                <button class="btn btn-primary" @click="stepRegMachine">Step</button>
-                                <button class="btn btn-primary" @click="resetRegisters">Reset</button>
+                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
+                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
+                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
                             </div>
-                        </div>a
+                        </div>
                     </div>
                     <div id="tests" class="container-fluid">
                         <div class="row">

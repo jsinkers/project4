@@ -20,3 +20,9 @@
   }
 
 }
+
+.currStep {
+  @extend .bg-primary;
+  @extend .text-white;
+}
+
