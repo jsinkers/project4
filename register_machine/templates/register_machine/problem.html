@@ -22,8 +22,8 @@
         <div class="container">
             <div class="row" id="probStatement">
                 <div class="col">
-                    <h1>Problem title</h1>
-                    <p>Problem statement goes here</p>
+                    <h1>{{ problem.title }}</h1>
+                    <p>{{ problem.statement }}</p>
                 </div>
             </div>
             <div class="row">
@@ -49,6 +49,19 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg">
+                    <div id="controls" class="container-fluid">
+                        <div class="row">
+                            <div class="col"><h4>Controls</h4></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
+                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
+                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="container-fluid" id="registers">
                         <div class="row">
                             <div class="col">
@@ -65,19 +78,6 @@
                                       :reg-id="reg.id"
                                       @update:reg-value="reg.value = $event"
                             ></register>
-                        </div>
-                    </div>
-                    <div id="controls" class="container-fluid">
-                        <div class="row">
-                            <div class="col"><h4>Controls</h4></div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
-                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
-                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
-                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
-                            </div>
                         </div>
                     </div>
                     <div id="tests" class="container-fluid">
