@@ -9,6 +9,8 @@
 
 //Vue.use(GridInstaller);
 
+var eventBus = new Vue();
+
 Vue.component('register', {
     props: {
         regId: Number,
@@ -57,7 +59,8 @@ Vue.component('program', {
     props: {
         program: Array,
         fields: Array,
-        currentStepId: Number
+        currentStepId: Number,
+        programOptions: Array
     },
     template : `<table class="table" id="tabProgram">
                 <thead>
@@ -77,6 +80,7 @@ Vue.component('program', {
                           :curr-step-id="currentStepId"
                           :key="ind"
                           :fields="fields"
+                          :step-options="programOptions[ind]"
                           >
                     </step>
                 </tbody>
@@ -90,19 +94,10 @@ Vue.component('program', {
 
 });
 
-
-Vue.component('program-grid', {
-    props: {
-        program: Array,
-        fields: Array
-    },
-    template: `<kendo-grid :data-source="program" :fields="fields">
-            </kendo-grid>`
-});
-
 Vue.component('step', {
     props: {
         progStep: Object,
+        stepOptions: Array,
         currStepId: Number,
         fields: Array
     },
@@ -115,9 +110,9 @@ Vue.component('step', {
                 <dropdown v-for="(field, ind) in fields"
                     :key="ind"
                     :editMode="step.editMode"
-                    :field="field.field"
+                    :field="field"
                     :value="step[field.field]"
-                    :options="field.options"
+                    :options="stepOptions[field.field]"
                 ></dropdown>
             </tr>`,
     data: function() {
@@ -128,7 +123,7 @@ Vue.component('step', {
     methods: {
         toggleEdit: function() {
             //this.editMode = !this.editMode;
-            this.$emit("toggle-edit");
+            eventBus.$emit("toggle-edit", this.step.id);
         }
     }
 });
@@ -136,9 +131,9 @@ Vue.component('step', {
 Vue.component('dropdown', {
     props: {
         editMode: Boolean,
-        field: String,
+        field: Object,
+        options: Object,
         value: Number | String,
-        options: Array
     },
     template: `<td>
                     <span v-if="editMode">
@@ -175,11 +170,12 @@ var app = new Vue({
         currentStepId: 1,
         running: false,
         rmInterval: null,
-        fields: [{field: "instruction", optionFn: function() {return this.instructions.map(x => {return this.instruction})}},
-                {field: "register", optionFn: function() {return this.registers.map(x => {return x.id})}},
-                {field: "goTo", optionFn: function() {return this.program.map(x => {return x.id})}},
-                {field: "branchTo", optionFn: function() {return this.program.map(x => {return x.id})}}
-        ]
+        fields: [{field: "instruction", optionFn: function() {return this.instructions.map(x => {return x.instruction})}},
+                {field: "register", optionFn: (data) => {return this.registers.map(x => {return x.id})}},
+                {field: "goTo", optionFn: (data) => {return this.program.map(x => {return x.id})}},
+                {field: "branchTo", optionFn: (data) => {return this.program.map(x => {return x.id})}}
+        ],
+        programOptions: []
     },
     components: {
         //Grid
@@ -240,20 +236,38 @@ var app = new Vue({
             }
             document.querySelector("#btnStep").disabled = false;
         },
-        registerOpts: function(inst) {
-            //return [for (reg of this.registers) reg.id]
-            return this.registers.map(x => {return x.id})
+        toggleEdit: function(stepID) {
+            for (let i in this.program) {
+                if (this.program[i].id === stepID) {
+                    this.program[i].editMode = !this.program[i].editMode;
+                } else {
+                    this.program[i].editMode = false;
+                }
+            }
         },
-        goToOpts: function(inst) {
-            //return [for (step of this.program) step.id]
-            return this.program.map(x => {return x.id})
-        },
-        branchToOpts: function(inst) {
-            return this.program.map(x => {return x.id})
-        },
-        instOpts: function() {
-            //return [for (inst of this.instructions) inst.description]
-            return this.program.map(x => {return this.instruction})
+        updateOptions: function() {
+            this.programOptions = [];
+            console.log('updating options');
+            for (let s = 0; s < this.program.length; s++) {
+                let newOpts = {};
+                for (let f = 0; f < this.fields.length; f++) {
+                    console.log(`s:${s} f:${f}`);
+                    // todo: sort out issues with "this" scope
+                    newOpts[f] = this.fields[f].optionFn();
+                }
+                this.programOptions.push(newOpts);
+            }
+        }
+    },
+    created: function() {
+        this.updateOptions();
+    },
+mounted() {
+        eventBus.$on("toggle-edit", stepID => {this.toggleEdit(stepID)});
+    },
+    watch: {
+        program: function() {
+            this.updateOptions();
         }
     }
 });
