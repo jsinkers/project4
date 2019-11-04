@@ -60,7 +60,6 @@ Vue.component('program', {
         program: Array,
         fields: Array,
         currentStepId: Number,
-        programOptions: Array
     },
     template : `<table class="table" id="tabProgram">
                 <thead>
@@ -80,7 +79,6 @@ Vue.component('program', {
                           :curr-step-id="currentStepId"
                           :key="ind"
                           :fields="fields"
-                          :step-options="programOptions[ind]"
                           >
                     </step>
                 </tbody>
@@ -112,7 +110,7 @@ Vue.component('step', {
                     :editMode="step.editMode"
                     :field="field"
                     :value="step[field.field]"
-                    :options="stepOptions[field.field]"
+                    :options="field.options"
                 ></dropdown>
             </tr>`,
     data: function() {
@@ -132,7 +130,7 @@ Vue.component('dropdown', {
     props: {
         editMode: Boolean,
         field: Object,
-        options: Object,
+        options: Array,
         value: Number | String,
     },
     template: `<td>
@@ -165,15 +163,15 @@ var app = new Vue({
             {id: 4, value: 0},
             ],
         instructions: [{instruction: "inc", description: "Increment register", fields: ["register", "goTo"]},
-            {instruction: "deb", description: "Decrement register or branch", fields: ["register", "goTo"]},
+            {instruction: "deb", description: "Decrement register or branch", fields: ["register", "goTo", "branchTo"]},
             {instruction: "end", description: "End", fields: []}],
         currentStepId: 1,
         running: false,
         rmInterval: null,
-        fields: [{field: "instruction", optionFn: function() {return this.instructions.map(x => {return x.instruction})}},
-                {field: "register", optionFn: (data) => {return this.registers.map(x => {return x.id})}},
-                {field: "goTo", optionFn: (data) => {return this.program.map(x => {return x.id})}},
-                {field: "branchTo", optionFn: (data) => {return this.program.map(x => {return x.id})}}
+        fields: [{field: "instruction", options: [], optionObject: "instructions", optionField: "instruction"},
+                {field: "register", options: [], optionObject: "registers", optionField: "id"},
+                {field: "goTo", options: [], optionObject: "program", optionField: "id"},
+                {field: "branchTo", options: [], optionObject: "program", optionField: "id"}
         ],
         programOptions: []
     },
@@ -245,22 +243,27 @@ var app = new Vue({
                 }
             }
         },
-        updateOptions: function() {
-            this.programOptions = [];
-            console.log('updating options');
-            for (let s = 0; s < this.program.length; s++) {
-                let newOpts = {};
-                for (let f = 0; f < this.fields.length; f++) {
-                    console.log(`s:${s} f:${f}`);
-                    // todo: sort out issues with "this" scope
-                    newOpts[f] = this.fields[f].optionFn();
-                }
-                this.programOptions.push(newOpts);
+        updateOptions: function(fields) {
+            console.log("updating options");
+            for (let f = 0; f < fields.length; f++) {
+                console.log(`f:${f}`);
+                let optField = fields[f].optionField;
+                let optObj = this[fields[f].optionObject];
+                this.fields[f].options = optObj.map(x => {return x[optField]});
             }
-        }
+            console.log("options updated");
+        },
+        /*options: function(field, rowID, table, filter, filterField) {
+            const row = table[rowID];
+            const filterRow = filter.find(x => x[filterField] === row[filterField]);
+            var rv = null;
+            if (filterRow.fields.find(field)) {
+
+            }
+        }*/
     },
     created: function() {
-        this.updateOptions();
+        this.updateOptions(this.fields);
     },
 mounted() {
         eventBus.$on("toggle-edit", stepID => {this.toggleEdit(stepID)});
