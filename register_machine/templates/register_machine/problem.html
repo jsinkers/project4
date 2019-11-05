@@ -23,7 +23,8 @@
             <div class="row" id="probStatement">
                 <div class="col">
                     <h1>{{ problem.title }}</h1>
-                    <p>{{ problem.statement }}</p>
+                    <span v-html="problem.statement"></span>
+                    <!--<p>{{ problem.statement }}</p>-->
                 </div>
             </div>
             <div class="row">
@@ -43,6 +44,7 @@
                                         :current-step-id="currentStepId"
                                          :fields="fields"
                                          :program-options="programOptions"
+                                         :instructions="instructions"
                                 ></program>
                                 <!--<program-grid></program-grid>-->
                             </div>

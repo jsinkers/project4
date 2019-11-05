@@ -60,6 +60,7 @@ Vue.component('program', {
         program: Array,
         fields: Array,
         currentStepId: Number,
+        instructions: Array
     },
     template : `<table class="table" id="tabProgram">
                 <thead>
@@ -79,6 +80,7 @@ Vue.component('program', {
                           :curr-step-id="currentStepId"
                           :key="ind"
                           :fields="fields"
+                          :instructions="instructions"
                           >
                     </step>
                 </tbody>
@@ -97,7 +99,8 @@ Vue.component('step', {
         progStep: Object,
         stepOptions: Array,
         currStepId: Number,
-        fields: Array
+        fields: Array,
+        instructions: Array
     },
     template: `<tr v-bind:class="{ currStep: step.id === currStepId}">
                 <td scope="row">
@@ -111,6 +114,9 @@ Vue.component('step', {
                     :field="field"
                     :value="step[field.field]"
                     :options="field.options"
+                    :id="step.id"
+                    :instruction="step.instruction"
+                    :instructions="instructions"
                 ></dropdown>
             </tr>`,
     data: function() {
@@ -132,29 +138,50 @@ Vue.component('dropdown', {
         field: Object,
         options: Array,
         value: Number | String,
+        instruction: String,
+        instructions: Array,
+        id: Number
     },
-    template: `<td>
-                    <span v-if="editMode">
-                        <select class="form-control">
+    template: `<td> 
+                    <span v-if="editMode && this.isEditableField()">
+                        <select class="form-control" @change="progValSel($event)">
                             <option v-for="(opt, ind) in options"
-                                    :key="ind">
+                                    :key="ind"
+                                    :selected="opt === value"
+                                    :value="ind"
+                                    >
                                     {{ opt }}
                             </option>
                         </select>
                     </span>
                     <span v-else>{{value}}</span>
                 </td>`,
+    data: function() {
+        return {
+        }
+    },
     methods: {
-
+        isEditableField: function() {
+            var inst = this.instructions.find(x => x.instruction === this.instruction);
+            return !!inst.fields.find(x => x === this.field.field);
+        },
+        progValSel: function(event) {
+            eventBus.$emit("prog-value-sel", {id: this.id, field: this.field.field, value: this.options[event.target.value]});
+        }
     }
 });
 
 var app = new Vue({
+    // todo: propagate edited steps in program table to parent
+    // todo: hide dropdowns when not applicable
+    // todo: prevent running while in edit mode
     el: '#app',
     data: {
-        problem: {title: "Example: Add", statement: "In this example, we have a program to add together the numbers in register 1 and register 2.  " +
-                "The answer is stored in register 2.  To run the program, click Run."},
-        program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
+        problem: {title: "Example: Add",
+                    statement: `<p>In this example, we have a program that performs addition on the numbers in register 1 and register 2, storing the result in register 2.</p>
+                                <p>Check out the values in Register 1 and Register 2.  What result do you expect?</p>
+                                <p>When you're ready, click Run.</p>`},
+        program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: true, editMode: false},
             {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: true, editMode: false},
             {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: false, editMode: false},],
         registers: [{id: 1, value: 5},
@@ -162,9 +189,9 @@ var app = new Vue({
             {id: 3, value: 0},
             {id: 4, value: 0},
             ],
-        instructions: [{instruction: "inc", description: "Increment register", fields: ["register", "goTo"]},
-            {instruction: "deb", description: "Decrement register or branch", fields: ["register", "goTo", "branchTo"]},
-            {instruction: "end", description: "End", fields: []}],
+        instructions: [{instruction: "inc", description: "Increment register", fields: ["instruction", "register", "goTo"]},
+            {instruction: "deb", description: "Decrement register or branch", fields: ["instruction", "register", "goTo", "branchTo"]},
+            {instruction: "end", description: "End", fields: ["instruction"]}],
         currentStepId: 1,
         running: false,
         rmInterval: null,
@@ -253,20 +280,30 @@ var app = new Vue({
             }
             console.log("options updated");
         },
-        /*options: function(field, rowID, table, filter, filterField) {
-            const row = table[rowID];
-            const filterRow = filter.find(x => x[filterField] === row[filterField]);
-            var rv = null;
-            if (filterRow.fields.find(field)) {
-
+        updateProgram: function(updateObj) {
+            console.log(updateObj);
+            var stepInd = this.program.findIndex(x => x.id === updateObj.id);
+            this.program[stepInd][updateObj.field] = updateObj.value;
+            if (updateObj.field === "instruction") {
+                for (let f in this.fields) {
+                    let inst = this.instructions.find(x => x.instruction === this.program[stepInd].instruction);
+                    if (!inst.fields.find(x => x === this.fields[f].field)) {
+                        // set to null if it is not a valid field for this instruction
+                        this.program[stepInd][this.fields[f].field] = null;
+                    } else if (this.program[stepInd][this.fields[f].field] === null) {
+                        // set a default value if it is currently unselected
+                        this.program[stepInd][this.fields[f].field] = this.fields[f].options[0];
+                    }
+                }
             }
-        }*/
+        }
     },
     created: function() {
         this.updateOptions(this.fields);
     },
-mounted() {
+    mounted() {
         eventBus.$on("toggle-edit", stepID => {this.toggleEdit(stepID)});
+        eventBus.$on("prog-value-sel", obj => {this.updateProgram(obj)});
     },
     watch: {
         program: function() {
