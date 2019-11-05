@@ -200,8 +200,57 @@ Vue.component('dropdown', {
     }
 });
 
+Vue.component('tests', {
+    props: {
+        tests: Array,
+    },
+    template: `<div class="container-fluid tests">
+                    <div class="row">
+                        <div class="col">
+                            <h4>Tests</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table mb-0">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Test</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Expected</th>
+                                    <th scope="col">Result</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(test, ind) in tests">
+                                        <td scope="row">{{ test.id }}</td>
+                                        <td scope="row">{{ test.description }}</td>
+                                        <td scope="row">{{ test.expected }}</td>
+                                        <td scope="row">{{ test.result }}</td>
+                                        <td v-if="(test.result !== null) && (test.expected === test.result)" 
+                                            scope="row"
+                                            class="mdi mdi-check-circle-outline text-success"
+                                        >Pass</td>
+                                        <td v-else-if="(test.result !== null) && (test.expected !== test.result)" 
+                                            scope="row"
+                                            class="mdi mdi-alert-circle-outline text-danger"
+                                        >Fail</td>
+                                        <td v-else scope="row"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>`,
+    data: function() {
+        return {}
+    },
+    methods: {
+
+    }
+})
 var app = new Vue({
-    // todo: prevent running while in edit mode
     el: '#app',
     data: {
         problem: {title: "Example: Add",
@@ -211,6 +260,7 @@ var app = new Vue({
         program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
             {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: false, editMode: false},
             {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false},],
+        tests: [{id: 1, description: "5+7=12", expected: 12, result: null}],
         registers: [{id: 1, value: 5},
             {id: 2, value: 7},
             {id: 3, value: 0},
