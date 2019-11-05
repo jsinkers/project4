@@ -208,9 +208,9 @@ var app = new Vue({
                     statement: `<p>In this example, we have a program that performs addition on the numbers in register 1 and register 2, storing the result in register 2.</p>
                                 <p>Check out the values in Register 1 and Register 2.  What result do you expect?</p>
                                 <p>When you're ready, click Run.</p>`},
-        program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: true, editMode: false},
-            {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: true, editMode: false},
-            {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: false, editMode: false},],
+        program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
+            {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: false, editMode: false},
+            {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false},],
         registers: [{id: 1, value: 5},
             {id: 2, value: 7},
             {id: 3, value: 0},
@@ -325,15 +325,16 @@ var app = new Vue({
             }
         },
         addStep: function() {
-            const id = this.program.reverse()[0].id + 1;
+            const id = this.program[this.program.length - 1].id + 1;
             var newStep = {id: id, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false};
             this.program.push(newStep);
             this.toggleEdit(id);
         },
         removeStep: function() {
-            const id = this.program.reverse()[0].id;
+            const id = this.program[this.program.length - 1].id;
             // search for this step in the existing program
-            if (this.program.slice(0,-1).findIndex(x => x.goTo === id) || this.program.slice(0,-1).findIndex(x => x.branchTo === id)) {
+            const slice = this.program.slice(0, -1);
+            if ((slice.findIndex(x => x.goTo === id) >= 0) || (slice.findIndex(x => x.branchTo === id) >= 0)) {
                 alert("Cannot remove the last step of the program as it is referenced by other program steps.")
             } else {
                 this.program.pop()
