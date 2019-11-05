@@ -8,6 +8,10 @@
 //const {GridInstaller} = require("@progress/kendo-grid-vue-wrapper");
 
 //Vue.use(GridInstaller);
+//import Vue from "vue";
+//import MenuIcon from "vue-material-design-icons";
+
+//Vue.component('menu-icon', MenuIcon);
 
 var eventBus = new Vue();
 
@@ -62,30 +66,55 @@ Vue.component('program', {
         currentStepId: Number,
         instructions: Array
     },
-    template : `<table class="table" id="tabProgram">
-                <thead>
-                <tr>
-                    <th scope="col">Step</th>
-                    <th scope="col">Instruction</th>
-                    <th scope="col">Register</th>
-                    <th scope="col">Go to</th>
-                    <th scope="col">Branch to</th>
-                    <!--<th scope="col"></th>-->
-                </tr>
-                </thead>
-                <tbody>
-                    <step v-for="(step, ind) in program"
-                          :prog-step="step"
-                          :edit-mode="false"
-                          :curr-step-id="currentStepId"
-                          :key="ind"
-                          :fields="fields"
-                          :instructions="instructions"
-                          >
-                    </step>
-                </tbody>
-            </table>`,
+    template : `<div class="container-fluid">
+                    <div class="row">
+                    <table class="table mb-0" id="tabProgram">
+                    <thead>
+                    <tr>
+                        <th scope="col">Step</th>
+                        <th scope="col">Instruction</th>
+                        <th scope="col">Register</th>
+                        <th scope="col">Go to</th>
+                        <th scope="col">Branch to</th>
+                        <!--<th scope="col"></th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <step v-for="(step, ind) in program"
+                              :prog-step="step"
+                              :edit-mode="false"
+                              :curr-step-id="currentStepId"
+                              :key="ind"
+                              :fields="fields"
+                              :instructions="instructions"
+                              >
+                        </step>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="row justify-content-center">
+                            <div class="col-3">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button class="btn btn-outline-primary" @click="removeStep">
+                                        <!--<i class="mdi mdi-minus"></i>-->
+                                        -
+                                    </button>
+                                    <button class="btn btn-outline-primary" @click="addStep">
+                                        <!--<i class="mdi mdi-plus"></i>-->
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            `,
     methods: {
+        addStep: function() {
+            eventBus.$emit("add-step");
+        },
+        removeStep: function() {
+            eventBus.$emit("remove-step");
+        }
 
     },
     created: function() {
@@ -172,8 +201,6 @@ Vue.component('dropdown', {
 });
 
 var app = new Vue({
-    // todo: propagate edited steps in program table to parent
-    // todo: hide dropdowns when not applicable
     // todo: prevent running while in edit mode
     el: '#app',
     data: {
@@ -296,6 +323,21 @@ var app = new Vue({
                     }
                 }
             }
+        },
+        addStep: function() {
+            const id = this.program.reverse()[0].id + 1;
+            var newStep = {id: id, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false};
+            this.program.push(newStep);
+            this.toggleEdit(id);
+        },
+        removeStep: function() {
+            const id = this.program.reverse()[0].id;
+            // search for this step in the existing program
+            if (this.program.slice(0,-1).findIndex(x => x.goTo === id) || this.program.slice(0,-1).findIndex(x => x.branchTo === id)) {
+                alert("Cannot remove the last step of the program as it is referenced by other program steps.")
+            } else {
+                this.program.pop()
+            }
         }
     },
     created: function() {
@@ -304,10 +346,12 @@ var app = new Vue({
     mounted() {
         eventBus.$on("toggle-edit", stepID => {this.toggleEdit(stepID)});
         eventBus.$on("prog-value-sel", obj => {this.updateProgram(obj)});
+        eventBus.$on("add-step", () => {this.addStep()});
+        eventBus.$on("remove-step", () => {this.removeStep()});
     },
     watch: {
         program: function() {
-            this.updateOptions();
+            this.updateOptions(this.fields);
         }
     }
 });
