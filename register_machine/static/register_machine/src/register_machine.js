@@ -209,6 +209,9 @@ Vue.component('tests', {
                         <div class="col">
                             <h4>Tests</h4>
                         </div>
+                        <div class="col">
+                            <button class="btn btn-primary" @click="runTests">Run tests</button>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col">
@@ -247,7 +250,9 @@ Vue.component('tests', {
         return {}
     },
     methods: {
-
+        runTests: function() {
+            eventBus.$emit("run-tests");
+        }
     }
 })
 var app = new Vue({
@@ -260,7 +265,9 @@ var app = new Vue({
         program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
             {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: false, editMode: false},
             {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false},],
-        tests: [{id: 1, description: "5+7=12", expected: 12, result: null}],
+        tests: [{id: 1, description: "5+7=12",
+                initRegVals: [{id: 1, value: 5}, {id: 2, value: 7}],
+                expectedRegVals: [{id: 2, value: 12}], actualRegVals: [{id: 2, value: null}]}],
         registers: [{id: 1, value: 5},
             {id: 2, value: 7},
             {id: 3, value: 0},
@@ -271,6 +278,7 @@ var app = new Vue({
             {instruction: "end", description: "End", fields: ["instruction"]}],
         currentStepId: 1,
         running: false,
+        testID: null,
         rmInterval: null,
         fields: [{field: "instruction", options: [], optionObject: "instructions", optionField: "instruction"},
                 {field: "register", options: [], optionObject: "registers", optionField: "id"},
@@ -321,11 +329,16 @@ var app = new Vue({
                     this.rmInterval = null;
                     document.querySelector("#btnStep").disabled = false;
                 }
+                if (this.testID) {
+                    this.testResult();
+                }
+
             }
         },
-        runRegMachine: function() {
+        runRegMachine: function(ev, interval = 500) {
+            console.log(interval);
             this.running = true;
-            this.rmInterval = setInterval(this.executeProgramStep, 500);
+            this.rmInterval = setInterval(this.executeProgramStep, interval);
             document.querySelector("#btnStep").disabled = true;
         },
         stepRegMachine: function() {
@@ -337,6 +350,44 @@ var app = new Vue({
                 this.rmInterval = clearInterval(this.rmInterval);
             }
             document.querySelector("#btnStep").disabled = false;
+        },
+        runTest: function(testID) {
+            // reset register machine
+            this.resetProgram();
+
+            // load data into registers
+            let test = this.tests.find(x => x.id === testID);
+            for (let i in this.registers) {
+                let j = test.initRegVals.findIndex(x => x.id === this.registers[i].id);
+                if (j >= 0) {
+                    console.log(j);
+                    this.registers[i].value = test.initRegVals[j].value
+                } else {
+                    this.registers[i].value = 0
+                }
+            }
+            // TODO: disable controls - use a test mode?
+
+            // run program
+            this.runRegMachine(null, 100);
+
+            // TODO: fix table in template
+            // TODO: if program is updated tests need to be reset
+
+        },
+        testResult: function() {
+            let test = this.tests.find(x => x.id === this.testID);
+            for (let i in test.actualRegVals) {
+                let j = this.registers.findIndex(x => x.id === test.actualRegVals[i].id);
+                test.actualRegVals[i].value = this.registers[j].value;
+            }
+            this.testID = null;
+        },
+        runTests: function() {
+            for (let i in this.tests) {
+                this.testID = this.tests[i].id;
+                this.runTest(this.tests[i].id);
+            }
         },
         toggleEdit: function(stepID) {
             for (let i in this.program) {
@@ -399,6 +450,7 @@ var app = new Vue({
         eventBus.$on("prog-value-sel", obj => {this.updateProgram(obj)});
         eventBus.$on("add-step", () => {this.addStep()});
         eventBus.$on("remove-step", () => {this.removeStep()});
+        eventBus.$on("run-tests", () => {this.runTests()});
     },
     watch: {
         program: function() {
