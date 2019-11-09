@@ -229,16 +229,14 @@ Vue.component('tests', {
                                     <tr v-for="(test, ind) in tests">
                                         <td scope="row">{{ test.id }}</td>
                                         <td scope="row">{{ test.description }}</td>
-                                        <td scope="row">{{ test.expected }}</td>
-                                        <td scope="row">{{ test.result }}</td>
-                                        <td v-if="(test.result !== null) && (test.expected === test.result)" 
+                                        <td scope="row">{{ testResultStr(test.expectedRegVals) }}</td>
+                                        <td scope="row">{{ testResultStr(test.actualRegVals) }}</td>
+                                        <td v-if="test.status === 'Pass'" 
                                             scope="row"
-                                            class="mdi mdi-check-circle-outline text-success"
-                                        >Pass</td>
-                                        <td v-else-if="(test.result !== null) && (test.expected !== test.result)" 
+                                        ><span class="mdi mdi-check-circle-outline text-success"></span></td>
+                                        <td v-else-if="test.status === 'Fail'" 
                                             scope="row"
-                                            class="mdi mdi-alert-circle-outline text-danger"
-                                        >Fail</td>
+                                        ><span class="mdi mdi-alert-circle-outline text-danger"></span></td>
                                         <td v-else scope="row"></td>
                                     </tr>
                                 </tbody>
@@ -252,6 +250,14 @@ Vue.component('tests', {
     methods: {
         runTests: function() {
             eventBus.$emit("run-tests");
+        },
+        testResultStr: function(values) {
+            var retStr = "";
+            for (let i in values) {
+                if (values[i].value) {
+                    retStr += `Reg ${values[i].id}: ${values[i].value}`;                }
+            }
+            return retStr;
         }
     }
 })
@@ -265,9 +271,14 @@ var app = new Vue({
         program: [{id: 1, instruction: "deb", register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
             {id: 2, instruction: "inc", register: 2, goTo: 1, branchTo: null, editable: false, editMode: false},
             {id: 3, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false},],
-        tests: [{id: 1, description: "5+7=12",
+        tests: [{id: 1, description: "5+7=12", status: null,
                 initRegVals: [{id: 1, value: 5}, {id: 2, value: 7}],
-                expectedRegVals: [{id: 2, value: 12}], actualRegVals: [{id: 2, value: null}]}],
+                expectedRegVals: [{id: 2, value: 12}],
+                actualRegVals: [{id: 2, value: null}]},
+                {id: 2, description: "10+3=13", status: null,
+                initRegVals: [{id: 1, value: 10}, {id: 2, value: 3}],
+                expectedRegVals: [{id: 2, value: 13}],
+                actualRegVals: [{id: 2, value: null}]}],
         registers: [{id: 1, value: 5},
             {id: 2, value: 7},
             {id: 3, value: 0},
@@ -376,17 +387,38 @@ var app = new Vue({
 
         },
         testResult: function() {
+            // stores test results
             let test = this.tests.find(x => x.id === this.testID);
             for (let i in test.actualRegVals) {
                 let j = this.registers.findIndex(x => x.id === test.actualRegVals[i].id);
                 test.actualRegVals[i].value = this.registers[j].value;
             }
-            this.testID = null;
+            this.checkTestStatus();
+            this.testID++;
+            this.runTests();
+        },
+        checkTestStatus: function() {
+            let test = this.tests.find(x => x.id === this.testID);
+            test.status = "Pass";
+            for (let i in test.actualRegVals) {
+                let j = test.expectedRegVals.find(x => x.id === test.actualRegVals[i].id);
+                if (test.actualRegVals[i].value !== test.expectedRegVals[i].value) {
+                    test.status = "Fail";
+                }
+            }
         },
         runTests: function() {
-            for (let i in this.tests) {
+            if (!this.testID) {
+                this.testID = 1;
+                console.log("test 1");
+            }
+            let i = this.tests.findIndex(x => x.id === this.testID);
+            if (i >= 0) {
                 this.testID = this.tests[i].id;
                 this.runTest(this.tests[i].id);
+            } else {
+                console.log("tests complete");
+                this.testID = null;
             }
         },
         toggleEdit: function(stepID) {
