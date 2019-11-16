@@ -9763,4 +9763,11 @@ th {
   filter: invert(100%);
 }
 
+.modal,
+.fade,
+.carousel,
+.slide {
+  height: 90vh;
+}
+
 /*# sourceMappingURL=register_machine.css.map */

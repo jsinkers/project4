@@ -118,3 +118,10 @@ th {
 .carousel-control-prev {
     filter: invert(100%);
 }
+
+.modal,
+.fade,
+.carousel,
+.slide {
+  height: 90vh;
+}

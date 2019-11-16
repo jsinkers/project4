@@ -19,9 +19,9 @@ Vue.component('tutorial-page', {
     props: {
         isActive: false
     },
-    template: `<div class="carousel-item" :class="{ active: isActive}">
-                    <div class="row justify-content-center">
-                        <div class="col-9">
+    template: `<div class="carousel-item h-100" :class="{ active: isActive}">
+                    <div class="row justify-content-center align-items-center h-100">
+                        <div class="col-10">
                             <h2><slot name="header"></slot></h2>
                             <slot name="content"></slot>
                         </div>

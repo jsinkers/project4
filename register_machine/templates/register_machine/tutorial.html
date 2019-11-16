@@ -23,10 +23,10 @@
             <li><a href="#lightbox" data-toggle="modal" data-slide-to="15">Open non existing Image</a></li>
         </ul>
 
-        <div class="modal fade carousel slide h-100" id="lightbox" data-interval="false">
-            <div class="modal-dialog h-75 modal-xl">
+        <div class="modal fade carousel slide" id="lightbox" data-interval="false">
+            <div class="modal-dialog h-100 modal-xl">
                 <div class="modal-content h-100">
-                    <div class="modal-body">
+                    <div class="modal-body h-100">
                         <ol class="carousel-indicators">
                             <li data-target="#lightbox" data-slide-to="0" class="active"></li>
                             <li data-target="#lightbox" data-slide-to="1"></li>
@@ -39,54 +39,53 @@
                                 <span class="sr-only">Previous</span>
                             </a>
                         </div>
-                            <div class="carousel-inner" >
-                                <tutorial-page :is-active="true">
-                                    <span slot="header">Register machine</span>
-                                    <div slot="content">
-                                        <p>This site gives you a series of challenges to solve using a register
-                                                machine, a kind of idealised computer. This is a useful tool to explore how computers work.
-                                                But first, let's look at what makes up a register machine.</p>
-                                            <p>This content is based on Daniel Dennett's description of the register
-                                                machine in <a href="https://www.goodreads.com/en/book/show/18378002-intuition-pumps-and-other-tools-for-thinking">
-                                                    Intuition Pumps and Other Tools for Thinking</a>.</p>
-                                    </div>
-                                </tutorial-page>
-                                <tutorial-page>
-                                    <span slot="header">Registers</span>
-                                    <div slot="content">
-                                        <p>Register machines have a number of registers. Registers act as memory
-                                            for the machine. They can store positive whole numbers (0, 1, 2, ...), and
-                                            each has a unique identifier (Register 1, Register 2, ...).</p>
-                                        <p>You can think of a register as a bucket into which you can place
-                                            buttons, with the value of the register being the number of buttons in the bucket.
-                                        </p>
-                                        <p>Here are two registers.  Try changing the values.</p>
-                                        <div class="container">
-                                            <div class="row justify-content-center">
-                                                    <register :reg-id="1" :reg-value="3"></register>
-                                                    <register :reg-id="2" :reg-value="4"></register>
-                                            </div>
+                        <div class="carousel-inner h-100 container-fluid overflow-auto" >
+                            <tutorial-page :is-active="true">
+                                <span slot="header">Register machine</span>
+                                <div slot="content">
+                                    <p>This site gives you a series of challenges to solve using a register
+                                            machine, a kind of idealised computer. This is a useful tool to explore how computers work.
+                                            But first, let's look at what makes up a register machine.</p>
+                                    <p>This content is based on Daniel Dennett's description of the register
+                                        machine in <a href="https://www.goodreads.com/en/book/show/18378002-intuition-pumps-and-other-tools-for-thinking">
+                                            Intuition Pumps and Other Tools for Thinking</a>.</p>
+                                </div>
+                            </tutorial-page>
+                            <tutorial-page>
+                                <span slot="header">Registers</span>
+                                <div slot="content">
+                                    <p>Register machines have a number of registers, which act as memory
+                                        for the machine. They can store whole numbers, and each has a unique ID
+                                        (Reg. 1, Reg. 2, ...).</p>
+                                    <p>You can think of a register as a bucket into which you can place
+                                        buttons, with the value of the register being the number of buttons in the bucket.
+                                    </p>
+                                    <p>Here are two registers.  Try changing their values.</p>
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                                <register :reg-id="1" :reg-value="3"></register>
+                                                <register :reg-id="2" :reg-value="4"></register>
                                         </div>
                                     </div>
-                                </tutorial-page>
-                                <tutorial-page>
-                                    <span slot="header">Testing</span>
-                                    <p slot="content">testing 1 2 3</p>
-                                </tutorial-page>
-                            </div><!-- /.carousel-inner -->
+                                </div>
+                            </tutorial-page>
+                            <tutorial-page>
+                                <span slot="header">Testing</span>
+                                <p slot="content">testing 1 2 3</p>
+                            </tutorial-page>
+                        </div><!-- /.carousel-inner -->
 
-                            <div>
-                                <a class="carousel-control-next" href="#lightbox" role="button"
-                                                  data-slide="next">
-                                    <span class="carousel-control-next-icon text-dark" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
+                        <div>
+                            <a class="carousel-control-next" href="#lightbox" role="button"
+                                              data-slide="next">
+                                <span class="carousel-control-next-icon text-dark" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
                         </div>
-                    </div><!-- /.modal-body -->
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                    </div>
+                </div><!-- /.modal-body -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div><!-- /.container -->
 </body>
 </html>
