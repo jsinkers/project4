@@ -23,11 +23,36 @@
 
         <div class="container">
             <div class="row" id="probStatement">
-                <div class="col">
+                <div class="col-12 col-md-6">
                     <h1>{{ problem.title }}</h1>
-                    <span v-html="problem.statement"></span>
-                    <!--<p>{{ problem.statement }}</p>-->
                 </div>
+                <div class="col">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="probText" class="collapse show">
+                        <div class="card card-body">
+                            <span v-html="problem.statement"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="controls" class="container-fluid">
+                        <div class="row">
+                            <div class="col"><h4>Controls</h4></div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col">
+                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
+                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
+                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
+                            </div>
+                        </div>
+                    </div>
             </div>
             <div class="row">
                 <div class="col-12 col-lg" id="program">
@@ -54,19 +79,6 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg">
-                    <div id="controls" class="container-fluid">
-                        <div class="row">
-                            <div class="col"><h4>Controls</h4></div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
-                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
-                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
-                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="container-fluid" id="registers">
                         <div class="row">
                             <div class="col">
