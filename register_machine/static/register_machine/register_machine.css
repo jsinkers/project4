@@ -9747,4 +9747,20 @@ th {
   left: -3px;
 }
 
+.modal-and-carousel {
+  position: fixed;
+}
+
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.carousel-indicators,
+.carousel-control-next,
+.carousel-control-prev {
+  filter: invert(100%);
+}
+
 /*# sourceMappingURL=register_machine.css.map */

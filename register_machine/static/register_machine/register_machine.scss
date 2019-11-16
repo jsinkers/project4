@@ -103,5 +103,18 @@ th {
     left: -3px
 }
 
+.modal-and-carousel {
+  position: fixed; // Needed because the carousel overrides the position property
+}
 
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
+.carousel-indicators,
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}

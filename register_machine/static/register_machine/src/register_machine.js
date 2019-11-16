@@ -15,31 +15,75 @@
 
 var eventBus = new Vue();
 
+Vue.component('tutorial-page', {
+    props: {
+        isActive: false
+    },
+    template: `<div class="carousel-item" :class="{ active: isActive}">
+                    <div class="row justify-content-center">
+                        <div class="col-9">
+                            <h2><slot name="header"></slot></h2>
+                            <slot name="content"></slot>
+                        </div>
+                    </div>
+                </div>`
+});
+Vue.component('tutorial', {
+    props: {
+
+    },
+    template:
+        `<div id="lightbox">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ol class="carousel-indicators">
+                            <li v-for="(page, ind) in tutorials.pages"
+                                data-target="#lightbox"
+                                data-slide-to="ind"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item">
+                            
+                            </div>            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`,
+    data: function() {
+        return {}
+    },
+    methods: {
+
+    }
+});
+
 Vue.component('register', {
     props: {
         regId: Number,
         regValue: Number,
     },
     template: `<div class="register">
-            <div class="container">
-                <div class="regHeading row justify-content-center">
-                    {{ regId }}
-                </div>
-                <div class="regContent row justify-content-center">
-                    <h2>{{ value }}</h2>
-                </div>
-                <div class="regFooter row">
-                    <div class="col btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn btn-outline-primary"
-                            @click="decReg"
-                            >-</button>
-                        <button type="button" class="btn btn-outline-primary"
-                            @click="incReg"
-                            >+</button>
+                    <div class="container group">
+                        <div class="regHeading row justify-content-center">
+                            <div class="col text-center">{{ regId }}</div>
+                        </div>
+                        <div class="regContent row justify-content-center">
+                            <div class="col text-center"><h2>{{ value }}</h2></div>
+                        </div>
+                        <div class="regFooter row">
+                            <div class="col btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-primary"
+                                    @click="decReg"
+                                    >-</button>
+                                <button type="button" class="btn btn-outline-primary"
+                                    @click="incReg"
+                                    >+</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>`,
+                </div>`,
     data: function() {
         return {
             value: this.regValue
