@@ -19,10 +19,10 @@ Vue.component('tutorial-page', {
     props: {
         isActive: false
     },
-    template: `<div class="carousel-item h-100" :class="{ active: isActive}">
+    template: `<div class="carousel-item h-100 w-100 container-fluid" :class="{ active: isActive}">
                     <div class="row justify-content-center align-items-center h-100">
-                        <div class="col-10">
-                            <h2><slot name="header"></slot></h2>
+                        <div class="col-10 text-center">
+                            <h3><slot name="header"></slot></h3>
                             <slot name="content"></slot>
                         </div>
                     </div>
