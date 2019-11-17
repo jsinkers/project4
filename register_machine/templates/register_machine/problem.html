@@ -10,96 +10,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script src="../../static/register_machine/src/register_machine.js" type="module"></script>
     <!--<script src="../../static/register_machine/dist/main.js"></script>-->
     <title>Problem</title>
 </head>
 
 <body>
-    <div id="app">
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0 h1">Reggie</span>
-        </nav>
+    <div id="app" class="d-flex container-fluid h-100 flex-column">
+        <div class="row">
+            <div class="col p-0">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <span class="navbar-brand mb-0 h1">Reggie</span>
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <router-link class="nav-link" to="/challenge">Challenge</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link class="nav-link" to="/tutorial">Tutorial</router-link>
+                            </li>
+                        </ul>
+                </nav>
+            </div>
+        </div>
 
-        <div class="container">
-            <div class="row" id="probStatement">
-                <div class="col-12 col-md-6">
-                    <h1>{{ problem.title }}</h1>
-                </div>
-                <div class="col">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div id="probText" class="collapse show">
-                        <div class="card card-body">
-                            <span v-html="problem.statement"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div id="controls" class="container-fluid">
-                        <div class="row">
-                            <div class="col"><h4>Controls</h4></div>
-                        </div>
-                        <div class="row text-center">
-                            <div class="col">
-                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
-                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
-                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
-                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-lg" id="program">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                <h4>Program</h4>
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-primary">Save</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <program :program="program"
-                                        :current-step-id="currentStepId"
-                                         :fields="fields"
-                                         :program-options="programOptions"
-                                         :instructions="instructions"
-                                ></program>
-                                <!--<program-grid></program-grid>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg">
-                    <div class="container-fluid" id="registers">
-                        <div class="row">
-                            <div class="col">
-                                <h4>Registers</h4>
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-primary" @click="resetRegisters">Zero</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <register v-for="(reg, ind) in registers"
-                                      :key="ind"
-                                      :reg-value="reg.value"
-                                      :reg-id="reg.id"
-                                      @update:reg-value="reg.value = $event"
-                            ></register>
-                        </div>
-                    </div>
-                    <tests :tests="tests"></tests>
-                </div>
-            </div>
+
+        <div class="row flex-grow-1">
+            <router-view></router-view>
         </div>
     </div>
 </body>

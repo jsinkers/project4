@@ -11,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script src="../../static/register_machine/src/register_machine.js" type="module"></script>
     <title>Reggie - Tutorial</title>
 </head>
@@ -30,6 +31,12 @@
                     <li data-target="#lightbox" data-slide-to="0" class="active"></li>
                     <li data-target="#lightbox" data-slide-to="1"></li>
                     <li data-target="#lightbox" data-slide-to="2"></li>
+                    <li data-target="#lightbox" data-slide-to="3"></li>
+                    <li data-target="#lightbox" data-slide-to="4"></li>
+                    <li data-target="#lightbox" data-slide-to="5"></li>
+                    <li data-target="#lightbox" data-slide-to="6"></li>
+                    <li data-target="#lightbox" data-slide-to="7"></li>
+                    <li data-target="#lightbox" data-slide-to="8"></li>
                 </ol>
                 <div>
                     <a class="carousel-control-prev" href="#lightbox" role="button"
@@ -75,10 +82,71 @@
                                 </div>
                             </tutorial-page>
                             <tutorial-page>
-                                <span slot="header">Testing</span>
-                                <p slot="content">testing 1 2 3</p>
+                                <span slot="header">Processing Unit</span>
+                                <div slot="content">
+                                    <p>The register machine also has a processing unit, which is capable of
+                                        performing three different instructions. It can only execute one instruction at
+                                        a time.</p>
+                                </div>
                             </tutorial-page>
-                        </div><!-- /.carousel-inner --></div></div>
+                            <tutorial-page>
+                                <span slot="header">Program</span>
+                                <div slot="content">
+                                    <p>A program for the register machine is simply a list of these instructions in a
+                                        specific order.  The register machine will execute this instructions,
+                                        one-by-one, operating on the values of the registers, to produce some result.
+                                    </p>
+                                </div>
+                            </tutorial-page>
+                            <tutorial-page>
+                                <span slot="header">Instruction 1: Increment</span>
+                                <div slot="content">
+                                    <p>The increment instruction adds 1 to the specified register, and then moves to a
+                                        specified step in the program (the Go-To step).</p>
+                                </div>
+                            </tutorial-page>
+                            <tutorial-page>
+                                <span slot="header">Instruction 2: End</span>
+                                <div slot="content">
+                                    <p>As you might have guessed, the End instruction halts execution of the register
+                                        machine.  Without one of these steps in your program, it will keep the
+                                        register machine running forever!</p>
+                                </div>
+                            </tutorial-page>
+                            <tutorial-page>
+                                <span slot="header">Instruction 3: Decrement-Branch</span>
+                                <div slot="content">
+                                    <p>The Decrement-Branch instruction is a bit more involved.  If the specified
+                                        register for that instruction contains a value greater than 0, then the
+                                        register has its value reduced by 1, and the processing unit moves to the Go-To
+                                        step specified.  If the specified register contains the value 0, then the
+                                        processing unit moves to the Branch step specified.</p>
+
+                                     <p>While this might seem a bit tricky, this is the most useful step, because it
+                                         allows our programs to change behaviour based on the current values of the
+                                         registers.  You'll see how this works as you solve the challenges.</p>
+                                </div>
+                            </tutorial-page>
+                            <tutorial-page>
+                                <span slot="header">Operating the register machine</span>
+                                <div slot="content">
+                                    <p>Now that you know what makes up a register machine, let's look at how we can
+                                    run our programs</p>
+                                    <p>The register machine has three controls:</p>
+                                    <ul>
+                                        <li>Run (pause): this executes the program until completion, and can be clicked
+                                            again to pause execution</li>
+                                        <li>Step: this executes the next instruction in the program.  This is useful if
+                                            you want to carefully examine the behaviour of the register machine - very
+                                            useful for locating bugs!</li>
+                                        <li>Reset: this takes the register machine back to the first step</li>
+                                    </ul>
+
+                                </div>
+                            </tutorial-page>
+                        </div><!-- /.carousel-inner -->
+                    </div>
+                </div>
 
                 <div>
                     <a class="carousel-control-next" href="#lightbox" role="button"
@@ -89,6 +157,6 @@
                 </div>
             </div>
         </div>
-    </div><!-- /.container -->
+    </div>
 </body>
 </html>

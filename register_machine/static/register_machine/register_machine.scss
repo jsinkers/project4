@@ -130,3 +130,6 @@ th {
     flex:1;
 }
 
+html, body {
+  @extend .h-100;
+}
