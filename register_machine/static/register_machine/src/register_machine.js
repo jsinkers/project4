@@ -16,19 +16,20 @@
 var eventBus = new Vue();
 
 
-Vue.component('tutorial-page', {
+Vue.component("tutorialPage", {
     props: {
         isActive: false
     },
     template: `<div class="carousel-item h-100 w-100 container-fluid" :class="{ active: isActive}">
                     <div class="row justify-content-center align-items-center h-100">
-                        <div class="col-10 text-center">
+                        <div class="col-10 col-lg-6 text-center">
                             <h3><slot name="header"></slot></h3>
                             <slot name="content"></slot>
                         </div>
                     </div>
                 </div>`
 });
+
 Vue.component('tutorial', {
     props: {
 
@@ -111,7 +112,7 @@ Vue.component('program', {
         currentStepId: Number,
         instructions: Array
     },
-    template : `<div class="container-fluid">
+    template : `<div class="container-fluid px-0">
                     <div class="row">
                     <table class="table mb-0" id="tabProgram">
                     <thead>
@@ -250,11 +251,11 @@ Vue.component('tests', {
         tests: Array,
     },
     template: `<div class="container-fluid tests">
-                    <div class="row">
-                        <div class="col">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
                             <h4>Tests</h4>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <button class="btn btn-primary" @click="runTests">Run tests</button>
                         </div>
                     </div>
@@ -310,12 +311,12 @@ Vue.component('tests', {
 const Challenge = {
     //el: '#app',
     template: `<div class="container">
-            <div class="row" id="probStatement">
-                <div class="col-12 col-md-6">
+            <div class="row justify-content-between align-items-center" id="probStatement">
+                <div class="col col-md-6">
                     <h1>{{ problem.title }}</h1>
                 </div>
-                <div class="col">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
+                <div class="col-auto">
+                    <button class="btn btn-primary align-middler" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
                 </div>
             </div>
             <div class="row">
@@ -345,11 +346,11 @@ const Challenge = {
             <div class="row">
                 <div class="col-12 col-lg" id="program">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
                                 <h4>Program</h4>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <button class="btn btn-primary">Save</button>
                             </div>
                         </div>
@@ -368,11 +369,11 @@ const Challenge = {
                 </div>
                 <div class="col-12 col-lg">
                     <div class="container-fluid" id="registers">
-                        <div class="row">
-                            <div class="col">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
                                 <h4>Registers</h4>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <button class="btn btn-primary" @click="resetRegisters">Zero</button>
                             </div>
                         </div>
@@ -733,7 +734,13 @@ const Tutorial = {
                                                 useful for locating bugs!</li>
                                             <li>Reset: this takes the register machine back to the first step</li>
                                         </ul>
-        
+                                    </div>
+                                </tutorial-page>
+                                <tutorial-page>
+                                    <span slot="header">Register machine</span>
+                                    <div slot="content">
+                                        <p>Now you know how the basics, let's get started!</p>
+                                        <router-link class="btn btn-primary" to="/challenge">Get started</router-link>
                                     </div>
                                 </tutorial-page>
                             </div>
@@ -747,15 +754,167 @@ const Tutorial = {
                         </a>
                     </div>
                 </div>`,
-}
+};
 
+const Home = {
+    template: `
+        <div class="container d-flex align-items-center h-100">
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <button class="btn btn-primary">Guest</button>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <button class="btn btn-primary">Log in</button>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col col-auto">
+                    <button class="btn btn-primary">Sign up</button>
+                </div>
+            </div>
+        </div>`,
+};
 
+const Playground = {
+    template: `
+        <div class="container">
+            <div class="row justify-content-between align-items-center" id="probStatement">
+                <div class="col">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                   
+                </div>
+            </div>
+            <div class="row">
+                <div id="controls" class="container-fluid">
+                        <div class="row">
+                            <div class="col"><h4>Controls</h4></div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col">
+                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
+                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
+                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg" id="program">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <h4>Program</h4>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <program :program="program"
+                                        :current-step-id="currentStepId"
+                                         :fields="fields"
+                                         :program-options="programOptions"
+                                         :instructions="instructions"
+                                ></program>
+                                <!--<program-grid></program-grid>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg">
+                    <div class="container-fluid" id="registers">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <h4>Registers</h4>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary" @click="resetRegisters">Zero</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <register v-for="(reg, ind) in registers"
+                                      :key="ind"
+                                      :reg-value="reg.value"
+                                      :reg-id="reg.id"
+                                      @update:reg-value="reg.value = $event"
+                            ></register>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`,
+    data: function() {
+        return {
+            program: [{id: 1, instruction: "end", register: null, goTo: null, branchTo: null, editable: true, editMode: false},],
+            registers: [{id: 1, value: 0},
+                {id: 2, value: 0},
+                {id: 3, value: 0},
+                {id: 4, value: 0},
+                ],
+            instructions: [{instruction: "inc", description: "Increment register", fields: ["instruction", "register", "goTo"]},
+                {instruction: "deb", description: "Decrement register or branch", fields: ["instruction", "register", "goTo", "branchTo"]},
+                {instruction: "end", description: "End", fields: ["instruction"]}],
+            currentStepId: 1,
+            running: false,
+            testID: null,
+            rmInterval: null,
+            fields: [{field: "instruction", options: [], optionObject: "instructions", optionField: "instruction"},
+                    {field: "register", options: [], optionObject: "registers", optionField: "id"},
+                    {field: "goTo", options: [], optionObject: "program", optionField: "id"},
+                    {field: "branchTo", options: [], optionObject: "program", optionField: "id"}
+            ],
+            programOptions: []
+        }
+    }
+};
 
-
+const Challenges = {
+    props: {
+        //programs: Array,
+    },
+    template: `
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-auto py-1" v-for="program in programs">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ program.title }}
+                                <span v-if="program.solved" class="mdi mdi-check-circle-outline text-success"></span>
+                                <span v-else class="mdi mdi-alert-circle-outline text-secondary"></span>
+                            </h5>
+                            <a :href="program.route" class="card-link">Go to challenge</a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>`,
+    data: function () {
+        return {
+            programs: [{title: "add", solved: true, route: "/challenge/1"},
+                        {title: "longer name", solved: true, route: "/challenge/1"},
+                        {title: "med name", solved: true, route: "/challenge/1"},
+                        {title: "add", solved: true, route: "/challenge/1"},
+                        {title: "add", solved: true, route: "/challenge/1"},
+                        {title: "add", solved: true, route: "/challenge/1"}]
+        };
+    },
+};
 
 const routes = [
+    { path: '/', component: Home },
+    { path: '/progress', component: Challenges },
     { path: '/challenge', component: Challenge },
-    { path: '/tutorial', component: Tutorial }
+    { path: '/playground', component: Playground },
+    { path: '/tutorial', component: Tutorial },
 ]
 
 //var app = new Vue();
