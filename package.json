@@ -49,5 +49,17 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "description": "## Project setup ``` npm install ```",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsinkers/register-machine.git"
+  },
+  "author": "James Sinclair",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsinkers/register-machine/issues"
+  },
+  "homepage": "https://github.com/jsinkers/register-machine#readme"
 }
