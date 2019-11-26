@@ -1,8 +1,0 @@
-{
-  "name": "project4",
-  "version": "1.0.0",
-  "dependencies": {
-    "@progress/kendo-grid-vue-wrapper": "latest",
-    "bootstrap": "^4.3.1"
-  }
-}

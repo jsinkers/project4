@@ -1,3 +1,20 @@
 venv/
 .idea/
 *.db
+**/node_modules/
+
+.DS_Store
+/dist/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+.env.local
+.env.*.local
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
