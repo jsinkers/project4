@@ -138,9 +138,12 @@
 
 <script>
     import TutorialPage from '../components/TutorialPage'
+    import Register from '../components/Register'
+
     export default {
         name: "Tutorial",
         components: {
+            Register,
             TutorialPage,
         }
     }

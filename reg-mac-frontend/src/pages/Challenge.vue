@@ -224,7 +224,7 @@ export default {
       let test = this.tests.find(x => x.id === this.testID)
       test.status = 'Pass'
       for (let i in test.actualRegVals) {
-        let j = test.expectedRegVals.find(x => x.id === test.actualRegVals[i].id)
+        let j = test.expectedRegVals.findIndex(x => x.id === test.actualRegVals[i].id)
         if (test.actualRegVals[i].value !== test.expectedRegVals[j].value) {
           test.status = 'Fail'
         }
