@@ -11,6 +11,7 @@ script: npm run --prefix ./reg-mac-frontend build
 deploy:
  provider: pages
  skip_cleanup: true
+ keep_history: true
  github_token: $GITHUB_TOKEN
  local_dir: reg-mac-frontend/dist
  on:
