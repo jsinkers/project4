@@ -19,26 +19,32 @@
 </template>
 
 <script>
+    import { eventBus } from '../state'
+    import Dropdown from './Dropdown'
+
     export default {
-        name: "Step",
-         props: {
-    progStep: Object,
-    stepOptions: Array,
-    currStepId: Number,
-    fields: Array,
-    instructions: Array
-  },
+        name: "ProgramStep",
+        props: {
+            progStep: Object,
+            stepOptions: Array,
+            currStepId: Number,
+            fields: Array,
+            instructions: Array
+        },
         data: function () {
-    return {
-      step: this.progStep
-    }
-  },
-  methods: {
-    toggleEdit: function () {
-      // this.editMode = !this.editMode;
-      eventBus.$emit('toggle-edit', this.step.id)
-    }
-  }
+            return {
+                step: this.progStep
+            }
+        },
+        methods: {
+            toggleEdit: function () {
+              // this.editMode = !this.editMode;
+                eventBus.$emit('toggle-edit', this.step.id)
+            }
+        },
+        components: {
+            Dropdown,
+        }
     }
 </script>
 

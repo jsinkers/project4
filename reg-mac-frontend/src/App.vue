@@ -45,6 +45,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  @import 'register_machine.css';
 </style>

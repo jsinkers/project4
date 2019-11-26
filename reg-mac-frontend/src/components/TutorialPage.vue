@@ -13,8 +13,9 @@
     export default {
         name: "TutorialPage",
         props: {
-            isActive: false
+            isActive: {type: Boolean, default: false}
         },
+        // template: "<template-page/>"
     }
 </script>
 

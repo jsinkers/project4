@@ -21,7 +21,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(test, ind) in tests">
+                        <tr v-for="test in tests" :key="test.id">
                             <td scope="row">{{ test.id }}</td>
                             <td scope="row">{{ test.description }}</td>
                             <td scope="row">{{ testResultStr(test.expectedRegVals) }}</td>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+    import {eventBus} from "../state";
+
     export default {
         name: "Tests",
         props: {

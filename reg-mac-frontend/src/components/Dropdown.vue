@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import eventBus from "./state"
+import {eventBus} from "../state"
 
 export default {
   name: "Dropdown",
@@ -24,7 +24,9 @@ export default {
     editMode: Boolean,
     field: Object,
     options: Array,
-    value: Number | String,
+    value: {
+        type: [Number,  String]
+    },
     instruction: String,
     instructions: Array,
     id: Number

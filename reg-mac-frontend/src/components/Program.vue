@@ -9,11 +9,10 @@
             <th scope="col">Register</th>
             <th scope="col">Go to</th>
             <th scope="col">Branch to</th>
-            <!--<th scope="col"></th>-->
         </tr>
         </thead>
         <tbody>
-            <step v-for="(step, ind) in program"
+            <ProgramStep v-for="(step, ind) in program"
                   :prog-step="step"
                   :edit-mode="false"
                   :curr-step-id="currentStepId"
@@ -21,7 +20,7 @@
                   :fields="fields"
                   :instructions="instructions"
                   >
-            </step>
+            </ProgramStep>
             </tbody>
         </table>
         </div>
@@ -43,6 +42,9 @@
 </template>
 
 <script>
+    import { eventBus } from '../state'
+    import ProgramStep from "./ProgramStep"
+
     export default {
         name: "Program",
         props: {
@@ -60,6 +62,9 @@
           }
 
         },
+        components: {
+            ProgramStep,
+        }
     }
 </script>
 

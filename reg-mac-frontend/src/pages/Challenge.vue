@@ -83,10 +83,13 @@
 
 <script>
 import {eventBus} from "../state"
+import Program from "../components/Program";
+import Register from "../components/Register";
+import Tests from "../components/Tests";
 
 export default {
-  name: 'Challenge',
-  data: function () {
+    name: 'Challenge',
+    data: function () {
     return {
       problem: {title: 'Example: Add',
         statement: `<p>In this example, we have a program that performs addition on the numbers in register 1 and register 2, storing the result in register 2.</p>
@@ -126,8 +129,8 @@ export default {
       ],
       programOptions: []
     }
-  },
-  methods: {
+    },
+    methods: {
     resetRegisters: function () {
       // console.log('resetting registers')
       this.registers.forEach(function (item) {
@@ -293,22 +296,27 @@ export default {
         this.program.pop()
       }
     }
-  },
-  created: function () {
-    this.updateOptions(this.fields)
-  },
-  mounted () {
-    eventBus.$on('toggle-edit', stepID => { this.toggleEdit(stepID) })
-    eventBus.$on('prog-value-sel', obj => { this.updateProgram(obj) })
-    eventBus.$on('add-step', () => { this.addStep() })
-    eventBus.$on('remove-step', () => { this.removeStep() })
-    eventBus.$on('run-tests', () => { this.runTests() })
-  },
-  watch: {
-    program: function () {
-      this.updateOptions(this.fields)
+    },
+    created: function () {
+        this.updateOptions(this.fields)
+    },
+    mounted () {
+        eventBus.$on('toggle-edit', stepID => { this.toggleEdit(stepID) })
+        eventBus.$on('prog-value-sel', obj => { this.updateProgram(obj) })
+        eventBus.$on('add-step', () => { this.addStep() })
+        eventBus.$on('remove-step', () => { this.removeStep() })
+        eventBus.$on('run-tests', () => { this.runTests() })
+    },
+    watch: {
+        program: function () {
+            this.updateOptions(this.fields)
+        }
+    },
+    components: {
+        Program,
+        Register,
+        Tests,
     }
-  }
 }
 </script>
 

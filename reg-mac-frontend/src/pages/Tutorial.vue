@@ -21,7 +21,7 @@
         <div class="row align-items-center flex-grow-1">
             <div class="col h-100">
                 <div class="carousel-inner container-fluid h-100">
-                    <tutorial-page :is-active="true">
+                    <TutorialPage :is-active="true">
                         <span slot="header">Register machine</span>
                         <div slot="content">
                             <p>This site gives you a series of challenges to solve using a register
@@ -34,8 +34,8 @@
                                         href="https://www.goodreads.com/en/book/show/18378002-intuition-pumps-and-other-tools-for-thinking">
                                     Intuition Pumps and Other Tools for Thinking</a>.</p>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Registers</span>
                         <div slot="content">
                             <p>Register machines have a number of registers, which act as memory
@@ -53,16 +53,16 @@
                                 </div>
                             </div>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Processing Unit</span>
                         <div slot="content">
                             <p>The register machine also has a processing unit, which is capable of
                                 performing three different instructions. It can only execute one instruction at
                                 a time.</p>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Program</span>
                         <div slot="content">
                             <p>A program for the register machine is simply a list of these instructions in a
@@ -70,23 +70,23 @@
                                 one-by-one, operating on the values of the registers, to produce some result.
                             </p>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Instruction 1: Increment</span>
                         <div slot="content">
                             <p>The increment instruction adds 1 to the specified register, and then moves to a
                                 specified step in the program (the Go-To step).</p>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Instruction 2: End</span>
                         <div slot="content">
                             <p>As you might have guessed, the End instruction halts execution of the register
                                 machine.  Without one of these steps in your program, it will keep the
                                 register machine running forever!</p>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Instruction 3: Decrement-Branch</span>
                         <div slot="content">
                             <p>The Decrement-Branch instruction is a bit more involved.  If the specified
@@ -99,8 +99,8 @@
                                  allows our programs to change behaviour based on the current values of the
                                  registers.  You'll see how this works as you solve the challenges.</p>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Operating the register machine</span>
                         <div slot="content">
                             <p>Now that you know what makes up a register machine, let's look at how we can
@@ -115,14 +115,14 @@
                                 <li>Reset: this takes the register machine back to the first step</li>
                             </ul>
                         </div>
-                    </tutorial-page>
-                    <tutorial-page>
+                    </TutorialPage>
+                    <TutorialPage>
                         <span slot="header">Register machine</span>
                         <div slot="content">
                             <p>Now you know how the basics, let's get started!</p>
                             <router-link class="btn btn-primary" to="/challenge">Get started</router-link>
                         </div>
-                    </tutorial-page>
+                    </TutorialPage>
                 </div>
             </div>
         </div>
@@ -137,8 +137,12 @@
 </template>
 
 <script>
+    import TutorialPage from '../components/TutorialPage'
     export default {
-        name: "Tutorial"
+        name: "Tutorial",
+        components: {
+            TutorialPage,
+        }
     }
 </script>
 
