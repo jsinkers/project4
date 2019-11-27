@@ -15,13 +15,25 @@
                 <button class="btn btn-primary">Sign up</button>
             </div>
         </div>
+        {{ info }}
     </div>
 </template>
 
 <script>
-
+    // import axios from 'axios'
+    import api from '../services/api'
     export default {
-        name: "Home"
+        name: "Home",
+        mounted () {
+            api
+              .get('challenge/1')
+              .then(response => (this.info = response))
+        },
+        data () {
+            return {
+                info: null
+            }
+        },
     }
 </script>
 

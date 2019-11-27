@@ -44,3 +44,4 @@ Deployment configured for github pages per [Vue deployment](https://cli.vuejs.or
 To set travis environment variable with github token:
 `> travis env set GITHUB_TOKEN xxx`
 
+Had to set environment variable on travis-ci.org
