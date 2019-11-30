@@ -14,6 +14,7 @@ export default new Router({
     { path: '/', component: Home },
     { path: '/progress', component: Challenges },
     { path: '/challenge', component: Challenge },
+    { path: '/challenge/:id', component: Challenge },
     { path: '/playground', component: Playground },
     { path: '/tutorial', component: Tutorial },
   ]

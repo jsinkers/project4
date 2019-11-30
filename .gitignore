@@ -18,3 +18,5 @@ venv/
 *.ntvs*
 *.njsproj
 *.sln
+*.sqlite3
+

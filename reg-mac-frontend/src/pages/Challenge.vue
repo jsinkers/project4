@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-between align-items-center" id="probStatement">
             <div class="col col-md-6">
-                <h1>{{ problem.title }}</h1>
+                <h1>{{ $route.params.id }}. {{ problem.title }}</h1>
             </div>
             <div class="col-auto">
                 <button class="btn btn-primary align-middler" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
@@ -83,15 +83,25 @@
 
 <script>
 import {eventBus} from "../state"
-import Program from "../components/Program";
-import Register from "../components/Register";
-import Tests from "../components/Tests";
+import Program from "../components/Program"
+import Register from "../components/Register"
+import Tests from "../components/Tests"
+import api from '../services/api'
 
 export default {
     name: 'Challenge',
+    //props: {
+    //    id: Number
+    //}
     data: function () {
     return {
-      problem: {title: 'Example: Add',
+      id: null,
+      response: null,
+      problem: {},
+      program: [],
+      tests: [],
+      registers: [],
+        /*{title: 'Example: Add',
         statement: `<p>In this example, we have a program that performs addition on the numbers in register 1 and register 2, storing the result in register 2.</p>
                                       <p>Check out the values in Register 1 and Register 2.  What result do you expect?</p>
                                       <p>When you're ready, click Run.</p>`},
@@ -114,7 +124,7 @@ export default {
         {id: 2, value: 7},
         {id: 3, value: 0},
         {id: 4, value: 0}
-      ],
+      ],*/
       instructions: [{instruction: 'inc', description: 'Increment register', fields: ['instruction', 'register', 'goTo']},
         {instruction: 'deb', description: 'Decrement register or branch', fields: ['instruction', 'register', 'goTo', 'branchTo']},
         {instruction: 'end', description: 'End', fields: ['instruction']}],
@@ -295,6 +305,25 @@ export default {
       } else {
         this.program.pop()
       }
+    },
+    updateChallenge: function(id) {
+        this.id = id
+
+        api
+          .get(`challenge/${this.id}`)
+              .then(response => {
+                  this.response = response
+                  this.problem = response.data.problem
+                  this.program = response.data.program
+                  this.tests = response.data.tests
+                  this.registers = response.data.registers
+              })
+
+        this.currentStepId = 1
+        this.running = false
+        this.testID = null
+        this.rmInterval = null
+        this.programOptions = null
     }
     },
     created: function () {
@@ -306,6 +335,8 @@ export default {
         eventBus.$on('add-step', () => { this.addStep() })
         eventBus.$on('remove-step', () => { this.removeStep() })
         eventBus.$on('run-tests', () => { this.runTests() })
+
+        this.updateChallenge(this.$route.params.id)
     },
     watch: {
         program: function () {
@@ -316,6 +347,10 @@ export default {
         Program,
         Register,
         Tests,
+    },
+    beforeRouteUpdate (to, from, next) {
+        this.updateChallenge(to.params.id)
+        next()
     }
 }
 </script>
