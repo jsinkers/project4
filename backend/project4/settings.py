@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'u8%4fur(_9-6#gl3afq_@vjqceq-aw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -133,7 +133,9 @@ MIDDLEWARE_CLASSES = (
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist', 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [] #os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist')]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = []
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE ='django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 django_heroku.settings(locals())
 
