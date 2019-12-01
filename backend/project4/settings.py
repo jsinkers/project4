@@ -131,9 +131,9 @@ MIDDLEWARE_CLASSES = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
-STATIC_ROOT = os.path.join('/app', 'reg-mac-frontend', 'dist', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'dist', 'static') #os.path.join('/app', 'reg-mac-frontend', 'dist', 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join('/app', 'reg-mac-frontend', 'dist', 'static')]
+STATICFILES_DIRS = [] # os.path.join('/app', 'reg-mac-frontend', 'dist', 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
 
