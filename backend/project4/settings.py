@@ -58,8 +58,7 @@ ROOT_URLCONF = 'project4.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('/app', 'reg-mac-frontend', 'dist'),
-                 os.path.join('/app', 'dist')]
+        'DIRS': [os.path.join('/app', 'reg-mac-frontend', 'dist')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -134,7 +133,7 @@ MIDDLEWARE_CLASSES = (
 
 STATIC_ROOT = os.path.join('/app', 'reg-mac-frontend', 'dist', 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [os.path.join('/app', 'reg-mac-frontend', 'dist', 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
 
