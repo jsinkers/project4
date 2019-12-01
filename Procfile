@@ -1,1 +1,1 @@
-web: gunicorn backend.project4.wsgi --log-file -
+web: gunicorn --chdir backend/ project4.wsgi --log-file -
