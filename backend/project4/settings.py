@@ -131,7 +131,7 @@ MIDDLEWARE_CLASSES = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = []
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
