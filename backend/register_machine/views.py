@@ -8,11 +8,11 @@ from rest_framework import viewsets
 # Serve Vue Application
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
-def index(request):
-    data = {
-        'register_machine': "working"
-    }
-    return JsonResponse(data)
+#def index(request):
+#    data = {
+#        'register_machine': "working"
+#    }
+#    return JsonResponse(data)
 
 
 def challenge(request, challenge_id):
