@@ -2,9 +2,10 @@
   "name": "register-machine",
   "version": "0.1.0",
   "scripts": {
-    "postinstall": "cd reg-mac-frontend && npm install"
+    "postinstall": "cd reg-mac-frontend && npm install && npm build"
   },
   "engines": {
     "node": "10.x"
-  }
+  },
+  "cacheDirectories": ["reg-mac-frontend/node_modules"]
 }
