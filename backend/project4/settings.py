@@ -56,7 +56,7 @@ ROOT_URLCONF = 'project4.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('..', 'reg-mac-frontend', 'dist')]
+        'DIRS': [os.path.join('app', 'reg-mac-frontend', 'dist')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
