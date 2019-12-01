@@ -131,9 +131,9 @@ MIDDLEWARE_CLASSES = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist', 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = []
+STATIC_ROOT = os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist', 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist', 'static')]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE ='django.contrib.staticfiles.storage.ManifestStaticFilesStorage'

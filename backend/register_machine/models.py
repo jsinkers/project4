@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.postgres.fields import JSONField
+#from django.contrib.postgres.fields import JSONField
 
-
+'''
 class Challenge(models.Model):
     """ register machine problems for users to solve """
     title = models.CharField(max_length=30)
@@ -29,7 +29,7 @@ class UserSolution(models.Model):
     passes = models.BooleanField()
 
 
-'''
+
 class UserRMProbSoln(models.Model):
     """ users' individual solutions to a register machine problem """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
