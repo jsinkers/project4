@@ -2,7 +2,7 @@
   "name": "register-machine",
   "version": "0.1.0",
   "scripts": {
-    "postinstall": "cd reg-mac-frontend && npm install && npm build"
+    "postinstall": "cd reg-mac-frontend && npm install && npm run build"
   },
   "engines": {
     "node": "10.x"
