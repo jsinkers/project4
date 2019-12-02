@@ -1,5 +1,8 @@
 # Register Machine
 
+Now running on heroku at:
+https://register-machine.herokuapp.com/
+Old: front-end build
 https://jsinkers.github.io/register-machine
 
 A web app based on Django intended as an educational tool to introduce concepts
@@ -54,4 +57,16 @@ vue.config.js contains a proxy so that these do not clash.
 
 ## Deployment
 
-TBD
+### Heroku Procfile
+
+
+### Heroku setup
+```bash
+$ heroku apps:create register-machine
+$ heroku git:remote -a register-machine
+$ heroku buildpacks:add --index 1 heroku/nodejs
+$ heroku buildpacks:add --index 2 heroku/python
+$ heroku config:set DJANGO_SECRET_KEY='enter_secret_key'
+$ heroku addons:create papertrail
+$ git push heroku
+```
