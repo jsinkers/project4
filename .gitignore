@@ -11,7 +11,7 @@ venv/
 .env.local
 .env.*.local
 staticfiles/
-
+**/__pycache__/
 # Editor directories and files
 .idea
 .vscode

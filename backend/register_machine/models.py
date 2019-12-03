@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-#from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import JSONField
 
-'''
+
 class Challenge(models.Model):
     """ register machine problems for users to solve """
     title = models.CharField(max_length=30)
@@ -14,6 +14,7 @@ class Challenge(models.Model):
 
 
 class UserProgram(models.Model):
+    """ users' register machine playground saved programs """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     updated = models.DateTimeField()
     title = models.CharField(max_length=30)
@@ -22,17 +23,17 @@ class UserProgram(models.Model):
 
 
 class UserSolution(models.Model):
+    """ users' individual solutions to a register machine problem """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     program = JSONField()
     updated = models.DateTimeField()
-    passes = models.BooleanField()
+    solved = models.BooleanField()
 
-
-
+'''
 class UserRMProbSoln(models.Model):
     """ users' individual solutions to a register machine problem """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
     rm_steps = JSONField()
     solved = models.BooleanField(default=False)
 

@@ -58,9 +58,14 @@ vue.config.js contains a proxy so that these do not clash.
 ## Deployment
 
 ### Heroku Procfile
-
+* Collects static files into one location
+* Performs database migrations
+* Serves webapp
 
 ### Heroku setup
+
+Heroku will build the Vue frontend with npm, and also install python dependencies.  
+
 ```bash
 $ heroku apps:create register-machine
 $ heroku git:remote -a register-machine
@@ -69,4 +74,9 @@ $ heroku buildpacks:add --index 2 heroku/python
 $ heroku config:set DJANGO_SECRET_KEY='enter_secret_key'
 $ heroku addons:create papertrail
 $ git push heroku
+```
+
+Create superuser
+```bash
+$ heroku run python backend/manage.py createsuperuser
 ```
