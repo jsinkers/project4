@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Challenge, User, UserSolution, UserProgram
 
 # Register your models here.
-admin.register(Challenge)
-admin.register(User)
-admin.register(UserSolution)
-admin.register(UserProgram)
+admin.site.register(Challenge)
+admin.site.register(User)
+admin.site.register(UserSolution)
+admin.site.register(UserProgram)
