@@ -7,10 +7,13 @@ class Challenge(models.Model):
     """ register machine problems for users to solve """
     title = models.CharField(max_length=30)
     statement = models.TextField()
-    program = JSONField()
+    program = JSONField(null=True)
     registers = JSONField()
     tests = JSONField()
-    hint = models.TextField()
+    hint = models.TextField(null=True)
+
+    def __str__(self):
+        return f"<Challenge: {self.title}>"
 
 
 class UserProgram(models.Model):

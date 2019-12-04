@@ -20,4 +20,4 @@ staticfiles/
 *.njsproj
 *.sln
 *.sqlite3
-
+**/datawizard/

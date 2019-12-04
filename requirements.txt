@@ -9,3 +9,4 @@ pyyaml
 sqlalchemy
 python-dotenv
 data-wizard
+django-extensions

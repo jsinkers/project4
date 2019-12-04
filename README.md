@@ -14,13 +14,19 @@ Dennett's work.
 
 ### Representation of register machine programs
 
-JSON objects
-```
-rm_program = {steps: [{inst: <inc|dec|end>, register: <int>, goTo: <int>, branchTo: <int>},
-         {inst: <inc|dec|end>, register: <int>, goTo: <int>, branchTo: <int>},
-         ...]}
-```
+Register machine programs are a JSON array of steps.  For convenience this is
+input as a YAML file.
 
+```yaml
+program:
+- id: <int>                     # program step id
+  instruction: <inc|deb|end>    # instruction for this step: increment, decrement/branch, or end
+  register: <int>               # register ID to apply inc/dec to
+  goTo: <int>                   # go-to step ID
+  branchTo: <int>               # branch-to step ID (for decrement/branch)
+  editable: <true|false>        # indicates whether this step is editable in the UI
+  editMode: <true|false>        # flag to toggle edit mode on the step in the UI
+```
          
 ### Representation of register machine program tests
 
@@ -87,4 +93,13 @@ PostgreSQL must be installed
 
 On Windows, run:
 ```heroku local web -f Procfile.windows```
+
+## Challenges
+
+### Writing challenges
+Challenges are written in YAML format, in `<project_root>/backend/challenges`.
+
+### Updating challenges
+In order to update challenges on the database, run:
+`$ heroku run python backend/manage.py runscript import_challenges`
 
