@@ -80,3 +80,11 @@ Create superuser
 ```bash
 $ heroku run python backend/manage.py createsuperuser
 ```
+
+### Running heroku app locally
+
+PostgreSQL must be installed
+
+On Windows, run:
+```heroku local web -f Procfile.windows```
+

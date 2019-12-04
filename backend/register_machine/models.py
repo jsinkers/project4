@@ -29,19 +29,3 @@ class UserSolution(models.Model):
     program = JSONField()
     updated = models.DateTimeField()
     solved = models.BooleanField()
-
-'''
-class UserRMProbSoln(models.Model):
-    """ users' individual solutions to a register machine problem """
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
-    rm_steps = JSONField()
-    solved = models.BooleanField(default=False)
-
-
-class RMPlayground(models.Model):
-    """ users' register machine playground saved programs """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=256)
-    notes = models.TextField()
-    rm_steps = JSONField()
-'''

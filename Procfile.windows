@@ -1,0 +1,3 @@
+run: python backend/manage.py collect
+release: python backend/manage.py migrate
+web: python backend/manage.py runserver 0.0.0.0:5000

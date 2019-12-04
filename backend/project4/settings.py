@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'register_machine.apps.RegisterMachineConfig',
+    'data_wizard',
+    'data_wizard.sources',
 ]
 
 MIDDLEWARE = [

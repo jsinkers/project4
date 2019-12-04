@@ -1,0 +1,47 @@
+---
+id: 3
+title: 'Zero'
+statement: "`<p>Your registers now hold numbers left over from the last program, and you want to clean things
+  out before you run your next program.  You could just click but this is slow and a hassle.  So write
+  a program to zero out each register in the machine.</p><p>Run the tests when you are ready to move on.</p>`"
+program:
+tests:
+- id: 1
+  description: Zero all registers
+  status: null
+  initRegVals:
+  - id: 1
+    value: 5
+  - id: 2
+    value: 7
+  - id: 3
+    value: 4
+  - id: 4
+    value: 8
+  expectedRegVals:
+  - id: 1
+    value: 0
+  - id: 2
+    value:
+  - id: 3
+    value: 0
+  - id: 4
+    value: 0
+  actualRegVals:
+  - id: 1
+    value: null
+  - id: 2
+    value: null
+  - id: 3
+    value: null
+  - id: 4
+    value: null
+registers:
+- id: 1
+  value: 4
+- id: 2
+  value: 7
+- id: 3
+  value: 15
+- id: 4
+  value: 19

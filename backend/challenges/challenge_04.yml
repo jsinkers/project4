@@ -1,0 +1,45 @@
+---
+id: 4
+title: 'Move'
+statement: "`<p>It might be useful to be able to move the contents of registers around.  Write a program to move the
+  number stored in register 1 to register 2.</p>`"
+program:
+tests:
+- id: 1
+  description: "Move to zeroed register"
+  status: null
+  initRegVals:
+  - id: 1
+    value: 10
+  - id: 2
+    value: 0
+  expectedRegVals:
+  - id: 2
+    value: 10
+  actualRegVals:
+  - id: 2
+    value: null
+- id: 1
+  description: "Move to non-zeroed register"
+  status: null
+  initRegVals:
+  - id: 1
+    value: 10
+  - id: 2
+    value: 7
+  expectedRegVals:
+  - id: 2
+    value: 10
+  actualRegVals:
+  - id: 2
+    value: null
+registers:
+- id: 1
+  value: 10
+- id: 2
+  value: 7
+- id: 3
+  value: 0
+- id: 4
+  value: 0
+hint:

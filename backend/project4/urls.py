@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('register_machine.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('datawizard/', include('data_wizard.urls')),
 ] #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

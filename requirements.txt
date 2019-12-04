@@ -5,3 +5,7 @@ gunicorn
 django-heroku
 whitenoise
 dj-database-url
+pyyaml
+sqlalchemy
+python-dotenv
+data-wizard
