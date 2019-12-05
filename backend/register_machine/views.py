@@ -3,6 +3,12 @@ from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from rest_framework import viewsets
+from .serializers import ChallengeSerializer
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from .models import Challenge
 
 
 # Serve Vue Application
@@ -13,9 +19,24 @@ index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 #        'register_machine': "working"
 #    }
 #    return JsonResponse(data)
+'''class ChallengeViewSet(viewsets.ModelViewSet):
+    """ API endpoint that allows specified challenge to be viewed """
+    queryset = Challenge.objects.get()
+    serializer_class = ChallengeSerializer'''
 
-
+#class ChallengesViewSet(viewsets.ModelViewSet):
+#    """ API endpoint that allows list of challenges to be viewed """
+@api_view(['GET'])
 def challenge(request, challenge_id):
+    """ Return challenge data """
+    if request.method == 'GET':
+        challenge = Challenge.objects.get(id=challenge_id)
+        serializer = ChallengeSerializer(challenge)
+        return Response(serializer.data)
+
+"""def challenge(request, challenge_id):
+    # 
+
     data = {
         'problem': {"title": 'Example: Add',
                     "statement": "`<p>In this example, we have a program that performs addition on the numbers in register 1 and register 2, storing the result in register 2.</p>" +
@@ -45,4 +66,4 @@ def challenge(request, challenge_id):
                       {'id': 3, 'value': 0},
                       {'id': 4, 'value': 0}],
     }
-    return JsonResponse(data)
+    return JsonResponse(data)"""

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-between align-items-center" id="probStatement">
             <div class="col col-md-6">
-                <h1>{{ $route.params.id }}. {{ problem.title }}</h1>
+                <h1>{{ $route.params.id }}. {{ title }}</h1>
             </div>
             <div class="col-auto">
                 <button class="btn btn-primary align-middler" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
@@ -12,7 +12,7 @@
             <div class="col">
                 <div id="probText" class="collapse show">
                     <div class="card card-body">
-                        <span v-html="problem.statement"></span>
+                        <span v-html="statement"></span>
                     </div>
                 </div>
             </div>
@@ -97,34 +97,12 @@ export default {
     return {
       id: null,
       response: null,
-      problem: {},
+      title: null,
+      statement: null,
       program: [],
       tests: [],
       registers: [],
-        /*{title: 'Example: Add',
-        statement: `<p>In this example, we have a program that performs addition on the numbers in register 1 and register 2, storing the result in register 2.</p>
-                                      <p>Check out the values in Register 1 and Register 2.  What result do you expect?</p>
-                                      <p>When you're ready, click Run.</p>`},
-      program: [{id: 1, instruction: 'deb', register: 1, goTo: 2, branchTo: 3, editable: false, editMode: false},
-        {id: 2, instruction: 'inc', register: 2, goTo: 1, branchTo: null, editable: false, editMode: false},
-        {id: 3, instruction: 'end', register: null, goTo: null, branchTo: null, editable: true, editMode: false}],
-      tests: [{id: 1,
-        description: '5+7=12',
-        status: null,
-        initRegVals: [{id: 1, value: 5}, {id: 2, value: 7}],
-        expectedRegVals: [{id: 2, value: 12}],
-        actualRegVals: [{id: 2, value: null}]},
-      {id: 2,
-        description: '10+3=13',
-        status: null,
-        initRegVals: [{id: 1, value: 10}, {id: 2, value: 3}],
-        expectedRegVals: [{id: 2, value: 13}],
-        actualRegVals: [{id: 2, value: null}]}],
-      registers: [{id: 1, value: 5},
-        {id: 2, value: 7},
-        {id: 3, value: 0},
-        {id: 4, value: 0}
-      ],*/
+      hint: null,
       instructions: [{instruction: 'inc', description: 'Increment register', fields: ['instruction', 'register', 'goTo']},
         {instruction: 'deb', description: 'Decrement register or branch', fields: ['instruction', 'register', 'goTo', 'branchTo']},
         {instruction: 'end', description: 'End', fields: ['instruction']}],
@@ -313,7 +291,8 @@ export default {
           .get(`challenge/${this.id}`)
               .then(response => {
                   this.response = response
-                  this.problem = response.data.problem
+                  this.title = response.data.title
+                  this.statement = response.data.statement
                   this.program = response.data.program
                   this.tests = response.data.tests
                   this.registers = response.data.registers
