@@ -16,9 +16,6 @@
                                 <router-link class="nav-link" to="/progress">Progress</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/challenge">Challenge</router-link>
-                            </li>
-                            <li class="nav-item">
                                 <router-link class="nav-link" to="/playground">Playground</router-link>
                             </li>
 
