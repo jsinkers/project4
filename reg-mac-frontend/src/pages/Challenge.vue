@@ -1,11 +1,29 @@
 <template>
     <div class="container">
+        <div class="row">
+            <div v-if="solved" class="col alert alert-success" role="alert">
+                Great work! You solved this challenge.
+                <router-link class="btn btn-success" :to="nextChallengeRoute()">Next challenge</router-link>
+            </div>
+            <div v-else-if="solved === false" class="col alert alert-danger" role="alert">
+                Uh oh! It looks like your program didn't pass the tests.  Give it another go.
+                <div v-if="hint !== ''">
+                    <button class="btn btn-danger" data-toggle="collapse" data-target="#hintText">Hint</button>
+                    <div id="hintText" class="collapse">
+                        <div class="card card-body">
+                            <span v-html="hint"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row justify-content-between align-items-center" id="probStatement">
+
             <div class="col col-md-6">
                 <h1>{{ $route.params.id }}. {{ title }}</h1>
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary align-middler" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
+                <button class="btn btn-primary align-middle" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
             </div>
         </div>
         <div class="row">
@@ -87,6 +105,7 @@ import Program from "../components/Program"
 import Register from "../components/Register"
 import Tests from "../components/Tests"
 import api from '../services/api'
+//import Dropdown from "../components/Dropdown";
 
 export default {
     name: 'Challenge',
@@ -115,10 +134,15 @@ export default {
         {field: 'goTo', options: [], optionObject: 'program', optionField: 'id'},
         {field: 'branchTo', options: [], optionObject: 'program', optionField: 'id'}
       ],
-      programOptions: []
+      programOptions: [],
+        solved: false,
     }
     },
     methods: {
+    nextChallengeRoute: function() {
+        const nextID = parseInt( this.$route.params.id) + 1
+        return `/challenge/${nextID}`
+    },
     resetRegisters: function () {
       // console.log('resetting registers')
       this.registers.forEach(function (item) {
@@ -200,15 +224,16 @@ export default {
       this.runRegMachine(null, 100)
     },
     testResult: function () {
-      // stores test results
-      let test = this.tests.find(x => x.id === this.testID)
-      for (let i in test.actualRegVals) {
-        let j = this.registers.findIndex(x => x.id === test.actualRegVals[i].id)
-        test.actualRegVals[i].value = this.registers[j].value
-      }
-      this.checkTestStatus()
-      this.testID++
-      this.runTests()
+        // stores test results
+        let test = this.tests.find(x => x.id === this.testID)
+        for (let i in test.actualRegVals) {
+            let j = this.registers.findIndex(x => x.id === test.actualRegVals[i].id)
+            test.actualRegVals[i].value = this.registers[j].value
+        }
+        this.checkTestStatus()
+        this.testID++
+        this.runTests()
+
     },
     checkTestStatus: function () {
       let test = this.tests.find(x => x.id === this.testID)
@@ -231,8 +256,22 @@ export default {
         this.runTest(this.tests[i].id)
       } else {
         // console.log('tests complete')
-        this.testID = null
+          this.testID = null
+          this.checkIfSolved()
       }
+    },
+    checkIfSolved() {
+        var failedTest = false
+        for (let i in this.tests) {
+            if (this.tests[i].status !== 'Pass') {
+                failedTest = true
+            }
+        }
+        if (failedTest) {
+            this.solved = false
+        } else {
+            this.solved = true
+        }
     },
     toggleEdit: function (stepID) {
       for (let i in this.program) {
@@ -303,6 +342,7 @@ export default {
                   this.program = response.data.program
                   this.tests = response.data.tests
                   this.registers = response.data.registers
+                  this.hint = response.data.hint
               })
 
         this.currentStepId = 1
@@ -310,6 +350,7 @@ export default {
         this.testID = null
         this.rmInterval = null
         this.programOptions = null
+        this.solved = null
     }
     },
     created: function () {
@@ -327,7 +368,11 @@ export default {
     watch: {
         program: function () {
             this.updateOptions(this.fields)
-        }
+            if (this.solved === true) {
+                this.solved = null
+            }
+        },
+        // tests: function() {}
     },
     components: {
         Program,
