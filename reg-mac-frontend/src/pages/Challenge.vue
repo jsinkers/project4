@@ -163,10 +163,12 @@ export default {
       }
     },
     runRegMachine: function (ev, interval = 500) {
-      // console.log(interval)
-      this.running = true
-      this.rmInterval = setInterval(this.executeProgramStep, interval)
-      document.querySelector('#btnStep').disabled = true
+        // console.log(interval)
+        if (this.program.length) {
+            this.running = true
+            this.rmInterval = setInterval(this.executeProgramStep, interval)
+            document.querySelector('#btnStep').disabled = true
+        }
     },
     stepRegMachine: function () {
       this.executeProgramStep()

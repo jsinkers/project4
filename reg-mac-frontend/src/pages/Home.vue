@@ -21,13 +21,11 @@
 
 <script>
     // import axios from 'axios'
-    import api from '../services/api'
+    // import api from '../services/api'
     export default {
         name: "Home",
         mounted () {
-            api
-              .get('challenge/1')
-              .then(response => (this.info = response))
+
         },
         data () {
             return {

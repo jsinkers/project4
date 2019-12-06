@@ -69,10 +69,10 @@ registers:
   value: 0
 - id: 4
   value: 0
-hint: "`One way to solve this problem is to break it into two parts:
+hint: "One way to solve this problem is to break it into two parts:
   <ol>
     <li>Add Register 1 to Register 2, storing the result in Register 2. We already have the solution to this from the
       Add challenge.</li>
     <li>Add Register 2 to Register 3, storing the result in Register 3.  This is going to be very similar to part 1!
       It will require additional steps that reference registers 2 and 3.</li>
-  </ol>`"
+  </ol>"
