@@ -2,9 +2,9 @@
 id: 2
 
 title: 'Add 3 Registers'
-statement: "`<p>Now you've seen how to add two registers together, extend the Add program
+statement: "<p>Now you've seen how to add two registers together, extend the Add program
   to add the numbers stored in registers 1, 2, and 3.  Store the result in register 3.</p>
-  <p>Run the tests to check your solution to move to the next challenge.</p>`"
+  <p>Run the tests to check your solution to move to the next challenge.</p>"
 program:
 - id: 1
   instruction: deb

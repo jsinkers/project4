@@ -1,9 +1,9 @@
 ---
 id: 4
 title: 'Move'
-statement: "`<p>It might be useful to be able to move the contents of registers around.  Write a program to move the
-  number stored in register 1 to register 2.</p>`"
-program:
+statement: "<p>It might be useful to be able to move the contents of registers around.  Write a program to move the
+  number stored in register 1 to register 2.</p>"
+program: []
 tests:
 - id: 1
   description: "Move to zeroed register"
@@ -42,4 +42,4 @@ registers:
   value: 0
 - id: 4
   value: 0
-hint:
+hint: ""

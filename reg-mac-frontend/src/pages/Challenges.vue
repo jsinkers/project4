@@ -11,7 +11,6 @@
                             <span v-else class="mdi mdi-alert-circle-outline text-secondary"></span>
                             -->
                         </h5>
-                        <!-- TODO: fix routing links -->
                         <router-link :to="challengeRoute(program)" class="card-link">Go to challenge</router-link>
                   </div>
                 </div>
@@ -28,12 +27,6 @@ export default {
     data: function () {
     return {
         programs: []
-      /*programs: [{id: 1, title: 'add', solved: true, route: 'challenge/1'},
-        {id: 2, title: 'longer name', solved: true, route: 'challenge/2'},
-        {id: 3, title: 'med name', solved: true, route: 'challenge/3'},
-        {id: 4, title: 'add', solved: true, route: 'challenge/4'},
-        {id: 5, title: 'add', solved: true, route: 'challenge/5'},
-        {id: 6, title: 'add', solved: true, route: 'challenge/6'}]*/
     }
     },
     methods: {

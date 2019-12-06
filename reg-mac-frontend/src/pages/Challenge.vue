@@ -269,20 +269,25 @@ export default {
       }
     },
     addStep: function () {
-      const id = this.program[this.program.length - 1].id + 1
-      var newStep = {id: id, instruction: 'end', register: null, goTo: null, branchTo: null, editable: true, editMode: false}
-      this.program.push(newStep)
-      this.toggleEdit(id)
+        var id = 1
+        if (this.program.length) {
+            id = this.program[this.program.length - 1].id + 1
+        }
+        var newStep = {id: id, instruction: 'end', register: null, goTo: null, branchTo: null, editable: true, editMode: false}
+        this.program.push(newStep)
+        this.toggleEdit(id)
     },
     removeStep: function () {
-      const id = this.program[this.program.length - 1].id
-      // search for this step in the existing program
-      const slice = this.program.slice(0, -1)
-      if ((slice.findIndex(x => x.goTo === id) >= 0) || (slice.findIndex(x => x.branchTo === id) >= 0)) {
-        alert('Cannot remove the last step of the program as it is referenced by other program steps.')
-      } else {
-        this.program.pop()
-      }
+        if (this.program.length) {
+            const id = this.program[this.program.length - 1].id
+            // search for this step in the existing program
+            const slice = this.program.slice(0, -1)
+            if ((slice.findIndex(x => x.goTo === id) >= 0) || (slice.findIndex(x => x.branchTo === id) >= 0)) {
+                alert('Cannot remove the last step of the program as it is referenced by other program steps.')
+            } else {
+                this.program.pop()
+            }
+        }
     },
     updateChallenge: function(id) {
         this.id = id

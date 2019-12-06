@@ -24,8 +24,8 @@
                         <tr v-for="test in tests" :key="test.id">
                             <td scope="row">{{ test.id }}</td>
                             <td scope="row">{{ test.description }}</td>
-                            <td scope="row">{{ testResultStr(test.expectedRegVals) }}</td>
-                            <td scope="row">{{ testResultStr(test.actualRegVals) }}</td>
+                            <td scope="row"><ul class="nobull" v-html="testResultStr(test.expectedRegVals)"></ul></td>
+                            <td scope="row"><ul class="nobull" v-html="testResultStr(test.actualRegVals)"></ul></td>
                             <td v-if="test.status === 'Pass'"
                                 scope="row"
                             ><span class="mdi mdi-check-circle-outline text-success"></span></td>
@@ -57,10 +57,10 @@
             eventBus.$emit('run-tests')
           },
           testResultStr: function (values) {
-            var retStr = ''
+            var retStr = ""
             for (let i in values) {
-              if (values[i].value) {
-                retStr += `Reg ${values[i].id}: ${values[i].value}`
+              if (values[i].value !== null) {
+                retStr += `<li>Reg ${values[i].id}: ${values[i].value}</li>`
               }
             }
             return retStr
@@ -69,6 +69,9 @@
     }
 </script>
 
-<style scoped>
-
+<style scoped type="text/css">
+    .nobull {
+        list-style-type: none;
+        padding: 0;
+    }
 </style>
