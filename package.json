@@ -11,6 +11,6 @@
     "reg-mac-frontend/node_modules"
   ],
   "dependencies": {
-    "@mdi/font": "^4.6.95"
+
   }
 }

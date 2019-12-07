@@ -28,10 +28,10 @@
                             <td scope="row"><ul class="nobull" v-html="testResultStr(test.actualRegVals)"></ul></td>
                             <td v-if="test.status === 'Pass'"
                                 scope="row"
-                            ><span class="mdi mdi-check-circle-outline text-success"></span></td>
+                            ><check-circle-outline-icon class="text-success"></check-circle-outline-icon></td>
                             <td v-else-if="test.status === 'Fail'"
                                 scope="row"
-                            ><span class="mdi mdi-alert-circle-outline text-danger"></span></td>
+                            ><alert-circle-outline-icon class="text-danger"></alert-circle-outline-icon></td>
                             <td v-else scope="row"></td>
                         </tr>
                     </tbody>
@@ -43,6 +43,8 @@
 
 <script>
     import {eventBus} from "../state";
+    import CheckCircleOutlineIcon from 'vue-material-design-icons/CheckCircleOutline.vue'
+    import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline.vue'
 
     export default {
         name: "Tests",
@@ -65,6 +67,10 @@
             }
             return retStr
           }
+        },
+        components: {
+            CheckCircleOutlineIcon,
+            AlertCircleOutlineIcon,
         }
     }
 </script>

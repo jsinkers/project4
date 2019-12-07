@@ -44,4 +44,5 @@ export default {
 
 <style lang="scss">
   @import 'register_machine.css';
+
 </style>
