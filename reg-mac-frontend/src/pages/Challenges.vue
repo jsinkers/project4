@@ -6,10 +6,8 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             {{ program.id }}. {{ program.title }}
-                            <!-- TODO: introduce solved data
-                            <span v-if="program.solved" class="mdi mdi-check-circle-outline text-success"></span>
-                            <span v-else class="mdi mdi-alert-circle-outline text-secondary"></span>
-                            -->
+                            <check-circle-outline-icon v-if="challengeSolved(program.id) === 'pass'" class="text-success"></check-circle-outline-icon>
+                            <alert-circle-outline-icon v-else-if="challengeSolved(program.id) === 'fail'" class="text-danger"></alert-circle-outline-icon>
                         </h5>
                         <router-link :to="challengeRoute(program)" class="card-link">Go to challenge</router-link>
                   </div>
@@ -21,9 +19,15 @@
 
 <script>
 import api from "../services/api";
+import CheckCircleOutlineIcon from 'vue-material-design-icons/CheckCircleOutline.vue'
+import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline.vue'
 
 export default {
     name: "Challenges",
+    components: {
+        CheckCircleOutlineIcon,
+        AlertCircleOutlineIcon,
+    },
     data: function () {
     return {
         programs: []
@@ -42,10 +46,22 @@ export default {
         },
         challengeRoute: function(program) {
           return `/challenge/${program.id}`
-        }
+        },
+        challengeSolved: function(id) {
+            const chall = this.challengeData.find(x => x.id == id)
+            if (chall) {
+                if (chall.solved) {
+                    return "pass"
+                } else if (chall.solved === false) {
+                    return "fail"
+                }
+            }
+            return "unattempted"
+        },
     },
     mounted () {
         this.updateChallengeList()
+        this.challengeData = JSON.parse(localStorage.challenges).data
     },
 }
 </script>

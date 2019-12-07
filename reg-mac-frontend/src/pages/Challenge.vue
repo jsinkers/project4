@@ -23,6 +23,7 @@
                 <h1>{{ $route.params.id }}. {{ title }}</h1>
             </div>
             <div class="col-auto">
+                <button class="btn btn-primary align-middle" type="button" @click="resetChallenge">Start over</button>
                 <button class="btn btn-primary align-middle" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
             </div>
         </div>
@@ -331,11 +332,11 @@ export default {
             }
         }
     },
-    updateChallenge: function(id) {
+    updateChallenge: function(id, forceRefresh) {
         this.id = id
         const challenges = JSON.parse(localStorage.challenges)
         const challID = challenges.data.findIndex(x => x.id === id)
-        if (challID !== -1) {
+        if (!forceRefresh && challID !== -1) {
             const userData = challenges.data[challID]
             this.initialiseData(userData)
         } else {
@@ -347,6 +348,9 @@ export default {
                     })
 
         }
+    },
+    resetChallenge: function() {
+        this.updateChallenge(this.$route.params.id, true)
     },
     initialiseData: function(data) {
         this.title = data.title
@@ -376,6 +380,7 @@ export default {
             challenges.data.push(this.stateRecord())
             localStorage.challenges = JSON.stringify(challenges)
         }
+        // TODO: provide feedback on whether data saved or not - show in save button
     },
     stateRecord: function() {
         var state = {}
