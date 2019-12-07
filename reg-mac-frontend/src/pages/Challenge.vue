@@ -5,7 +5,7 @@
                 Great work! You solved this challenge.
                 <router-link class="btn btn-success" :to="nextChallengeRoute()">Next challenge</router-link>
             </div>
-            <div v-else-if="solved === false" class="col alert alert-danger" role="alert">
+            <div v-else-if="(solved !== null) && (solved === false)" class="col alert alert-danger" role="alert">
                 Uh oh! It looks like your program didn't pass the tests.  Give it another go.
                 <div v-if="hint !== ''">
                     <button class="btn btn-danger" data-toggle="collapse" data-target="#hintText">Hint</button>
@@ -58,7 +58,7 @@
                             <h4>Program</h4>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-primary" @click="persist">Save</button>
                         </div>
                     </div>
                     <div class="row">
@@ -135,7 +135,7 @@ export default {
         {field: 'branchTo', options: [], optionObject: 'program', optionField: 'id'}
       ],
       programOptions: [],
-        solved: false,
+        solved: null,
     }
     },
     methods: {
@@ -258,6 +258,7 @@ export default {
         // console.log('tests complete')
           this.testID = null
           this.checkIfSolved()
+          this.persist()
       }
     },
     checkIfSolved() {
@@ -332,25 +333,61 @@ export default {
     },
     updateChallenge: function(id) {
         this.id = id
+        const challenges = JSON.parse(localStorage.challenges)
+        const challID = challenges.data.findIndex(x => x.id === id)
+        if (challID !== -1) {
+            const userData = challenges.data[challID]
+            this.initialiseData(userData)
+        } else {
+            api
+                .get(`challenge/${this.id}`)
+                    .then(response => {
+                        this.response = response
+                        this.initialiseData(response.data)
+                    })
 
-        api
-          .get(`challenge/${this.id}`)
-              .then(response => {
-                  this.response = response
-                  this.title = response.data.title
-                  this.statement = response.data.statement
-                  this.program = response.data.program
-                  this.tests = response.data.tests
-                  this.registers = response.data.registers
-                  this.hint = response.data.hint
-              })
-
+        }
+    },
+    initialiseData: function(data) {
+        this.title = data.title
+        this.statement = data.statement
+        this.program = data.program
+        this.tests = data.tests
+        this.registers = data.registers
+        this.hint = data.hint
+        if (data.solved !== null) {
+            this.solved = data.solved
+        } else {
+            this.solved = null
+        }
         this.currentStepId = 1
         this.running = false
         this.testID = null
         this.rmInterval = null
         this.programOptions = null
-        this.solved = null
+    },
+    persist: function() {
+        var challenges = JSON.parse(localStorage.challenges);
+        const challID = challenges.data.findIndex(x => x.id === this.id)
+        if (challID > -1) {
+            challenges.data[challID] = this.stateRecord()
+            localStorage.challenges = JSON.stringify(challenges)
+        } else {
+            challenges.data.push(this.stateRecord())
+            localStorage.challenges = JSON.stringify(challenges)
+        }
+    },
+    stateRecord: function() {
+        var state = {}
+        state["id"] = this.id
+        state["title"] = this.title
+        state["statement"] = this.statement
+        state["program"] = this.program
+        state["tests"] = this.tests
+        state["registers"] = this.registers
+        state["hint"] = this.hint
+        state["solved"] = this.solved
+        return state
     }
     },
     created: function () {
@@ -368,9 +405,9 @@ export default {
     watch: {
         program: function () {
             this.updateOptions(this.fields)
-            if (this.solved === true) {
-                this.solved = null
-            }
+            //if (this.solved === true) {
+            //this.solved = null
+            //}
         },
         // tests: function() {}
     },

@@ -18,5 +18,17 @@ Vue.config.productionTip = false
 new Vue({
   router,
   el: '#app',
-  render: h => h(App)
+  render: h => h(App),
+  mounted() {
+    if (!localStorage.challenges) {
+      localStorage.challenges = JSON.stringify({data: []})
+    } else {
+      try {
+        JSON.parse(localStorage.getItem('challenges'));
+      } catch(e) {
+        localStorage.removeItem('challenges');
+        localStorage.challenges = JSON.stringify({data: []})
+      }
+    }
+  }
 }).$mount('#app')
