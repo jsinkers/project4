@@ -69,6 +69,7 @@
                                 specific order.  The register machine will execute this instructions,
                                 one-by-one, operating on the values of the registers, to produce some result.
                             </p>
+                            <program :program="program" :fields="fields" :current-step-id="currentStepId" :instructions="instructions"></program>
                         </div>
                     </TutorialPage>
                     <TutorialPage>
@@ -139,12 +140,23 @@
 <script>
     import TutorialPage from '../components/TutorialPage'
     import Register from '../components/Register'
+    import Program from '../components/Program'
 
     export default {
         name: "Tutorial",
         components: {
             Register,
             TutorialPage,
+            Program,
+
+        },
+        data: function() {
+            return {
+                program: [{"id":1,"goTo":2,"branchTo":3,"editMode":false,"editable":false,"register":1,"instruction":"deb"},{"id":2,"goTo":1,"branchTo":null,"editMode":false,"editable":false,"register":2,"instruction":"inc"},{"id":3,"goTo":null,"branchTo":null,"editMode":false,"editable":false,"register":null,"instruction":"end"}],
+                fields: [{"field":"instruction","options":["inc","deb","end"],"optionObject":"instructions","optionField":"instruction"},{"field":"register","options":[1,2,3,4],"optionObject":"registers","optionField":"id"},{"field":"goTo","options":[1,2,3],"optionObject":"program","optionField":"id"},{"field":"branchTo","options":[1,2,3],"optionObject":"program","optionField":"id"}],
+                currentStepId: 1,
+                instructions: []
+            }
         }
     }
 </script>
