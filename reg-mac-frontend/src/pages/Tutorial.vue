@@ -120,7 +120,7 @@
                         <span slot="header">Register machine</span>
                         <div slot="content">
                             <p>Now you know how the basics, let's get started!</p>
-                            <router-link class="btn btn-primary" to="/challenge">Get started</router-link>
+                            <router-link class="btn btn-primary" to="/progress">Get started</router-link>
                         </div>
                     </TutorialPage>
                 </div>
