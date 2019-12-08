@@ -1,9 +1,11 @@
 <template>
-    <tr v-bind:class="{ currStep: step.id === currStepId}">
+    <tr :class="{currStep: step.id === currStepId,   clickable: step.editable}"
+        @click="toggleEdit(step.editable)"
+        ><!-- v-on="{click: step.editable ? toggleEdit : null}" -->
         <td scope="row">
-            {{ step.id }} <a v-if="step.editable" href="#"
-                class="badge badge-primary"
-                @click="toggleEdit">Edit</a>
+            {{ step.id }}
+            <pencil-circle-outline-icon v-if="step.editable" class="text-primary"
+            >Edit</pencil-circle-outline-icon>
         </td>
         <dropdown v-for="(field, ind) in fields"
             :key="ind"
@@ -19,11 +21,16 @@
 </template>
 
 <script>
+    import PencilCircleOutlineIcon from 'vue-material-design-icons/PencilCircleOutline.vue'
     import { eventBus } from '../state'
     import Dropdown from './Dropdown'
 
     export default {
         name: "ProgramStep",
+        components: {
+            PencilCircleOutlineIcon,
+            Dropdown,
+        },
         props: {
             progStep: Object,
             stepOptions: Array,
@@ -37,14 +44,13 @@
             }
         },
         methods: {
-            toggleEdit: function () {
+            toggleEdit: function (editable) {
               // this.editMode = !this.editMode;
-                eventBus.$emit('toggle-edit', this.step.id)
+                if (editable) {
+                    eventBus.$emit('toggle-edit', this.step.id)
+                }
             }
         },
-        components: {
-            Dropdown,
-        }
     }
 </script>
 

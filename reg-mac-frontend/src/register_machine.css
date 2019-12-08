@@ -5774,15 +5774,17 @@ a.close.disabled {
   vertical-align: text-top !important;
 }
 
-.bg-primary, .currStep, .register .container .regHeading {
+.bg-primary, .currTest, .currStep, .register .container .regHeading {
   background-color: #007bff !important;
 }
 
-a.bg-primary:hover, a.currStep:hover, .register .container a.regHeading:hover, a.bg-primary:focus, a.currStep:focus, .register .container a.regHeading:focus,
+a.bg-primary:hover, a.currTest:hover, a.currStep:hover, .register .container a.regHeading:hover, a.bg-primary:focus, a.currTest:focus, a.currStep:focus, .register .container a.regHeading:focus,
 button.bg-primary:hover,
+button.currTest:hover,
 button.currStep:hover,
 .register .container button.regHeading:hover,
 button.bg-primary:focus,
+button.currTest:focus,
 button.currStep:focus,
 .register .container button.regHeading:focus {
   background-color: #0062cc !important;
@@ -7078,7 +7080,7 @@ button.bg-dark:focus {
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }
 
-.shadow, .cardHover:hover {
+.shadow, .clickable:hover, .cardHover:hover {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -9452,7 +9454,7 @@ button.bg-dark:focus {
   font-style: italic !important;
 }
 
-.text-white, .currStep, .register .container .regHeading {
+.text-white, .currTest, .currStep, .register .container .regHeading {
   color: #fff !important;
 }
 
@@ -9765,6 +9767,10 @@ th {
 
 .flex-fill {
   flex: 1;
+}
+
+.clickable:hover {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=register_machine.css.map */
