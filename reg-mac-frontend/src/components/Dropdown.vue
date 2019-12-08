@@ -1,7 +1,7 @@
 <template>
     <td>
         <span v-if="editMode && this.isEditableField()">
-            <select class="form-control" @change="progValSel($event)">
+            <select class="form-control" @click.stop="clickEvent" @change="progValSel($event)">
                 <option v-for="(opt, ind) in options"
                         :key="ind"
                         :selected="opt === value"
@@ -42,7 +42,10 @@ export default {
     },
     progValSel: function (event) {
       eventBus.$emit('prog-value-sel', {id: this.id, field: this.field.field, value: this.options[event.target.value]})
-    }
+    },
+      clickEvent: function() {
+
+      }
   }
 }
 </script>
