@@ -23,13 +23,17 @@
                 <h1>{{ $route.params.id }}. {{ title }}</h1>
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary align-middle" type="button" @click="resetChallenge">Start over</button>
-                <button class="btn btn-primary align-middle" type="button" data-toggle="collapse" data-target="#probText">Collapse</button>
+                <button class="btn btn-primary align-middle" type="button" @click="resetChallenge">Reset challenge</button>
+                <button class="btn btn-primary align-middle" type="button" data-toggle="collapse"
+                    data-target="#probText"
+                    ><span v-if="!statementCollapsed"><unfold-less-horizontal-icon></unfold-less-horizontal-icon></span>
+                    <span v-else><unfold-more-horizontal-icon></unfold-more-horizontal-icon></span>
+                </button>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <div id="probText" class="collapse show">
+                <div id="probText" ref="probText" class="collapse show">
                     <div class="card card-body">
                         <span v-html="statement"></span>
                     </div>
@@ -94,7 +98,7 @@
                         ></register>
                     </div>
                 </div>
-                <tests :tests="tests"></tests>
+                <tests :tests="tests" :curr-test="testID"></tests>
             </div>
         </div>
     </div>
@@ -106,7 +110,8 @@ import Program from "../components/Program"
 import Register from "../components/Register"
 import Tests from "../components/Tests"
 import api from '../services/api'
-//import Dropdown from "../components/Dropdown";
+import UnfoldLessHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
+import UnfoldMoreHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
 
 export default {
     name: 'Challenge',
@@ -116,30 +121,35 @@ export default {
     data: function () {
     return {
       id: null,
-      response: null,
-      title: null,
-      statement: null,
-      program: [],
-      tests: [],
-      registers: [],
-      hint: null,
-      instructions: [{instruction: 'inc', description: 'Increment register', fields: ['instruction', 'register', 'goTo']},
+        response: null,
+        title: null,
+        statement: null,
+        program: [],
+        tests: [],
+        registers: [],
+        hint: null,
+        instructions: [{instruction: 'inc', description: 'Increment register', fields: ['instruction', 'register', 'goTo']},
         {instruction: 'deb', description: 'Decrement register or branch', fields: ['instruction', 'register', 'goTo', 'branchTo']},
         {instruction: 'end', description: 'End', fields: ['instruction']}],
-      currentStepId: 1,
-      running: false,
-      testID: null,
-      rmInterval: null,
-      fields: [{field: 'instruction', options: [], optionObject: 'instructions', optionField: 'instruction'},
+        currentStepId: 1,
+        running: false,
+        testID: null,
+        rmInterval: null,
+        fields: [{field: 'instruction', options: [], optionObject: 'instructions', optionField: 'instruction'},
         {field: 'register', options: [], optionObject: 'registers', optionField: 'id'},
         {field: 'goTo', options: [], optionObject: 'program', optionField: 'id'},
         {field: 'branchTo', options: [], optionObject: 'program', optionField: 'id'}
       ],
-      programOptions: [],
+        programOptions: [],
         solved: null,
+        statementCollapsed: false,
     }
     },
     methods: {
+        toggleStatement: function() {
+            //this.$refs.probText.style = "collapse"
+            this.statementCollapsed = !this.statementCollapsed
+        },
     nextChallengeRoute: function() {
         const nextID = parseInt( this.$route.params.id) + 1
         return `/challenge/${nextID}`
@@ -189,7 +199,7 @@ export default {
     },
     runRegMachine: function (ev, interval = 500) {
         // console.log(interval)
-        if (this.program.length) {
+        if (this.program.length > 0) {
             this.running = true
             this.rmInterval = setInterval(this.executeProgramStep, interval)
             document.querySelector('#btnStep').disabled = true
@@ -246,21 +256,34 @@ export default {
         }
       }
     },
+    resetTests: function () {
+        for (let i in this.tests) {
+            this.tests[i].status = null
+        }
+    },
     runTests: function () {
-      if (!this.testID) {
-        this.testID = 1
-        // console.log('test 1')
-      }
-      let i = this.tests.findIndex(x => x.id === this.testID)
-      if (i >= 0) {
-        this.testID = this.tests[i].id
-        this.runTest(this.tests[i].id)
-      } else {
-        // console.log('tests complete')
-          this.testID = null
-          this.checkIfSolved()
-          this.persist()
-      }
+        if (this.program.length > 0) {
+            if (!this.testID) {
+                this.testID = 1
+                // set test status to unsolved
+                this.resetTests()
+                // turn off edit mode
+                this.disableProgramEdit()
+            }
+            let i = this.tests.findIndex(x => x.id === this.testID)
+            if (i >= 0) {
+                this.testID = this.tests[i].id
+                this.runTest(this.tests[i].id)
+            } else {
+                this.testID = null
+                this.checkIfSolved()
+                this.persist()
+            }
+        }
+    },
+    haltTests: function () {
+        this.pauseRegMachine()
+        this.testID = null
     },
     checkIfSolved() {
         var failedTest = false
@@ -273,6 +296,11 @@ export default {
             this.solved = false
         } else {
             this.solved = true
+        }
+    },
+    disableProgramEdit: function () {
+        for (let i in this.program) {
+            this.program[i].editMode = false
         }
     },
     toggleEdit: function (stepID) {
@@ -404,22 +432,20 @@ export default {
         eventBus.$on('add-step', () => { this.addStep() })
         eventBus.$on('remove-step', () => { this.removeStep() })
         eventBus.$on('run-tests', () => { this.runTests() })
-
+        eventBus.$on('halt-tests', () => { this.haltTests() })
         this.updateChallenge(this.$route.params.id)
     },
     watch: {
         program: function () {
             this.updateOptions(this.fields)
-            //if (this.solved === true) {
-            //this.solved = null
-            //}
         },
-        // tests: function() {}
     },
     components: {
         Program,
         Register,
         Tests,
+        UnfoldLessHorizontalIcon,
+        UnfoldMoreHorizontalIcon,
     },
     beforeRouteUpdate (to, from, next) {
         this.updateChallenge(to.params.id)

@@ -5,7 +5,8 @@
                 <h4>Tests</h4>
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary" @click="runTests">Run tests</button>
+                <button v-if="currTest === null" class="btn btn-primary" @click="runTests">Run tests</button>
+                <button v-else class="btn btn-primary" @click="haltTests">Stop tests</button>
             </div>
         </div>
         <div class="row">
@@ -21,7 +22,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="test in tests" :key="test.id">
+                        <tr v-for="test in tests" :key="test.id" :class="{currTest: test.id === currTest}">
                             <td scope="row">{{ test.id }}</td>
                             <td scope="row">{{ test.description }}</td>
                             <td scope="row"><ul class="nobull" v-html="testResultStr(test.expectedRegVals)"></ul></td>
@@ -49,7 +50,8 @@
     export default {
         name: "Tests",
         props: {
-          tests: Array
+          tests: Array,
+          currTest: Number,
         },
         data: function () {
           return {}
@@ -58,6 +60,9 @@
           runTests: function () {
             eventBus.$emit('run-tests')
           },
+            haltTests: function() {
+              eventBus.$emit('halt-tests')
+            },
           testResultStr: function (values) {
             var retStr = ""
             for (let i in values) {
