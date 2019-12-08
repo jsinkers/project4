@@ -4,7 +4,8 @@ title: 'Add'
 statement: "<p>In this example, we have a program that performs addition on the
   numbers in register 1 and register 2, storing the result in register 2.</p><p>Check
   out the values in Register 1 and Register 2.  What result do you expect?</p><p>When
-  youre ready, click Run.</p>"
+  youre ready, click Run to see how it works.</p><p>When you're ready to move on, run the tests to see if the
+  program meets the requirements of the challenge.</p>"
 program:
 - id: 1
   instruction: deb

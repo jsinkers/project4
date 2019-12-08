@@ -1,0 +1,64 @@
+---
+id: 5
+title: Copy
+statement: "<p>So far you have managed to move the contents of Register 1 to Register 2, but what if you want to make a
+  copy, and keep the original value in the first register?</p><p>Write a program to copy the number in Register 1 to
+  Register 2, keeping the original value in Register 1</p>"
+program: []
+tests:
+- id: 1
+  description: Copy Reg 1, Empty Reg 2.
+  status: null
+  initRegVals:
+  - id: 1
+    value: 5
+  - id: 2
+    value: 0
+  - id: 3
+    value: 0
+  - id: 4
+    value: 0
+  expectedRegVals:
+  - id: 1
+    value: 5
+  - id: 2
+    value: 5
+  actualRegVals:
+  - id: 1
+    value: null
+  - id: 2
+    value: null
+- id: 2
+  description: Copy Reg 1, Non-empty Reg 2, 3, 4
+  status: null
+  initRegVals:
+  - id: 1
+    value: 10
+  - id: 2
+    value: 5
+  - id: 3
+    value: 2
+  - id: 4
+    value: 8
+  expectedRegVals:
+  - id: 1
+    value: 10
+  - id: 2
+    value: 10
+  actualRegVals:
+  - id: 1
+    value: null
+  - id: 2
+    value: null
+registers:
+- id: 1
+  value: 4
+- id: 2
+  value: 2
+- id: 3
+  value: 1
+- id: 4
+  value: 3
+hint: "Try moving the value in Register 1 to Register 2 and Register 3.  Once this is complete, you can move the value
+  from Register 3 back into Register 1.  Remember Register 2 and Register 3 might not be empty initially, so you will
+  also have to zero Register 2 and Register 3 before you do anything else."

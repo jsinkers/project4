@@ -1,0 +1,117 @@
+---
+id: 8
+title: Improved Subtract
+statement: "<p>The last attempt at subtraction had a big limitation: we had to assume the value of Register 1 would be
+  greater than the value in Register 2.  If this wasn't the case we would have a value of 0 in Register 3 and the
+  program would halt.  We need a way to represent negative numbers in the register machine.</p>
+  <p>Let's use Register 4 to represent the sign of the number, where 0 indicates a positive number, and 1 indicates a
+  negative number.</p>
+  <p>With this approach, write an improved program that subtracts the value in Register 2 from the value in Register 1,
+  storing the result in Register 3, and indicating the sign of the result in Register 4.</p>"
+program: []
+tests:
+- id: 1
+  description: 10-5=5
+  status: null
+  initRegVals:
+  - id: 1
+    value: 10
+  - id: 2
+    value: 5
+  - id: 3
+    value: 0
+  - id: 4
+    value: 0
+  expectedRegVals:
+  - id: 3
+    value: 5
+  - id: 4
+    value: 0
+  actualRegVals:
+  - id: 3
+    value: null
+  - id: 4
+    value: null
+- id: 2
+  description: 5-10=-5
+  status: null
+  initRegVals:
+  - id: 1
+    value: 5
+  - id: 2
+    value: 10
+  - id: 3
+    value: 0
+  - id: 4
+    value: 0
+  expectedRegVals:
+  - id: 3
+    value: 5
+  - id: 4
+    value: 1
+  actualRegVals:
+  - id: 3
+    value: null
+  - id: 4
+    value: null
+- id: 3
+  description: 10-10=0
+  status: null
+  initRegVals:
+  - id: 1
+    value: 10
+  - id: 2
+    value: 10
+  - id: 3
+    value: 1
+  - id: 4
+    value: 5
+  expectedRegVals:
+  - id: 3
+    value: 0
+  - id: 4
+    value: 0
+  actualRegVals:
+  - id: 3
+    value: null
+  - id: 4
+    value: null
+- id: 4
+  description: 2-10=-8
+  status: null
+  initRegVals:
+  - id: 1
+    value: 2
+  - id: 2
+    value: 10
+  - id: 3
+    value: 3
+  - id: 4
+    value: 2
+  expectedRegVals:
+  - id: 3
+    value: 8
+  - id: 4
+    value: 1
+  actualRegVals:
+  - id: 3
+    value: null
+  - id: 4
+    value: null
+registers:
+- id: 1
+  value: 5
+- id: 2
+  value: 7
+- id: 3
+  value: 1
+- id: 4
+  value: 3
+hint: "Don't forget to zero Registers 3 and 4!  You can use a similar approach to the subtract problem, with some extra
+  steps.
+  <ol>
+    <li>Add Register 1 to Register 3 by decrementing 1 and incrementing 3.</li>
+    <li>Subtract Register 2 from Register 3 by decrementing 2 and decrementing 3.</li>
+    <li>Register 3 should branch to increment the sign register (Register 4), and then the remainder of Register 2
+    should be added to Register 3.</li>
+  </ol>"
