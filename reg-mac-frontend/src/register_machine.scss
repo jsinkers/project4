@@ -133,3 +133,13 @@ th {
 html, body {
   @extend .h-100;
 }
+
+.cardHover:hover {
+  @extend .shadow;
+  //@extend .bg-light;
+  //@extend .text-light;
+}
+
+.cardHover {
+  @extend .text-dark;
+}
