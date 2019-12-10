@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="d-flex container-fluid h-100 flex-column">
+    <div id="app" class="d-flex container-fluid flex-column min-vh-100">
         <div class="row">
             <div class="col p-0">
                 <nav class="navbar navbar-expand-sm navbar-light bg-light">
@@ -24,10 +24,10 @@
                 </nav>
             </div>
         </div>
+        <router-view></router-view>
+        <!--<div class="row flex-grow-1 debug">
 
-        <div class="row flex-grow-1">
-            <router-view></router-view>
-        </div>
+        </div>-->
     </div>
 </template>
 

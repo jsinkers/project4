@@ -1,104 +1,106 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div v-if="solved" class="col alert alert-success" role="alert">
-                Great work! You solved this challenge.
-                <router-link class="btn btn-success" :to="nextChallengeRoute()">Next challenge</router-link>
-            </div>
-            <div v-else-if="(solved !== null) && (solved === false)" class="col alert alert-danger" role="alert">
-                Uh oh! It looks like your program didn't pass the tests.  Give it another go.
-                <div v-if="hint !== ''">
-                    <button class="btn btn-danger" data-toggle="collapse" data-target="#hintText">Hint</button>
-                    <div id="hintText" class="collapse">
-                        <div class="card card-body">
-                            <span v-html="hint"></span>
+    <div class="row debug">
+        <div class="container debug2">
+            <div class="row">
+                <div v-if="solved" class="col alert alert-success" role="alert">
+                    Great work! You solved this challenge.
+                    <router-link class="btn btn-success" :to="nextChallengeRoute()">Next challenge</router-link>
+                </div>
+                <div v-else-if="(solved !== null) && (solved === false)" class="col alert alert-danger" role="alert">
+                    Uh oh! It looks like your program didn't pass the tests.  Give it another go.
+                    <div v-if="hint !== ''">
+                        <button class="btn btn-danger" data-toggle="collapse" data-target="#hintText">Hint</button>
+                        <div id="hintText" class="collapse">
+                            <div class="card card-body">
+                                <span v-html="hint"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-between align-items-center" id="probStatement">
+            <div class="row justify-content-between align-items-center" id="probStatement">
 
-            <div class="col col-md-6">
-                <h1>{{ $route.params.id }}. {{ title }}</h1>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary align-middle" type="button" @click="resetChallenge">Reset challenge</button>
-                <button class="btn btn-primary align-middle" type="button" data-toggle="collapse"
-                    data-target="#probText"
-                    ><span v-if="!statementCollapsed"><unfold-less-horizontal-icon></unfold-less-horizontal-icon></span>
-                    <span v-else><unfold-more-horizontal-icon></unfold-more-horizontal-icon></span>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div id="probText" ref="probText" class="collapse show">
-                    <div class="card card-body">
-                        <span v-html="statement"></span>
-                    </div>
+                <div class="col col-md-6">
+                    <h1>{{ $route.params.id }}. {{ title }}</h1>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary align-middle" type="button" @click="resetChallenge">Reset challenge</button>
+                    <button class="btn btn-primary align-middle" type="button" data-toggle="collapse"
+                        data-target="#probText"
+                        ><span v-if="!statementCollapsed"><unfold-less-horizontal-icon></unfold-less-horizontal-icon></span>
+                        <span v-else><unfold-more-horizontal-icon></unfold-more-horizontal-icon></span>
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div id="controls" class="container-fluid">
-                    <div class="row">
-                        <div class="col"><h4>Controls</h4></div>
-                    </div>
-                    <div class="row text-center">
-                        <div class="col">
-                            <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
-                            <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
-                            <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
-                            <button class="btn btn-primary" @click="resetProgram">Reset</button>
-                        </div>
-                    </div>
-                </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg" id="program">
-                <div class="container-fluid">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <h4>Program</h4>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-primary" @click="persist">Save</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <program :program="program"
-                                    :current-step-id="currentStepId"
-                                     :fields="fields"
-                                     :program-options="programOptions"
-                                     :instructions="instructions"
-                            ></program>
-                            <!--<program-grid></program-grid>-->
+            <div class="row">
+                <div class="col">
+                    <div id="probText" ref="probText" class="collapse show">
+                        <div class="card card-body">
+                            <span v-html="statement"></span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg">
-                <div class="container-fluid" id="registers">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <h4>Registers</h4>
+            <div class="row">
+                <div id="controls" class="container-fluid">
+                        <div class="row">
+                            <div class="col"><h4>Controls</h4></div>
                         </div>
-                        <div class="col-auto">
-                            <button class="btn btn-primary" @click="resetRegisters">Zero</button>
+                        <div class="row text-center">
+                            <div class="col">
+                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
+                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
+                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <register v-for="(reg, ind) in registers"
-                                  :key="ind"
-                                  :reg-value="reg.value"
-                                  :reg-id="reg.id"
-                                  @update:reg-value="reg.value = $event"
-                        ></register>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg" id="program">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <h4>Program</h4>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary" @click="persist">Save</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <program :program="program"
+                                        :current-step-id="currentStepId"
+                                         :fields="fields"
+                                         :program-options="programOptions"
+                                         :instructions="instructions"
+                                ></program>
+                                <!--<program-grid></program-grid>-->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <tests :tests="tests" :curr-test="testID"></tests>
+                <div class="col-12 col-lg">
+                    <div class="container-fluid" id="registers">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <h4>Registers</h4>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary" @click="resetRegisters">Zero</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <register v-for="(reg, ind) in registers"
+                                      :key="ind"
+                                      :reg-value="reg.value"
+                                      :reg-id="reg.id"
+                                      @update:reg-value="reg.value = $event"
+                            ></register>
+                        </div>
+                    </div>
+                    <tests :tests="tests" :curr-test="testID"></tests>
+                </div>
             </div>
         </div>
     </div>

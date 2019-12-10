@@ -1,18 +1,22 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <h1 class="p-4">Challenges</h1>
-        </div>
-        <div class="row">
-            <div class="col-auto py-1" v-for="program in programs" :key="program.id">
-                <div class="card">
-                    <router-link :to="challengeRoute(program)" class="card-body cardHover">
-                        <h5 class="card-title">
-                            {{ program.id }}. {{ program.title }}
-                            <check-circle-outline-icon v-if="challengeSolved(program.id) === 'pass'" class="text-success"></check-circle-outline-icon>
-                            <alert-circle-outline-icon v-else-if="challengeSolved(program.id) === 'fail'" class="text-danger"></alert-circle-outline-icon>
-                        </h5>
-                  </router-link>
+    <div class="row debug">
+        <div class="container-fluid">
+            <div class="row">
+                <h1 class="p-4">Challenges</h1>
+            </div>
+            <div class="row">
+                <div class="col-auto py-1" v-for="program in programs" :key="program.id">
+                    <div class="card">
+                        <router-link :to="challengeRoute(program)" class="card-body cardHover">
+                            <h5 class="card-title">
+                                {{ program.id }}. {{ program.title }}
+                                <check-circle-outline-icon v-if="challengeSolved(program.id) === 'pass'"
+                                                           class="text-success"></check-circle-outline-icon>
+                                <alert-circle-outline-icon v-else-if="challengeSolved(program.id) === 'fail'"
+                                                           class="text-danger"></alert-circle-outline-icon>
+                            </h5>
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </div>
