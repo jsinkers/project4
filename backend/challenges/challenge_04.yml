@@ -19,7 +19,7 @@ tests:
   actualRegVals:
   - id: 2
     value: null
-- id: 1
+- id: 2
   description: "Move to non-zeroed register"
   status: null
   initRegVals:
