@@ -5,7 +5,7 @@
                 <h1 class="p-4">Challenges</h1>
             </div>
             <div class="row">
-                <div class="col-auto py-1" v-for="program in programs" :key="program.id">
+                <div class="col-sm-6 py-1" v-for="program in programs" :key="program.id">
                     <div class="card">
                         <router-link :to="challengeRoute(program)" class="card-body cardHover">
                             <h5 class="card-title">

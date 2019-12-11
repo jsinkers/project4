@@ -376,6 +376,11 @@ export default {
                         this.response = response
                         this.initialiseData(response.data)
                     })
+                    .catch(error => {
+                        if (error.response.status === 404) {
+                            this.$router.push('/progress')
+                        }
+                    })
 
         }
     },

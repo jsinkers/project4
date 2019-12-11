@@ -19,9 +19,14 @@ index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 def challenge(request, challenge_id):
     """ Return challenge data """
     if request.method == 'GET':
-        challenge = Challenge.objects.get(id=challenge_id)
-        serializer = ChallengeSerializer(challenge)
-        return Response(serializer.data)
+        try:
+            challenge = Challenge.objects.get(id=challenge_id)
+            serializer = ChallengeSerializer(challenge)
+            response = Response(serializer.data)
+        except Challenge.DoesNotExist:
+            response = Response(status=status.HTTP_404_NOT_FOUND)
+
+        return response
 
 
 @api_view(['GET'])
