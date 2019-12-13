@@ -24,12 +24,13 @@
                     <h1>{{ $route.params.id }}. {{ title }}</h1>
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-primary align-middle" type="button" @click="resetChallenge">Reset challenge</button>
-                    <button class="btn btn-primary align-middle" type="button" data-toggle="collapse"
+                    <b-button variant="primary" class="align-middle" type="button" @click="resetChallenge"
+                        >Reset challenge</b-button>
+                    <b-button variant="primary" class="align-middle m-1" type="button" data-toggle="collapse"
                         data-target="#probText"
                         ><span v-if="!statementCollapsed"><unfold-less-horizontal-icon></unfold-less-horizontal-icon></span>
                         <span v-else><unfold-more-horizontal-icon></unfold-more-horizontal-icon></span>
-                    </button>
+                    </b-button>
                 </div>
             </div>
             <div class="row">
@@ -48,10 +49,20 @@
                         </div>
                         <div class="row text-center">
                             <div class="col">
-                                <button v-if="!running" class="btn btn-primary m-1" @click="runRegMachine">Run</button>
-                                <button v-else class="btn btn-primary m-1" @click="pauseRegMachine">Pause</button>
-                                <button id="btnStep" class="btn btn-primary m-1" @click="stepRegMachine">Step</button>
-                                <button class="btn btn-primary m-1" @click="resetProgram">Reset</button>
+                                <b-button v-if="!running" @click="runRegMachine" class="m-1"
+                                    v-b-tooltip.hover title="Run to completion"
+                                    variant="primary">Run</b-button>
+                                <b-button v-else @click="pauseRegMachine"
+                                    variant="primary" class="m-1"
+                                    v-b-tooltip.hover title="Pause the register machine"
+                                    >Pause</b-button>
+                                <b-button variant="primary" id="btnStep" class="m-1" @click="stepRegMachine"
+                                    v-b-tooltip.hover title="Execute the next step"
+                                    >Step</b-button>
+                                <b-button variant="primary" class="m-1" @click="resetProgram"
+                                    v-b-tooltip.hover title="Return to first step"
+                                    >Reset</b-button>
+
                             </div>
                         </div>
                     </div>

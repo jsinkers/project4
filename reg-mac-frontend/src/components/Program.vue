@@ -5,7 +5,7 @@
         <thead>
         <tr>
             <th scope="col">Step</th>
-            <th scope="col">Instruction</th>
+            <th scope="col" id="btnInst">Instruction</th>
             <th scope="col">Register</th>
             <th scope="col">Go to</th>
             <th scope="col">Branch to</th>
@@ -23,6 +23,12 @@
             </ProgramStep>
             </tbody>
         </table>
+        <b-tooltip target="btnInst" placement="bottom" triggers="hover">
+            <p><b>inc:</b> Increment register value</p>
+            <p><b>deb:</b> Decrement/branch. If register value > 0, decrement register value.
+                If register value = 0, branch.</p>
+            <p><b>end:</b> Halt register machine</p>
+        </b-tooltip>
         </div>
         <div class="row justify-content-center">
                 <div class="col-3">
