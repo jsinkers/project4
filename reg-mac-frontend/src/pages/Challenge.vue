@@ -42,16 +42,16 @@
                 </div>
             </div>
             <div class="row">
-                <div id="controls" class="container-fluid">
+                <div id="controls" class="container">
                         <div class="row">
                             <div class="col"><h4>Controls</h4></div>
                         </div>
                         <div class="row text-center">
                             <div class="col">
-                                <button v-if="!running" class="btn btn-primary" @click="runRegMachine">Run</button>
-                                <button v-else class="btn btn-primary" @click="pauseRegMachine">Pause</button>
-                                <button id="btnStep" class="btn btn-primary" @click="stepRegMachine">Step</button>
-                                <button class="btn btn-primary" @click="resetProgram">Reset</button>
+                                <button v-if="!running" class="btn btn-primary m-1" @click="runRegMachine">Run</button>
+                                <button v-else class="btn btn-primary m-1" @click="pauseRegMachine">Pause</button>
+                                <button id="btnStep" class="btn btn-primary m-1" @click="stepRegMachine">Step</button>
+                                <button class="btn btn-primary m-1" @click="resetProgram">Reset</button>
                             </div>
                         </div>
                     </div>
