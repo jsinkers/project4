@@ -89,6 +89,12 @@
                                 <!--<program-grid></program-grid>-->
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col">
+                                <programGraph :program="program"
+                                    :current-step-id="currentStepId"></programGraph>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 col-lg">
@@ -122,6 +128,7 @@ import {eventBus} from "../state"
 import Program from "../components/Program"
 import Register from "../components/Register"
 import Tests from "../components/Tests"
+import ProgramGraph from "../components/ProgramGraph";
 import api from '../services/api'
 import UnfoldLessHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
 import UnfoldMoreHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
@@ -460,6 +467,7 @@ export default {
     },
     components: {
         Program,
+        ProgramGraph,
         Register,
         Tests,
         UnfoldLessHorizontalIcon,
