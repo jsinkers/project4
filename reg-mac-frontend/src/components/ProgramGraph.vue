@@ -1,7 +1,7 @@
 <template>
     <div id="programGraph">
         <h4>Graph</h4>
-
+        <!--<cytoscape ref="cy" :config="config" :afterCreated="afterCreated"></cytoscape>-->
         <cytoscape ref="cy" :config="config" :afterCreated="afterCreated">
             <cy-element
             v-for="def in elements"
@@ -21,102 +21,66 @@
             currentStepId: Number,
         },
         methods: {
-            async afterCreated(cy) {
+            async afterCreated(cy=null) {
+                if (cy !== null) {
+                    this.cy = cy
+                    console.log("storing cytoscape instance")
+                } else {
+                    cy = this.cy
+                    console.log("loading cytoscape instance")
+                }
                 await cy
+                console.log("running layout")
                 cy.layout(this.config.layout).run()
+                console.log("layout complete")
             },
             programToGraph: function() {
                 // establish nodes
-                for (let step in this.program) {
-                    let ind = this.elements.nodes.findIndex(x => x.id == this.program[step].id)
-                    if (ind === -1) {
-                        // create new node
-
-                    }
-                    // update node
-                    let node = this.elements.nodes[ind].data
-                    node.data = this.program[step].data
-                    node.label = this.nodeLabel(node)
+                var nodes = []
+                for (let i in this.program) {
+                    let node = {}
+                    node.data = { ...this.program[i]}
+                    node.data.label = this.nodeLabel(node.data)
+                    nodes.push(node)
                 }
                 // establish edges
+                var edges = []
+                for (let i in nodes) {
+                    let elem = nodes[i].data
+                    if (elem.instruction === "inc" || elem.instruction === "deb") {
+                        // go to edge
+                        let edge = {data: {id: `${elem.id}-${elem.goTo}`, source: elem.id, target: elem.goTo, type: "goTo"}}
+                        edges.push(edge)
+                    }
+                    if (elem.instruction === "deb") {
+                        // branch to edge
+                        let edge = {data: {id: `${elem.id}-${elem.branchTo}`, source: elem.id, target: elem.branchTo, type: "branchTo"}}
+                        edges.push(edge)
+                    }
+                }
 
+                this.elements = [...nodes, ...edges]
+                this.config.elements = [...this.elements]
             },
-            nodeLabel: function(node) {
-                if (node.instruction === "inc") {
-                    return `+{node.register}`
-                } else if (node.instruction === "deb") {
-                    return `-{node.register}`
-                } else if (node.instruction === "end") {
+            nodeLabel: function(nodeData) {
+                if (nodeData.instruction === "inc") {
+                    return `+${nodeData.register}`
+                } else if (nodeData.instruction === "deb") {
+                    return `-${nodeData.register}`
+                } else if (nodeData.instruction === "end") {
                     return "end"
                 }
             }
         },
+        created() {
+            this.programToGraph()
+        },
         mounted() {
-            /*cytoscape({
-                container: this.$refs['cy'], // container to render in
-                elements: {
-                    nodes: [ // list of graph elements to start with
-                        {data: {id: '0', label: 'start', instruction: 'start'}},
-                        {data: {id: '1', label: '-1', instruction: 'deb', register: 1, goTo: '2', branchTo: '3'}},
-                        {data: {id: '2', label: '+2', instruction: 'inc', register: 2, goTo: '1'}},
-                        {data: {id: '3', label: 'end', instruction: 'end'}},
-                    ],
-                    edges: [
-                        {data: {id: '01', source: '0', target: '1', type: 'goTo'}},
-                        {data: {id: '12', source: '1', target: '2', type: 'goTo'}},
-                        {data: {id: '21', source: '2', target: '1', type: 'goTo'}},
-                        {data: {id: '13', source: '1', target: '3', type: 'branchTo'}}
-                    ]
-                },
 
-                style: [ // the stylesheet for the graph
-                {
-                    selector: 'node',
-                    style: {
-                        'background-color': 'blue', //'#666',
-                        'label': 'data(label)',
-                        'text-wrap': 'wrap',
-                        "text-valign": "center",
-                        "text-halign": "center",
-                        'color': 'white',
-                        "width": '50px',
-                        "height": '50px',
-                        "padding": '50%',
-                    }
-                },
-                {
-                  selector: 'edge',
-                  style: {
-                      'curve-style': 'bezier',
-                    'width': 3,
-                    'line-color': '#ccc',
-                    'target-arrow-color': '#ccc',
-                    'target-arrow-shape': 'triangle',
-                      "source-label": 'data(source)',
-                  }
-                }
-                ],
-                layout: {
-                    name: 'grid',
-                    rows: 2,
-                }
-            })*/
         },
         data: function() {
             return {
-                elements:
-                    [ // list of graph elements to start with
-                        {data: {id: '0', label: 'start', instruction: 'start'}},
-                        {data: {id: '1', label: '-1', instruction: 'deb', register: 1, goTo: '2', branchTo: '3'}},
-                        {data: {id: '2', label: '+2', instruction: 'inc', register: 2, goTo: '1'}},
-                        {data: {id: '3', label: 'end', instruction: 'end'}},
-
-                        {data: {id: '01', source: '0', target: '1', type: 'goTo'}},
-                        {data: {id: '12', source: '1', target: '2', type: 'goTo'}},
-                        {data: {id: '21', source: '2', target: '1', type: 'goTo'}},
-                        {data: {id: '13', source: '1', target: '3', type: 'branchTo'}}
-                    ]
-                ,
+                elements: [],
                 config: {
                   style: [
                     {
@@ -154,6 +118,12 @@
         },
         components: {
         },
+        watch: {
+            program: function() {
+                this.programToGraph()
+                this.$refs.cy.afterCreated()
+            },
+        }
     }
 </script>
 
