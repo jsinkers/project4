@@ -450,6 +450,7 @@ export default {
     },
     created: function () {
         this.updateOptions(this.fields)
+        this.updateChallenge(this.$route.params.id)
     },
     mounted () {
         eventBus.$on('toggle-edit', stepID => { this.toggleEdit(stepID) })
@@ -458,7 +459,6 @@ export default {
         eventBus.$on('remove-step', () => { this.removeStep() })
         eventBus.$on('run-tests', () => { this.runTests() })
         eventBus.$on('halt-tests', () => { this.haltTests() })
-        this.updateChallenge(this.$route.params.id)
     },
     watch: {
         program: function () {

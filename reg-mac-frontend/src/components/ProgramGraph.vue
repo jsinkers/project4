@@ -9,7 +9,6 @@
             :definition="def"
             />
         </cytoscape>
-        <h4>Graph2</h4>
     </div>
 </template>
 
@@ -35,6 +34,7 @@
                 console.log("layout complete")
             },
             programToGraph: function() {
+                console.log("running programToGraph()")
                 // establish nodes
                 var nodes = []
                 for (let i in this.program) {
@@ -60,7 +60,9 @@
                 }
 
                 this.elements = [...nodes, ...edges]
-                this.config.elements = [...this.elements]
+                //this.config.elements = [...this.elements]
+
+                //this.$refs.cy.afterCreated()
             },
             nodeLabel: function(nodeData) {
                 if (nodeData.instruction === "inc") {
@@ -76,7 +78,8 @@
             this.programToGraph()
         },
         mounted() {
-
+            //this.programToGraph()
+            //this.$refs.cy.afterCreated()
         },
         data: function() {
             return {
@@ -119,9 +122,16 @@
         components: {
         },
         watch: {
-            program: function() {
-                this.programToGraph()
-                this.$refs.cy.afterCreated()
+            program: {
+                handler:function() {
+                    this.programToGraph()
+                },
+                immediate: false
+            },
+            elements: function() {
+                if (this.$refs.cy) {
+                    this.$refs.cy.afterCreated()
+                }
             },
         }
     }
