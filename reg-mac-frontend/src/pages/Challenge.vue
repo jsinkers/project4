@@ -329,6 +329,7 @@ export default {
           this.program[i].editMode = !this.program[i].editMode
         } else {
           this.program[i].editMode = false
+          eventBus.$emit("program-updated")
         }
       }
     },
@@ -358,6 +359,7 @@ export default {
           }
         }
       }
+
     },
     addStep: function () {
         var id = 1

@@ -1,7 +1,6 @@
 <template>
     <div id="programGraph">
         <h4>Graph</h4>
-        <!--<cytoscape ref="cy" :config="config" :afterCreated="afterCreated"></cytoscape>-->
         <cytoscape ref="cy" :config="config" :afterCreated="afterCreated">
             <cy-element
             v-for="def in elements"
@@ -13,6 +12,8 @@
 </template>
 
 <script>
+    import {eventBus} from "../state";
+
     export default {
         name: "ProgramGraph",
         props: {
@@ -80,6 +81,8 @@
         mounted() {
             //this.programToGraph()
             //this.$refs.cy.afterCreated()
+            //eventBus.$on('program-updated', () => { this.programToGraph() })
+            eventBus.$on('prog-value-sel', () => { this.programToGraph() })
         },
         data: function() {
             return {
