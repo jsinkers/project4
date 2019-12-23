@@ -55,6 +55,10 @@
                                     </div>`
                          }
                         },
+                        /*{query: 'edge',
+                         tpl: function(data) {
+                            return `<span>${data.label}</span>`
+                         }},*/
                     ])
                 cy.layout(this.config.layout).run()
                 console.log("layout complete")
@@ -75,12 +79,12 @@
                     let elem = nodes[i].data
                     if (elem.instruction === "inc" || elem.instruction === "deb") {
                         // go to edge
-                        let edge = {data: {id: `${elem.id}-${elem.goTo}`, source: elem.id, target: elem.goTo, type: "goTo"}}
+                        let edge = {data: {id: `${elem.id}-${elem.goTo}`, source: elem.id, target: elem.goTo, type: "goTo", label: null}}
                         edges.push(edge)
                     }
                     if (elem.instruction === "deb") {
                         // branch to edge
-                        let edge = {data: {id: `${elem.id}-${elem.branchTo}`, source: elem.id, target: elem.branchTo, type: "branchTo"}}
+                        let edge = {data: {id: `${elem.id}-${elem.branchTo}`, source: elem.id, target: elem.branchTo, type: "branchTo", label: 0}}
                         edges.push(edge)
                     }
                 }
@@ -136,6 +140,7 @@
                               'line-color': '#ccc',
                               'target-arrow-color': '#ccc',
                               'target-arrow-shape': 'triangle',
+                              'label': 'data(label)',
                               //"source-label": 'data(source)',
                           }
                       }
