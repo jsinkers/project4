@@ -5,7 +5,7 @@
         <thead>
         <tr>
             <th scope="col">Step</th>
-            <th scope="col" id="btnInst">Instruction</th>
+            <th scope="col" id="btnInst">Instruction <information-outline-icon></information-outline-icon></th>
             <th scope="col">Register</th>
             <th scope="col">Go to</th>
             <th scope="col">Branch to</th>
@@ -54,7 +54,7 @@
 <script>
     import { eventBus } from '../state'
     import ProgramStep from "./ProgramStep"
-
+    import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
     export default {
         name: "Program",
         props: {
@@ -83,6 +83,7 @@
         },
         components: {
             ProgramStep,
+            InformationOutlineIcon,
         },
         data: function() {
             return {
