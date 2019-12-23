@@ -1,6 +1,14 @@
 <template>
-    <div id="programGraph">
-        <h4>Graph</h4>
+    <div id="programGraph" class="container-fluid">
+        <div class="row justify-content-between align-items-center">
+            <div class="col col-md-6">
+                <h4>Graph</h4>
+            </div>
+            <div class="col-auto">
+                <b-button variant="primary" class="align-middle" type="button" @click="updateLayout"
+                        >Update layout</b-button>
+            </div>
+        </div>
         <cytoscape ref="cy" :config="config" :preConfig="preConfig" :afterCreated="afterCreated">
             <cy-element
             v-for="def in elements"
@@ -15,7 +23,7 @@
     import {eventBus} from "../state";
     //import klay from 'cytoscape-klay';
     import dagre from 'cytoscape-dagre'
-    //import popper from 'cytoscape-popper'
+    import popper from 'cytoscape-popper'
     import nodeHtmlLabel from 'cytoscape-node-html-label'
 
     export default {
@@ -30,7 +38,9 @@
                 if (!cytoscape('core', 'dagre')) {
                     cytoscape.use(dagre)
                 }
-                //cytoscape.use(popper)
+                if (!cytoscape('core', 'popper')) {
+                    cytoscape.use(popper)
+                }
                 if (!cytoscape('core', 'nodeHtmlLabel')) {
                     cytoscape.use(nodeHtmlLabel)
                 }
@@ -79,20 +89,18 @@
                     let elem = nodes[i].data
                     if (elem.instruction === "inc" || elem.instruction === "deb") {
                         // go to edge
-                        let edge = {data: {id: `${elem.id}-${elem.goTo}`, source: elem.id, target: elem.goTo, type: "goTo", label: null}}
+                        let edge = {data: {id: `${elem.id}-${elem.goTo}g`, source: elem.id, target: elem.goTo, type: "goTo", label: ""}}
                         edges.push(edge)
                     }
                     if (elem.instruction === "deb") {
                         // branch to edge
-                        let edge = {data: {id: `${elem.id}-${elem.branchTo}`, source: elem.id, target: elem.branchTo, type: "branchTo", label: 0}}
+                        let edge = {data: {id: `${elem.id}-${elem.branchTo}b`, source: elem.id, target: elem.branchTo, type: "branchTo", label: 0}}
                         edges.push(edge)
                     }
                 }
 
                 this.elements = [...nodes, ...edges]
-                //this.config.elements = [...this.elements]
 
-                //this.$refs.cy.afterCreated()
             },
             nodeLabel: function(nodeData) {
                 if (nodeData.instruction === "inc") {
@@ -102,6 +110,11 @@
                 } else if (nodeData.instruction === "end") {
                     return "end"
                 }
+            },
+            updateLayout: function() {
+                if (this.$refs.cy) {
+                    this.$refs.cy.afterCreated()
+                }
             }
         },
         created() {
@@ -109,9 +122,9 @@
         },
         mounted() {
             //this.programToGraph()
-            //this.$refs.cy.afterCreated()
             //eventBus.$on('program-updated', () => { this.programToGraph() })
             eventBus.$on('update-graph', () => { this.programToGraph() })
+            this.updateLayout()
         },
         data: function() {
             return {
@@ -164,9 +177,7 @@
                 immediate: false
             },
             elements: function() {
-                if (this.$refs.cy) {
-                    this.$refs.cy.afterCreated()
-                }
+                this.updateLayout()
             },
         }
     }
