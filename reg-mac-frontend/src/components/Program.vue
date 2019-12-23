@@ -33,7 +33,7 @@
         <div class="row justify-content-center">
                 <div class="col-3">
                     <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-outline-primary" @click="removeStep">
+                        <button id="btnRem" class="btn btn-outline-primary" @click.stop="removeStep">
                             <!--<i class="mdi mdi-minus"></i>-->
                             -
                         </button>
@@ -43,6 +43,10 @@
                         </button>
                     </div>
                 </div>
+                <b-tooltip :show.sync="showTooltipRemStep" variant="warning" ref="tooltipRemStep" target="btnRem"
+                           placement="top" triggers="manual">
+                    Cannot remove the last step as it is referenced by other steps.
+                </b-tooltip>
         </div>
     </div>
 </template>
@@ -65,11 +69,25 @@
           },
           removeStep: function () {
             eventBus.$emit('remove-step')
-          }
+          },
+          removeStepFail: function() {
+            //this.$refs.tooltipRemStep.$emit('open')
+              this.showTooltipRemStep = true
+          },
 
+
+        },
+        mounted () {
+            eventBus.$on('program-cannot-remove-step', () => { this.removeStepFail() })
+            eventBus.$on('challenge-click', () => { this.showTooltipRemStep = false })
         },
         components: {
             ProgramStep,
+        },
+        data: function() {
+            return {
+                showTooltipRemStep: false,
+            }
         }
     }
 </script>

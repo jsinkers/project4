@@ -1,5 +1,5 @@
 <template>
-    <div class="row debug">
+    <div class="row debug" @click="challengeClicked">
         <div class="container debug2">
             <div class="row">
                 <div v-if="solved" class="col alert alert-success" role="alert">
@@ -376,11 +376,15 @@ export default {
             // search for this step in the existing program
             const slice = this.program.slice(0, -1)
             if ((slice.findIndex(x => x.goTo === id) >= 0) || (slice.findIndex(x => x.branchTo === id) >= 0)) {
-                alert('Cannot remove the last step of the program as it is referenced by other program steps.')
+                //alert('Cannot remove the last step of the program as it is referenced by other program steps.')
+                eventBus.$emit("program-cannot-remove-step")
             } else {
                 this.program.pop()
             }
         }
+    },
+    challengeClicked: function() {
+        eventBus.$emit('challenge-click')
     },
     updateChallenge: function(id, forceRefresh) {
         this.id = id
