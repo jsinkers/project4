@@ -359,7 +359,7 @@ export default {
           }
         }
       }
-
+      eventBus.$emit("update-graph")
     },
     addStep: function () {
         var id = 1

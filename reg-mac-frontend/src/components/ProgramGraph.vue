@@ -82,7 +82,7 @@
             //this.programToGraph()
             //this.$refs.cy.afterCreated()
             //eventBus.$on('program-updated', () => { this.programToGraph() })
-            eventBus.$on('prog-value-sel', () => { this.programToGraph() })
+            eventBus.$on('update-graph', () => { this.programToGraph() })
         },
         data: function() {
             return {
