@@ -1,7 +1,7 @@
 <template>
     <div id="programGraph">
         <h4>Graph</h4>
-        <cytoscape ref="cy" :config="config" :afterCreated="afterCreated">
+        <cytoscape ref="cy" :config="config" :preConfig="preConfig" :afterCreated="afterCreated">
             <cy-element
             v-for="def in elements"
             :key="`${def.data.id}`"
@@ -13,6 +13,10 @@
 
 <script>
     import {eventBus} from "../state";
+    //import klay from 'cytoscape-klay';
+    import dagre from 'cytoscape-dagre'
+    //import popper from 'cytoscape-popper'
+    import nodeHtmlLabel from 'cytoscape-node-html-label'
 
     export default {
         name: "ProgramGraph",
@@ -21,6 +25,16 @@
             currentStepId: Number,
         },
         methods: {
+            preConfig(cytoscape) {
+                //cytoscape.use(klay)
+                if (!cytoscape('core', 'dagre')) {
+                    cytoscape.use(dagre)
+                }
+                //cytoscape.use(popper)
+                if (!cytoscape('core', 'nodeHtmlLabel')) {
+                    cytoscape.use(nodeHtmlLabel)
+                }
+            },
             async afterCreated(cy=null) {
                 if (cy !== null) {
                     this.cy = cy
@@ -31,6 +45,17 @@
                 }
                 await cy
                 console.log("running layout")
+                cy.nodeHtmlLabel(
+                    [
+                        {query: 'node',
+                         tpl: function(data) {
+                            return `<div class="container">
+                                        <div class="row"><div class="col programNodeStep">${data.id}</div></div>
+                                        <div class="row"><div class="col programNodeLabel">${data.label}</div></div>
+                                    </div>`
+                         }
+                        },
+                    ])
                 cy.layout(this.config.layout).run()
                 console.log("layout complete")
             },
@@ -93,7 +118,7 @@
                       selector: 'node',
                       style: {
                           'background-color': 'blue', //'#666',
-                          'label': 'data(label)',
+                          //'label': 'data(label)',
                           'text-wrap': 'wrap',
                           "text-valign": "center",
                           "text-halign": "center",
@@ -111,13 +136,15 @@
                               'line-color': '#ccc',
                               'target-arrow-color': '#ccc',
                               'target-arrow-shape': 'triangle',
-                              "source-label": 'data(source)',
+                              //"source-label": 'data(source)',
                           }
                       }
                   ],
                   layout: {
-                    name: 'grid',
-                    rows: 2
+                    //name: 'grid',
+                      //name: 'klay',
+                      name: 'dagre',
+                    //rows: 2
                   }
                 }
             }

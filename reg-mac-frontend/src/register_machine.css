@@ -9362,7 +9362,7 @@ button.bg-dark:focus {
   text-align: right !important;
 }
 
-.text-center {
+.text-center, .programNodeLabel, .programNodeStep {
   text-align: center !important;
 }
 
@@ -9454,7 +9454,7 @@ button.bg-dark:focus {
   font-style: italic !important;
 }
 
-.text-white, .currTest, .currStep, .register .container .regHeading {
+.text-white, .programNodeLabel, .programNodeStep, .currTest, .currStep, .register .container .regHeading {
   color: #fff !important;
 }
 
@@ -9672,6 +9672,10 @@ th {
     font-size: 0.8rem;
   }
 }
+.programNodeStep {
+  font-size: 0.5rem;
+}
+
 .group:after {
   content: "";
   display: table;

@@ -42,6 +42,17 @@ th {
   }
 }
 
+.programNodeStep {
+  font-size: 0.5rem;
+  @extend .text-center;
+  @extend .text-white;
+}
+
+.programNodeLabel {
+  @extend .text-center;
+  @extend .text-white;
+}
+
 .modal-and-carousel {
   //position: fixed; // Needed because the carousel overrides the position property
 }
