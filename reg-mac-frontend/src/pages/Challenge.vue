@@ -27,11 +27,13 @@
                     <b-button variant="primary" class="align-middle" type="button" @click="resetChallenge"
                         >Reset challenge</b-button>
                     <b-button variant="primary" class="align-middle m-1" type="button" data-toggle="collapse"
-                        data-target="#probText"
+                        data-target="#probText" @click="toggleStatement"
                         ><span v-if="!statementCollapsed"><unfold-less-horizontal-icon></unfold-less-horizontal-icon></span>
                         <span v-else><unfold-more-horizontal-icon></unfold-more-horizontal-icon></span>
                     </b-button>
                 </div>
+
+
             </div>
             <div class="row">
                 <div class="col">
@@ -131,7 +133,7 @@ import Tests from "../components/Tests"
 import ProgramGraph from "../components/ProgramGraph";
 import api from '../services/api'
 import UnfoldLessHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
-import UnfoldMoreHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
+import UnfoldMoreHorizontalIcon from 'vue-material-design-icons/UnfoldMoreHorizontal.vue'
 
 export default {
     name: 'Challenge',
@@ -139,36 +141,38 @@ export default {
     //    id: Number
     //}
     data: function () {
-    return {
-      id: null,
-        response: null,
-        title: null,
-        statement: null,
-        program: [],
-        tests: [],
-        registers: [],
-        hint: null,
-        instructions: [{instruction: 'inc', description: 'Increment register', fields: ['instruction', 'register', 'goTo']},
-        {instruction: 'deb', description: 'Decrement register or branch', fields: ['instruction', 'register', 'goTo', 'branchTo']},
-        {instruction: 'end', description: 'End', fields: ['instruction']}],
-        currentStepId: 1,
-        running: false,
-        testID: null,
-        rmInterval: null,
-        fields: [{field: 'instruction', options: [], optionObject: 'instructions', optionField: 'instruction'},
-        {field: 'register', options: [], optionObject: 'registers', optionField: 'id'},
-        {field: 'goTo', options: [], optionObject: 'program', optionField: 'id'},
-        {field: 'branchTo', options: [], optionObject: 'program', optionField: 'id'}
-      ],
-        programOptions: [],
-        solved: null,
-        statementCollapsed: false,
-    }
+        return {
+            id: null,
+            response: null,
+            title: null,
+            statement: null,
+            program: [],
+            tests: [],
+            registers: [],
+            hint: null,
+            instructions: [{instruction: 'inc', description: 'Increment register', fields: ['instruction', 'register', 'goTo']},
+                {instruction: 'deb', description: 'Decrement register or branch', fields: ['instruction', 'register', 'goTo', 'branchTo']},
+                {instruction: 'end', description: 'End', fields: ['instruction']}],
+            currentStepId: 1,
+            running: false,
+            testID: null,
+            rmInterval: null,
+            fields: [{field: 'instruction', options: [], optionObject: 'instructions', optionField: 'instruction'},
+                {field: 'register', options: [], optionObject: 'registers', optionField: 'id'},
+                {field: 'goTo', options: [], optionObject: 'program', optionField: 'id'},
+                {field: 'branchTo', options: [], optionObject: 'program', optionField: 'id'}
+            ],
+            programOptions: [],
+            solved: null,
+            statementCollapsed: false,
+        }
     },
     methods: {
         toggleStatement: function() {
+            console.log("toggleStatement")
             //this.$refs.probText.style = "collapse"
             this.statementCollapsed = !this.statementCollapsed
+            console.log(this.statementCollapsed)
         },
     nextChallengeRoute: function() {
         const nextID = parseInt( this.$route.params.id) + 1
