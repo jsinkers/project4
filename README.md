@@ -16,6 +16,7 @@ Uses Vue for front-end with Django back-end. Configured for PostgreSQL.
 
 ### Demo: Solving Challenge #2
 Video walking through Challenge 2 
+
 [![Register Machine Walkthrough](https://img.youtube.com/vi/9eTyqoDCcc4/0.jpg)](https://youtu.be/9eTyqoDCcc4)
 
 N.B. dropdowns didn't record in this screen recording
