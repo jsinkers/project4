@@ -15,8 +15,10 @@ Uses Vue for front-end with Django back-end. Configured for PostgreSQL.
 ## Register Machine Challenges
 
 ### Demo: Solving Challenge #2
+Video walking through Challenge 2 
 [![Register Machine Walkthrough](https://img.youtube.com/vi/9eTyqoDCcc4/0.jpg)](https://youtu.be/9eTyqoDCcc4)
-N.B. dropdowns didn' record in this screen recording
+
+N.B. dropdowns didn't record in this screen recording
 
 ### Writing challenges
 Challenges are written in YAML format, placed in `<project_root>/backend/challenges`.
