@@ -1,7 +1,5 @@
 # Register Machine
-www.registermachine.com
 A web app intended as an educational tool to introduce concepts
-
 of computer programming, based on Wang's register machine [1], as discussed in
 Ch. 24 of Dennett [2].  Text and the register machine problems draw on 
 Dennett's work.   It is constructed with a brief tutorial, and a series of challenges
@@ -17,7 +15,8 @@ Uses Vue for front-end with Django back-end. Configured for PostgreSQL.
 ## Register Machine Challenges
 
 ### Demo: Solving Challenge #2
-[Register Machine Walkthrough](https://youtu.be/9eTyqoDCcc4)
+[![Register Machine Walkthrough](https://img.youtube.com/vi/9eTyqoDCcc4/0.jpg)](https://youtu.be/9eTyqoDCcc4)
+N.B. dropdowns didn' record in this screen recording
 
 ### Writing challenges
 Challenges are written in YAML format, placed in `<project_root>/backend/challenges`.
