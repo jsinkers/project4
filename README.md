@@ -1,15 +1,23 @@
 # Register Machine
+www.registermachine.com
 A web app intended as an educational tool to introduce concepts
+
 of computer programming, based on Wang's register machine [1], as discussed in
 Ch. 24 of Dennett [2].  Text and the register machine problems draw on 
 Dennett's work.   It is constructed with a brief tutorial, and a series of challenges
 of increasing difficulty and new concepts.  Challenges are completed by successfully passing the tests supplied.  
 
+![Running challenge tests on the register machine](docs/running_tests.gif)
+
 Deployed via heroku at www.registermachine.com
 
-Uses Vue for front-end with Django back-end. Configured for PostgreSQL database.
+Uses Vue for front-end with Django back-end. Configured for PostgreSQL.
+
 
 ## Register Machine Challenges
+
+### Demo: Solving Challenge #2
+[Register Machine Walkthrough](https://youtu.be/9eTyqoDCcc4)
 
 ### Writing challenges
 Challenges are written in YAML format, placed in `<project_root>/backend/challenges`.
@@ -143,6 +151,6 @@ On Windows, run:
 
 ## References
 
-1. Wang, H., 1957: "A variation to Turing's Theroy of Computing Machines." *Journal
+1. Wang, H., 1957: "A variation to Turing's Theory of Computing Machines." *Journal
 of the Association for Computing Machinery*, pp. 63-92. 
 2. Dennett, D., 2013, *Intuition pumps and other tools for thinking.*
