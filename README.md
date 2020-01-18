@@ -1,22 +1,43 @@
 # Register Machine
-
-Now running on heroku at:
-https://register-machine.herokuapp.com/
-Old: front-end build
-https://jsinkers.github.io/register-machine
-
-A web app based on Django intended as an educational tool to introduce concepts
+A web app intended as an educational tool to introduce concepts
 of computer programming, based on Wang's register machine [1], as discussed in
 Ch. 24 of Dennett [2].  Text and the register machine problems draw on 
-Dennett's work.    
+Dennett's work.   It is constructed with a brief tutorial, and a series of challenges
+of increasing difficulty and new concepts.  Challenges are completed by successfully passing the tests supplied.  
 
-## Representation 
+Deployed via heroku at www.registermachine.com
 
+Uses Vue for front-end with Django back-end. Configured for PostgreSQL database.
+
+## Register Machine Challenges
+
+### Writing challenges
+Challenges are written in YAML format, placed in `<project_root>/backend/challenges`.
+
+Challenge YAML files are named ```challenge_<id>.yml``` where
+```id``` is the integer challenge ID.  
+See for example [Challenge 1](https://github.com/jsinkers/register-machine/blob/master/backend/challenges/challenge_01.yml)
+
+Each time the app is deployed it checks for updates to the challenges and updates
+the database accordingly.
+
+The challenge YAML file should contain info on the challenge description, hints, registers,
+and tests.
+
+Skeleton `challenge_<id>.yml`:
+```yaml
+---
+id: <id>
+title: <challenge title>
+statement: <html statement in quotes>
+program: <see below>
+tests: <see below>
+registers: <see below>
+hint: <html hint in quotes>
+```
 ### Representation of register machine programs
 
-Register machine programs are a JSON array of steps.  For convenience this is
-input as a YAML file.
-
+Register machine programs are a JSON array of steps.  
 ```yaml
 program:
 - id: <int>                     # program step id
@@ -30,26 +51,44 @@ program:
          
 ### Representation of register machine program tests
 
-JSON objects
+Tests are represented in YAML as:
+```yaml
+tests: 
+- id: <test id> 
+  description: <brief test description>
+  status: null      # indicates whether test has been passed.  should be stored as null
+  initRegVals:      # stores register values at start of test
+    - id:           # register id
+      value:        # value of register <id>
+  expectedRegVals:  # stores expected register values once test complete
+    - id:
+      value:
+  actualRegVals:    # actual register values once test complete
+    - id:
+      value:
 ```
-tests = { { name: <string>,
-  register_start_values: { <id>: <value>, ... }
-  register_end_values: { <id>: <value>, ... }
-}, { } }
+
+### Representation of registers
+
+On page load, the number of registers listed in the YAML register list will be 
+added to the register machine, and displayed with the values specified in the Challenge
+YAML:
+```yaml
+registers:
+- id: <int register id>
+  value: <int initial value of register>
 ```
 
-## References
-
-1. Wang, H., 1957: "A variation to Turing's Theroy of Computing Machines." *Journal
-of the Association for Computing Machinery*, pp. 63-92. 
-2. Dennett, D., 2013, *Intuition pumps and other tools for thinking.*
-
+### Updating challenges
+In order to update challenges on the database, run:
+`$ heroku run python backend/manage.py runscript import_challenges`
 
 ## Architecture
 
 Django back-end for API, models, and to serve the built Vue files
 Vue front-end
-Used parts of https://github.com/gtalarico/django-vue-template
+Used parts of [django-vue-template](https://github.com/gtalarico/django-vue-template)
+Local storage currently used to retain user progress.  
 
 ## Development server
 
@@ -66,6 +105,7 @@ vue.config.js contains a proxy so that these do not clash.
 ### Heroku Procfile
 * Collects static files into one location
 * Performs database migrations
+* Updates challenges
 * Serves webapp
 
 ### Heroku setup
@@ -89,17 +129,20 @@ $ heroku run python backend/manage.py createsuperuser
 
 ### Running heroku app locally
 
-PostgreSQL must be installed
+PostgreSQL must be installed to run this locally
 
 On Windows, run:
 ```heroku local web -f Procfile.windows```
 
-## Challenges
+## Upcoming features
 
-### Writing challenges
-Challenges are written in YAML format, in `<project_root>/backend/challenges`.
+* playground to allow users to make their own programs to do anything they wish
+* user accounts to allow permanent storage of solutions and playground programs
+* layout improvements
+* Vue tests
 
-### Updating challenges
-In order to update challenges on the database, run:
-`$ heroku run python backend/manage.py runscript import_challenges`
+## References
 
+1. Wang, H., 1957: "A variation to Turing's Theroy of Computing Machines." *Journal
+of the Association for Computing Machinery*, pp. 63-92. 
+2. Dennett, D., 2013, *Intuition pumps and other tools for thinking.*

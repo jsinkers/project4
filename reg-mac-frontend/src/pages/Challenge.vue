@@ -169,294 +169,291 @@ export default {
     },
     methods: {
         toggleStatement: function() {
-            console.log("toggleStatement")
-            //this.$refs.probText.style = "collapse"
             this.statementCollapsed = !this.statementCollapsed
-            console.log(this.statementCollapsed)
         },
-    nextChallengeRoute: function() {
-        const nextID = parseInt( this.$route.params.id) + 1
-        return `/challenge/${nextID}`
-    },
-    resetRegisters: function () {
-      // console.log('resetting registers')
-      this.registers.forEach(function (item) {
-        // console.log(`${item.id}`)
-        item.value = 0
-      })
-    },
-    resetProgram: function () {
-      if (this.rmInterval) {
-        this.rmInterval = clearInterval(this.rmInterval)
-      }
-      this.running = false
-      this.currentStepId = 1
-    },
-    executeProgramStep: function () {
-      // console.log('executeProgramStep')
-      let currStep = this.program.find(x => x.id === this.currentStepId)
-      if (currStep.instruction !== 'end') {
-        var regInd = this.registers.findIndex(x => x.id === currStep.register)
-      }
-      if (currStep.instruction === 'inc') {
-        // find register whose steps correspond to
-        this.registers[regInd].value++
-        this.currentStepId = currStep.goTo
-      } else if (currStep.instruction === 'deb') {
-        if (this.registers[regInd].value === 0) {
-          this.currentStepId = currStep.branchTo
-        } else {
-          this.registers[regInd].value--
-          this.currentStepId = currStep.goTo
-        }
-      } else if (currStep.instruction === 'end') {
-        this.running = false
-        if (this.rmInterval) {
-          clearInterval(this.rmInterval)
-          this.rmInterval = null
-          document.querySelector('#btnStep').disabled = false
-        }
-        if (this.testID) {
-          this.testResult()
-        }
-      }
-    },
-    runRegMachine: function (ev, interval = 500) {
-        // console.log(interval)
-        if (this.program.length > 0) {
-            this.running = true
-            this.rmInterval = setInterval(this.executeProgramStep, interval)
-            document.querySelector('#btnStep').disabled = true
-        }
-    },
-    stepRegMachine: function () {
-      this.executeProgramStep()
-    },
-    pauseRegMachine: function () {
-      this.running = false
-      if (this.rmInterval) {
-        this.rmInterval = clearInterval(this.rmInterval)
-      }
-      document.querySelector('#btnStep').disabled = false
-    },
-    runTest: function (testID) {
-      // reset register machine
-      this.resetProgram()
-
-      // load data into registers
-      let test = this.tests.find(x => x.id === testID)
-      for (let i in this.registers) {
-        let j = test.initRegVals.findIndex(x => x.id === this.registers[i].id)
-        if (j >= 0) {
-          // console.log(j)
-          this.registers[i].value = test.initRegVals[j].value
-        } else {
-          this.registers[i].value = 0
-        }
-      }
-
-      // run program
-      this.runRegMachine(null, 100)
-    },
-    testResult: function () {
-        // stores test results
-        let test = this.tests.find(x => x.id === this.testID)
-        for (let i in test.actualRegVals) {
-            let j = this.registers.findIndex(x => x.id === test.actualRegVals[i].id)
-            test.actualRegVals[i].value = this.registers[j].value
-        }
-        this.checkTestStatus()
-        this.testID++
-        this.runTests()
-
-    },
-    checkTestStatus: function () {
-      let test = this.tests.find(x => x.id === this.testID)
-      test.status = 'Pass'
-      for (let i in test.actualRegVals) {
-        let j = test.expectedRegVals.findIndex(x => x.id === test.actualRegVals[i].id)
-        if (test.actualRegVals[i].value !== test.expectedRegVals[j].value) {
-          test.status = 'Fail'
-        }
-      }
-    },
-    resetTests: function () {
-        for (let i in this.tests) {
-            this.tests[i].status = null
-        }
-    },
-    runTests: function () {
-        if (this.program.length > 0) {
-            if (!this.testID) {
-                this.testID = 1
-                // set test status to unsolved
-                this.resetTests()
-                // turn off edit mode
-                this.disableProgramEdit()
-            }
-            let i = this.tests.findIndex(x => x.id === this.testID)
-            if (i >= 0) {
-                this.testID = this.tests[i].id
-                this.runTest(this.tests[i].id)
-            } else {
-                this.testID = null
-                this.checkIfSolved()
-                this.persist()
-            }
-        }
-    },
-    haltTests: function () {
-        this.pauseRegMachine()
-        this.testID = null
-    },
-    checkIfSolved() {
-        var failedTest = false
-        for (let i in this.tests) {
-            if (this.tests[i].status !== 'Pass') {
-                failedTest = true
-            }
-        }
-        if (failedTest) {
-            this.solved = false
-        } else {
-            this.solved = true
-        }
-    },
-    disableProgramEdit: function () {
-        for (let i in this.program) {
-            this.program[i].editMode = false
-        }
-    },
-    toggleEdit: function (stepID) {
-      for (let i in this.program) {
-        if (this.program[i].id === stepID) {
-          this.program[i].editMode = !this.program[i].editMode
-        } else {
-          this.program[i].editMode = false
-          eventBus.$emit("program-updated")
-        }
-      }
-    },
-    updateOptions: function (fields) {
-      // console.log('updating options')
-      for (let f = 0; f < fields.length; f++) {
-        // console.log(`f:${f}`)
-        let optField = fields[f].optionField
-        let optObj = this[fields[f].optionObject]
-        this.fields[f].options = optObj.map(x => { return x[optField] })
-      }
-      // console.log('options updated')
-    },
-    updateProgram: function (updateObj) {
-      // console.log(updateObj)
-      var stepInd = this.program.findIndex(x => x.id === updateObj.id)
-      this.program[stepInd][updateObj.field] = updateObj.value
-      if (updateObj.field === 'instruction') {
-        for (let f in this.fields) {
-          let inst = this.instructions.find(x => x.instruction === this.program[stepInd].instruction)
-          if (!inst.fields.find(x => x === this.fields[f].field)) {
-            // set to null if it is not a valid field for this instruction
-            this.program[stepInd][this.fields[f].field] = null
-          } else if (this.program[stepInd][this.fields[f].field] === null) {
-            // set a default value if it is currently unselected
-            this.program[stepInd][this.fields[f].field] = this.fields[f].options[0]
+        nextChallengeRoute: function() {
+            const nextID = parseInt( this.$route.params.id) + 1
+            return `/challenge/${nextID}`
+        },
+        resetRegisters: function () {
+          // console.log('resetting registers')
+          this.registers.forEach(function (item) {
+            // console.log(`${item.id}`)
+            item.value = 0
+          })
+        },
+        resetProgram: function () {
+          if (this.rmInterval) {
+            this.rmInterval = clearInterval(this.rmInterval)
           }
-        }
-      }
-      eventBus.$emit("update-graph")
-    },
-    addStep: function () {
-        var id = 1
-        if (this.program.length) {
-            id = this.program[this.program.length - 1].id + 1
-        }
-        var newStep = {id: id, instruction: 'end', register: null, goTo: null, branchTo: null, editable: true, editMode: false}
-        this.program.push(newStep)
-        this.toggleEdit(id)
-    },
-    removeStep: function () {
-        if (this.program.length) {
-            const id = this.program[this.program.length - 1].id
-            // search for this step in the existing program
-            const slice = this.program.slice(0, -1)
-            if ((slice.findIndex(x => x.goTo === id) >= 0) || (slice.findIndex(x => x.branchTo === id) >= 0)) {
-                //alert('Cannot remove the last step of the program as it is referenced by other program steps.')
-                eventBus.$emit("program-cannot-remove-step")
+          this.running = false
+          this.currentStepId = 1
+        },
+        executeProgramStep: function () {
+          // console.log('executeProgramStep')
+          let currStep = this.program.find(x => x.id === this.currentStepId)
+          if (currStep.instruction !== 'end') {
+            var regInd = this.registers.findIndex(x => x.id === currStep.register)
+          }
+          if (currStep.instruction === 'inc') {
+            // find register whose steps correspond to
+            this.registers[regInd].value++
+            this.currentStepId = currStep.goTo
+          } else if (currStep.instruction === 'deb') {
+            if (this.registers[regInd].value === 0) {
+              this.currentStepId = currStep.branchTo
             } else {
-                this.program.pop()
+              this.registers[regInd].value--
+              this.currentStepId = currStep.goTo
             }
-        }
-    },
-    challengeClicked: function() {
-        eventBus.$emit('challenge-click')
-    },
-    updateChallenge: function(id, forceRefresh) {
-        this.id = id
-        const challenges = JSON.parse(localStorage.challenges)
-        const challID = challenges.data.findIndex(x => x.id === id)
-        if (!forceRefresh && challID !== -1) {
-            const userData = challenges.data[challID]
-            this.initialiseData(userData)
-        } else {
-            api
-                .get(`challenge/${this.id}`)
-                    .then(response => {
-                        this.response = response
-                        this.initialiseData(response.data)
-                    })
-                    .catch(error => {
-                        if (error.response.status === 404) {
-                            this.$router.push('/progress')
-                        }
-                    })
+          } else if (currStep.instruction === 'end') {
+            this.running = false
+            if (this.rmInterval) {
+              clearInterval(this.rmInterval)
+              this.rmInterval = null
+              document.querySelector('#btnStep').disabled = false
+            }
+            if (this.testID) {
+              this.testResult()
+            }
+          }
+        },
+        runRegMachine: function (ev, interval = 500) {
+            // console.log(interval)
+            if (this.program.length > 0) {
+                this.running = true
+                this.rmInterval = setInterval(this.executeProgramStep, interval)
+                document.querySelector('#btnStep').disabled = true
+            }
+        },
+        stepRegMachine: function () {
+          this.executeProgramStep()
+        },
+        pauseRegMachine: function () {
+          this.running = false
+          if (this.rmInterval) {
+            this.rmInterval = clearInterval(this.rmInterval)
+          }
+          document.querySelector('#btnStep').disabled = false
+        },
+        runTest: function (testID) {
+          // reset register machine
+          this.resetProgram()
 
+          // load data into registers
+          let test = this.tests.find(x => x.id === testID)
+          for (let i in this.registers) {
+            let j = test.initRegVals.findIndex(x => x.id === this.registers[i].id)
+            if (j >= 0) {
+              // console.log(j)
+              this.registers[i].value = test.initRegVals[j].value
+            } else {
+              this.registers[i].value = 0
+            }
+          }
+
+          // run program
+          this.runRegMachine(null, 100)
+        },
+        testResult: function () {
+            // stores test results
+            let test = this.tests.find(x => x.id === this.testID)
+            for (let i in test.actualRegVals) {
+                let j = this.registers.findIndex(x => x.id === test.actualRegVals[i].id)
+                test.actualRegVals[i].value = this.registers[j].value
+            }
+            this.checkTestStatus()
+            this.testID++
+            this.runTests()
+
+        },
+        checkTestStatus: function () {
+          let test = this.tests.find(x => x.id === this.testID)
+          test.status = 'Pass'
+          for (let i in test.actualRegVals) {
+            let j = test.expectedRegVals.findIndex(x => x.id === test.actualRegVals[i].id)
+            if (test.actualRegVals[i].value !== test.expectedRegVals[j].value) {
+              test.status = 'Fail'
+            }
+          }
+        },
+        resetTests: function () {
+            for (let i in this.tests) {
+                this.tests[i].status = null
+            }
+        },
+        runTests: function () {
+            if (this.program.length > 0) {
+                if (!this.testID) {
+                    this.testID = 1
+                    // set test status to unsolved
+                    this.resetTests()
+                    // turn off edit mode
+                    this.disableProgramEdit()
+                }
+                let i = this.tests.findIndex(x => x.id === this.testID)
+                if (i >= 0) {
+                    this.testID = this.tests[i].id
+                    this.runTest(this.tests[i].id)
+                } else {
+                    this.testID = null
+                    this.checkIfSolved()
+                    this.persist()
+                }
+            }
+        },
+        haltTests: function () {
+            this.pauseRegMachine()
+            this.testID = null
+        },
+        checkIfSolved() {
+            var failedTest = false
+            for (let i in this.tests) {
+                if (this.tests[i].status !== 'Pass') {
+                    failedTest = true
+                }
+            }
+            if (failedTest) {
+                this.solved = false
+            } else {
+                this.solved = true
+            }
+        },
+        disableProgramEdit: function () {
+            for (let i in this.program) {
+                this.program[i].editMode = false
+            }
+        },
+        toggleEdit: function (stepID) {
+          for (let i in this.program) {
+            if (this.program[i].id === stepID) {
+              this.program[i].editMode = !this.program[i].editMode
+            } else {
+              this.program[i].editMode = false
+              eventBus.$emit("program-updated")
+            }
+          }
+        },
+        updateOptions: function (fields) {
+          // console.log('updating options')
+          for (let f = 0; f < fields.length; f++) {
+            // console.log(`f:${f}`)
+            let optField = fields[f].optionField
+            let optObj = this[fields[f].optionObject]
+            this.fields[f].options = optObj.map(x => { return x[optField] })
+          }
+          // console.log('options updated')
+        },
+        updateProgram: function (updateObj) {
+          // console.log(updateObj)
+          var stepInd = this.program.findIndex(x => x.id === updateObj.id)
+          this.program[stepInd][updateObj.field] = updateObj.value
+          if (updateObj.field === 'instruction') {
+            for (let f in this.fields) {
+              let inst = this.instructions.find(x => x.instruction === this.program[stepInd].instruction)
+              if (!inst.fields.find(x => x === this.fields[f].field)) {
+                // set to null if it is not a valid field for this instruction
+                this.program[stepInd][this.fields[f].field] = null
+              } else if (this.program[stepInd][this.fields[f].field] === null) {
+                // set a default value if it is currently unselected
+                this.program[stepInd][this.fields[f].field] = this.fields[f].options[0]
+              }
+            }
+          }
+          eventBus.$emit("update-graph")
+        },
+        addStep: function () {
+            var id = 1
+            if (this.program.length) {
+                id = this.program[this.program.length - 1].id + 1
+            }
+            var newStep = {id: id, instruction: 'end', register: null, goTo: null, branchTo: null, editable: true, editMode: false}
+            this.program.push(newStep)
+            this.toggleEdit(id)
+        },
+        removeStep: function () {
+            if (this.program.length) {
+                const id = this.program[this.program.length - 1].id
+                // search for this step in the existing program
+                const slice = this.program.slice(0, -1)
+                if ((slice.findIndex(x => x.goTo === id) >= 0) || (slice.findIndex(x => x.branchTo === id) >= 0)) {
+                    //alert('Cannot remove the last step of the program as it is referenced by other program steps.')
+                    eventBus.$emit("program-cannot-remove-step")
+                } else {
+                    this.program.pop()
+                }
+            }
+        },
+        challengeClicked: function() {
+            eventBus.$emit('challenge-click')
+        },
+        updateChallenge: function(id, forceRefresh) {
+            this.id = id
+            const challenges = JSON.parse(localStorage.challenges)
+            const challID = challenges.data.findIndex(x => x.id === id)
+            if (!forceRefresh && challID !== -1) {
+                const userData = challenges.data[challID]
+                this.initialiseData(userData)
+            } else {
+                api
+                    .get(`challenge/${this.id}`)
+                        .then(response => {
+                            this.response = response
+                            this.initialiseData(response.data)
+                        })
+                        .catch(error => {
+                            if (error.response.status === 404) {
+                                this.$router.push('/progress')
+                            }
+                        })
+
+            }
+        },
+        resetChallenge: function() {
+            this.updateChallenge(this.$route.params.id, true)
+        },
+        initialiseData: function(data) {
+            this.title = data.title
+            this.statement = data.statement
+            this.program = data.program
+            this.tests = data.tests
+            this.registers = data.registers
+            this.hint = data.hint
+            if (data.solved !== null) {
+                this.solved = data.solved
+            } else {
+                this.solved = null
+            }
+            this.currentStepId = 1
+            this.running = false
+            this.testID = null
+            this.rmInterval = null
+            this.programOptions = null
+        },
+        persist: function() {
+            var challenges = JSON.parse(localStorage.challenges);
+            const challID = challenges.data.findIndex(x => x.id === this.id)
+            if (challID > -1) {
+                challenges.data[challID] = this.stateRecord()
+                localStorage.challenges = JSON.stringify(challenges)
+            } else {
+                challenges.data.push(this.stateRecord())
+                localStorage.challenges = JSON.stringify(challenges)
+            }
+            // TODO: provide feedback on whether data saved or not - show in save button
+        },
+        stateRecord: function() {
+            var state = {}
+            state["id"] = this.id
+            state["title"] = this.title
+            state["statement"] = this.statement
+            state["program"] = this.program
+            state["tests"] = this.tests
+            state["registers"] = this.registers
+            state["hint"] = this.hint
+            state["solved"] = this.solved
+            return state
         }
-    },
-    resetChallenge: function() {
-        this.updateChallenge(this.$route.params.id, true)
-    },
-    initialiseData: function(data) {
-        this.title = data.title
-        this.statement = data.statement
-        this.program = data.program
-        this.tests = data.tests
-        this.registers = data.registers
-        this.hint = data.hint
-        if (data.solved !== null) {
-            this.solved = data.solved
-        } else {
-            this.solved = null
-        }
-        this.currentStepId = 1
-        this.running = false
-        this.testID = null
-        this.rmInterval = null
-        this.programOptions = null
-    },
-    persist: function() {
-        var challenges = JSON.parse(localStorage.challenges);
-        const challID = challenges.data.findIndex(x => x.id === this.id)
-        if (challID > -1) {
-            challenges.data[challID] = this.stateRecord()
-            localStorage.challenges = JSON.stringify(challenges)
-        } else {
-            challenges.data.push(this.stateRecord())
-            localStorage.challenges = JSON.stringify(challenges)
-        }
-        // TODO: provide feedback on whether data saved or not - show in save button
-    },
-    stateRecord: function() {
-        var state = {}
-        state["id"] = this.id
-        state["title"] = this.title
-        state["statement"] = this.statement
-        state["program"] = this.program
-        state["tests"] = this.tests
-        state["registers"] = this.registers
-        state["hint"] = this.hint
-        state["solved"] = this.solved
-        return state
-    }
     },
     created: function () {
         this.updateOptions(this.fields)

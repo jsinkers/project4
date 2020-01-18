@@ -102,6 +102,7 @@
                                 <p>While this might seem a bit tricky, this is the most useful step, because it
                                     allows our programs to change behaviour based on the current values of the
                                     registers. You'll see how this works as you solve the challenges.</p>
+                                <!-- todo: add decrement program step and graph -->
                             </div>
                         </TutorialPage>
                         <TutorialPage>
