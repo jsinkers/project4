@@ -127,16 +127,16 @@
 
 <script>
 import {eventBus} from "../state"
-import Program from "../components/Program"
-import Register from "../components/Register"
-import Tests from "../components/Tests"
+import Program from "../components/ProgramListing"
+import Register from "../components/RegisterDisplay"
+import Tests from "../components/TestsListing"
 import ProgramGraph from "../components/ProgramGraph";
 import api from '../services/api'
 import UnfoldLessHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
 import UnfoldMoreHorizontalIcon from 'vue-material-design-icons/UnfoldMoreHorizontal.vue'
 
 export default {
-    name: 'Challenge',
+    name: 'ChallengePage',
     //props: {
     //    id: Number
     //}

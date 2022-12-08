@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "./pages/Home"
-import Challenges from "./pages/Challenges"
-import Playground from "./pages/Playground"
-import Challenge from "./pages/Challenge"
-import Tutorial from "./pages/Tutorial"
+import Home from "./pages/HomePage"
+import Challenges from "./pages/ChallengesPage"
+import Playground from "./pages/PlaygroundPage"
+import Challenge from "./pages/ChallengePage"
+import Tutorial from "./pages/TutorialPage"
 
 
 Vue.use(Router)

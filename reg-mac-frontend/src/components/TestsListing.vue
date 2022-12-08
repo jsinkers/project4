@@ -48,7 +48,7 @@
     import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline.vue'
 
     export default {
-        name: "Tests",
+        name: "TestsListing",
         props: {
           tests: Array,
           currTest: Number,

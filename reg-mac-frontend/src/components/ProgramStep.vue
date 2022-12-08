@@ -24,7 +24,7 @@
     import PencilIcon from 'vue-material-design-icons/Pencil.vue'
     import PencilOffIcon from 'vue-material-design-icons/PencilOff.vue'
     import { eventBus } from '../state'
-    import Dropdown from './Dropdown'
+    import Dropdown from './DropdownMenu'
 
     export default {
         name: "ProgramStep",

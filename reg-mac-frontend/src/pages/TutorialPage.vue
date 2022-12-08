@@ -146,11 +146,11 @@
 
 <script>
     import TutorialPage from '../components/TutorialPage'
-    import Register from '../components/Register'
-    import Program from '../components/Program'
+    import Register from '../components/RegisterDisplay'
+    import Program from '../components/ProgramListing'
 
     export default {
-        name: "Tutorial",
+        name: "TutorialPage",
         components: {
             Register,
             TutorialPage,

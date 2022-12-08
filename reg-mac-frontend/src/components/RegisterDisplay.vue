@@ -23,7 +23,7 @@
 
 <script>
 export default {
-    name: "Register",
+    name: "RegisterDisplay",
     props: {
         regId: Number,
         regValue: Number

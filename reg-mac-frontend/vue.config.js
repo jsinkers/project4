@@ -8,9 +8,11 @@ module.exports = {
                 target: 'http://localhost:8000/',
             }
         },
-        publicPath: process.env.NODE_ENV === 'production'
-            ? '/register-machine/'
-            : '/'
+        devMiddleware: {
+            publicPath: process.env.NODE_ENV === 'production'
+                ? '/register-machine/'
+                : '/'
+        },
     },
     configureWebpack: {
         devtool: 'source-map'

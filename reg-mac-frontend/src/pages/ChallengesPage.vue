@@ -29,7 +29,7 @@ import CheckCircleOutlineIcon from 'vue-material-design-icons/CheckCircleOutline
 import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline.vue'
 
 export default {
-    name: "Challenges",
+    name: "ChallengesPage",
     components: {
         CheckCircleOutlineIcon,
         AlertCircleOutlineIcon,

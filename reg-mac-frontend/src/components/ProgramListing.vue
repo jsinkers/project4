@@ -56,7 +56,7 @@
     import ProgramStep from "./ProgramStep"
     import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
     export default {
-        name: "Program",
+        name: "ProgramListing",
         props: {
           program: Array,
           fields: Array,

@@ -77,7 +77,7 @@
 
 <script>
 export default {
-  name: "Playground",
+  name: "PlaygroundPage",
   data: function () {
     return {
       program: [{id: 1, instruction: 'end', register: null, goTo: null, branchTo: null, editable: true, editMode: false}],

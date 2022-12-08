@@ -19,7 +19,7 @@
 import {eventBus} from "../state"
 
 export default {
-  name: "Dropdown",
+  name: "DropdownMenu",
   props: {
     editMode: Boolean,
     field: Object,
