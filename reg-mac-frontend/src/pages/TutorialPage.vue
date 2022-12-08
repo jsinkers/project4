@@ -1,4 +1,4 @@
-<template>
+Component<template>
     <div class="row flex-grow-1 debug2 ">
         <div class="container-fluid d-flex flex-column carousel slide debug" id="lightbox"
              data-interval="false">
@@ -23,8 +23,8 @@
             <div class="row align-items-center flex-grow-1">
                 <div class="col h-100">
                     <div class="carousel-inner container-fluid h-100">
-                        <TutorialPage :is-active="true">
-                            <span slot="header">Register machine</span>
+                        <TutorialComponent :is-active="true">
+                          <span slot="header">Register machine</span>
                             <div slot="content">
                                 <p>This site gives you a series of challenges to solve using a register
                                     machine, a kind of idealised computer. This is a useful tool to explore how
@@ -36,8 +36,8 @@
                                             href="https://www.goodreads.com/en/book/show/18378002-intuition-pumps-and-other-tools-for-thinking">
                                         Intuition Pumps and Other Tools for Thinking</a>.</p>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Registers</span>
                             <div slot="content">
                                 <p>Register machines have a number of registers, which act as memory
@@ -55,16 +55,16 @@
                                     </div>
                                 </div>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Processing Unit</span>
                             <div slot="content">
                                 <p>The register machine also has a processing unit, which is capable of
                                     performing three different instructions. It can only execute one instruction at
                                     a time.</p>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Program</span>
                             <div slot="content">
                                 <p>A program for the register machine is simply a list of these instructions in a
@@ -74,23 +74,23 @@
                                 <program :program="program" :fields="fields" :current-step-id="currentStepId"
                                          :instructions="instructions"></program>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Instruction 1: Increment</span>
                             <div slot="content">
                                 <p>The increment instruction adds 1 to the specified register, and then moves to a
                                     specified step in the program (the Go-To step).</p>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Instruction 2: End</span>
                             <div slot="content">
                                 <p>As you might have guessed, the End instruction halts execution of the register
                                     machine. Without one of these steps in your program, it will keep the
                                     register machine running forever!</p>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Instruction 3: Decrement-Branch</span>
                             <div slot="content">
                                 <p>The Decrement-Branch instruction is a bit more involved. If the specified
@@ -104,8 +104,8 @@
                                     registers. You'll see how this works as you solve the challenges.</p>
                                 <!-- todo: add decrement program step and graph -->
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Operating the register machine</span>
                             <div slot="content">
                                 <p>Now that you know what makes up a register machine, let's look at how we can
@@ -122,14 +122,14 @@
                                     <li>Reset: this takes the register machine back to the first step</li>
                                 </ul>
                             </div>
-                        </TutorialPage>
-                        <TutorialPage>
+                        </TutorialComponent>
+                        <TutorialComponent>
                             <span slot="header">Register machine</span>
                             <div slot="content">
                                 <p>Now you know how the basics, let's get started!</p>
                                 <router-link class="btn btn-primary" to="/progress">Get started</router-link>
                             </div>
-                        </TutorialPage>
+                        </TutorialComponent>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
 </template>
 
 <script>
-    import TutorialPage from '../components/TutorialPage'
+    import TutorialComponent from '../components/TutorialComponent'
     import Register from '../components/RegisterDisplay'
     import Program from '../components/ProgramListing'
 
@@ -153,7 +153,7 @@
         name: "TutorialPage",
         components: {
             Register,
-            TutorialPage,
+            TutorialComponent,
             Program,
 
         },

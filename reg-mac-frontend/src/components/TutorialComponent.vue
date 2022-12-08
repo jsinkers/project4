@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        name: "TutorialPage",
+        name: "TutorialComponent",
         props: {
             isActive: {type: Boolean, default: false}
         },

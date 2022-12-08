@@ -1,21 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "./pages/HomePage"
-import Challenges from "./pages/ChallengesPage"
-import Playground from "./pages/PlaygroundPage"
-import Challenge from "./pages/ChallengePage"
-import Tutorial from "./pages/TutorialPage"
+import HomePage from "./pages/HomePage"
+import ChallengesPage from "./pages/ChallengesPage"
+import PlaygroundPage from "./pages/PlaygroundPage"
+import ChallengePage from "./pages/ChallengePage"
+import TutorialPage from "./pages/TutorialPage"
 
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/', component: Home },
-    { path: '/progress', component: Challenges },
-    { path: '/challenge', component: Challenge },
-    { path: '/challenge/:id', component: Challenge },
-    { path: '/playground', component: Playground },
-    { path: '/tutorial', component: Tutorial },
+    { path: '/', component: HomePage },
+    { path: '/progress', component: ChallengesPage },
+    { path: '/challenge', component: ChallengePage },
+    { path: '/challenge/:id', component: ChallengePage },
+    { path: '/playground', component: PlaygroundPage },
+    { path: '/tutorial', component: TutorialPage },
   ]
 })
