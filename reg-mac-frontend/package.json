@@ -14,7 +14,7 @@
     "axios": "^0.21.2",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.1.0",
-    "core-js": "^3.3.2",
+    "core-js": "^3.31.1",
     "cytoscape": "^3.12.1",
     "cytoscape-dagre": "^2.2.2",
     "cytoscape-klay": "^3.1.3",
