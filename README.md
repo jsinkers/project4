@@ -1,15 +1,32 @@
 # Register Machine
-A web app intended as an educational tool to introduce concepts
-of computer programming, based on Wang's register machine [1], as discussed in
-Ch. 24 of Dennett [2].  Text and the register machine problems draw on 
-Dennett's work.   It is constructed with a brief tutorial, and a series of challenges
-of increasing difficulty and new concepts.  Challenges are completed by successfully passing the tests supplied.  
+
+[registermachine.com](registermachine.com) 
+
+This web app is an educational tool that introduces concepts
+of computer programming and models of computation via the register machine.
+
+__Built with Vue/Django/PostgreSQL__
 
 ![Running challenge tests on the register machine](docs/running_tests.gif)
 
-Deployed via heroku at www.registermachine.com
+I built this as a learning exercise in an area of personal interest as my first project with Vue but also to develop knowledge of Django and relational databases. The architecture is needlessly complicated for the current requirements as it's a learning exercise.
 
-Uses Vue for front-end with Django back-end. Configured for PostgreSQL.
+This was originally hosted on Heroku, but due to rising costs I have Dockerized it and now self-host it. The Heroku deployment instructions are still included below.
+
+## What is a register machine?
+
+The register machine is a simple model of computation, with a set of registers, and a program that manipulates the registers. With only simple instructions, the register machine is Turing complete, and can solve any computable problem.
+This is based on Wang's register machine [1], as discussed in Ch. 24 of Dennett [2]. Content in the app and the register machine problems draw on Dennett's work.  
+
+## What does it do?
+
+The web app includes a brief __tutorial__, and a series of __challenges__
+of increasing difficulty gradually introducing new concepts.  Challenges require you to write a program for the register machine that performs the required task. 
+Challenges are completed by successfully passing the set of tests supplied.  
+
+There's also a __playground__ where you can write your own programs and run them.
+
+Challenges are specified in YAML files, and the app is designed to be easily extensible with new challenges.
 
 
 ## Register Machine Challenges
@@ -45,6 +62,7 @@ tests: <see below>
 registers: <see below>
 hint: <html hint in quotes>
 ```
+
 ### Representation of register machine programs
 
 Register machine programs are a JSON array of steps.  
@@ -83,6 +101,7 @@ tests:
 On page load, the number of registers listed in the YAML register list will be 
 added to the register machine, and displayed with the values specified in the Challenge
 YAML:
+
 ```yaml
 registers:
 - id: <int register id>
@@ -90,17 +109,31 @@ registers:
 ```
 
 ### Updating challenges
+
 In order to update challenges on the database, run:
 `$ heroku run python backend/manage.py runscript import_challenges`
 
 ## Architecture
 
-Django back-end for API, models, and to serve the built Vue files
-Vue front-end
-Used parts of [django-vue-template](https://github.com/gtalarico/django-vue-template)
-Local storage currently used to retain user progress.  
+- __Note: the architecture is overly complex for the current requirements, as it was a learning exercise. I've included some comments on how this could be simplified__
+- __PostgreSQL database__ stores challenges
+  - challenges are written in YAML and loaded into the database on deployment, allowing for easy extensibility
+  and updates
+  - alternatively
+- __Django back-end__ for API and models
+  - endpoints for challenges
+  - could be eliminated 
+- __Vue front-end__ for user interface
+  - the register machine programs run in the browser
 
-## Development server
+- Local storage is used to retain user progress. I didn't want to create user accounts for this project.
+- I used parts of [django-vue-template](https://github.com/gtalarico/django-vue-template) when setting up the project
+
+### Simplifications
+
+For the same feature set, the architecture could be simplified by removing the database and Django and a simply serving the static files for the Vue front-end. The challenges could be stored in JSON files in the Vue app.
+
+## Development server - Running locally
 
 From backend directory, Run django:
 ```python manage.py runserver```
@@ -110,9 +143,21 @@ From frontend directory, run Vue:
 
 vue.config.js contains a proxy so that these do not clash.
 
-## Deployment
+## Deployment - Docker
+
+- set up a `.env` file in the root directory per the `.env.example` file
+- run `docker compose up --build -d`
+
+### Details
+
+- `gunicorn` is used to serve the Django API 
+- `node` is used to build the Vue app and serve it with `nginx`
+- `postgres` is used for the database
+
+## Deployment - Heroku (Deprecated)
 
 ### Heroku Procfile
+
 * Collects static files into one location
 * Performs database migrations
 * Updates challenges
@@ -144,12 +189,11 @@ PostgreSQL must be installed to run this locally
 On Windows, run:
 ```heroku local web -f Procfile.windows```
 
-## Upcoming features
+## Ideas for further development
 
-* playground to allow users to make their own programs to do anything they wish
-* user accounts to allow permanent storage of solutions and playground programs
-* layout improvements
-* Vue tests
+* __user accounts__ to allow permanent storage of solutions and playground programs
+* __layout improvements__ for consistency and responsiveness
+* __Vue tests__
 
 ## References
 
