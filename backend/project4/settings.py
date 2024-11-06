@@ -91,11 +91,14 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
         'HOST': 'db',
         'PORT': '5432',
+        #'OPTIONS': {
+        #    'sslmode': 'disable',
+        #}
     }
 }
 
 # Change 'default' database configuration with $DATABASE_URL.
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=False))
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -147,5 +150,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'reg-mac-frontend', 'dist', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE ='django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-django_heroku.settings(locals())
+django_heroku.settings(locals(), databases=False)
 
