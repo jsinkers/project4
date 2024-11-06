@@ -38,3 +38,7 @@ def challenge_list(request):
         serializer = ChallengeListSerializer(challenge_list, many=True)
         return Response(serializer.data)
 
+
+@api_view(['GET'])
+def health_check(request):
+    return JsonResponse({"status": "ok"})

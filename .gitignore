@@ -21,3 +21,4 @@ staticfiles/
 *.sln
 *.sqlite3
 **/datawizard/
+.env
